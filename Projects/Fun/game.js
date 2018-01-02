@@ -12,6 +12,12 @@ var space
 
 var tree;
 
+var print3D;
+var maxlayers;
+var layer;
+var startlayerheight;
+var maxskirt;
+
 function setup() {
 
     var canvas = createCanvas(windowWidth, windowHeight);
@@ -37,6 +43,14 @@ function setup() {
     space = new Space(width, height - 50, 5, 5);
     space.position(createVector(0, 50));
     space.scaleCells(0.9, 0.9);
+
+
+    maxlayers = 1;
+    layer = 0;
+    startlayerheight = 0;
+    maxskirt = 3
+    print3D = new Print3D("Ultimaker2+", "PLA", "fine", maxlayers, startlayerheight, maxskirt);
+
 
     issaved = false;
 }
