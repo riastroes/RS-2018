@@ -66,8 +66,10 @@ function mousePressed() {
     } else {
         var i = colShapes.length;
 
-        colShapes[i] = new Shape(createVector(0, 0), colorstrip.color);
-        colShapes[i].createOnCircle(3);
+        colShapes[i] = new Shape(createVector(0, 0));
+        colShapes[i].style(color(0), colorstrip.color,1);
+        colShapes[i].createOnCircle(createVector(0, 0),  30,3);
+        colShapes[i].moveTo(colShapes[i].center);
 
 
     }

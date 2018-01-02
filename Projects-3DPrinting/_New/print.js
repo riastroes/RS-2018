@@ -1,6 +1,7 @@
-function Print() {
+function Print(pos) {
     this.skirt;
     this.path;
+    this.pos = pos.copy();
 
 
 }

@@ -1,8 +1,7 @@
 function Print() {
     this.skirt;
     this.path;
-
-
+        
 }
 Print.prototype.skirt = function() {
     let p = [];
@@ -13,12 +12,24 @@ Print.prototype.skirt = function() {
     return p;
 }
 Print.prototype.getPrint = function() {
+
     return this.path;
 }
-Print.prototype.create = function(layer) {
+Print.prototype.create = function(layer, pos) {
     this.path = [];
     if (layer == 0) {
         this.path = this.path.concat(this.skirt());
-
+        this.path = this.path.concat(this.createVlinder(pos));
     }
+}
+Print.prototype.createVlinder = function(pos){
+    let path = [];
+    let shape = new Shape();
+    shape.createOnCircle(100, 4);
+    shape.moveTo(pos);
+    shape.style(color(255,0,0),color(255,0,0));
+    shape.draw();
+    
+    path = shape.getPath();
+    return path;
 }

@@ -22,9 +22,14 @@ Print3D.prototype.createLayers = function() {
     }
 
 }
-Print3D.prototype.addToLayer = function(layer, path) {
+Print3D.prototype.addToLayer = function(layer, path, show) {
     this.layers[layer].add(path);
     this.last = path[path.length - 1].copy();
+    if(show){
+        strokeWeight(5);
+        point(this.last.x, this.last.y);
+        strokeWeight(5);
+    }
 }
 Print3D.prototype.addPointToLayer = function(layer, vector) {
     this.layers[layer].addPoint(vector);

@@ -22,27 +22,29 @@ function setup() {
     maxskirt = 3;
     print3D = new Print3D("Vlinders", "Anet", "PLA", "fine", maxlayers, startlayerheight, maxskirt);
     print3D.start();
-    print = new Print();
-
+    
     issaved = false;
 }
 
 function mousePressed() {
     if (!issaved) {
-        print3D.save();
-        issaved = true;
+        if(print3D.checkPrint(printpath, 0, 0, width, height)){
+            print3D.save();
+            issaved = true;
+        }
+        
     }
 }
-
 function draw() {
     if (layer < maxlayers) {
-        print.create(layer);
+        print = new Print();  //begin in het centrum
+        print.create(layer, createVector(550,550));
+
         printpath = print.getPrint();
         print3D.addToLayer(layer, printpath);
         print3D.print(layer);
     }
     if (layer == maxlayers) {
-        print3D.checkPrint(printpath, 0, 0, width, height);
         print3D.stop();
         noLoop();
     }
