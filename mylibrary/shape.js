@@ -5,7 +5,7 @@ de punten zijn relatief t.o.v. dit punt gedefinieerd.
 */
 
 function Shape() {
-    
+
     this.p = [];
     this.path = [];
     this.direction = createVector(0, 0);
@@ -14,43 +14,38 @@ function Shape() {
     this.strokeweight = 1;
 
 }
-Shape.prototype.style = function(strokecolor, fillcolor, strokeweight){
-    if(strokecolor == undefined){
+Shape.prototype.style = function(strokecolor, fillcolor, strokeweight) {
+    if (strokecolor == undefined) {
         this.strokecolor = 0;
         stroke(0);
-    }
-    else if(strokecolor == null){
+    } else if (strokecolor == null) {
         this.strokecolor = null;
         noStroke();
-    }
-    else{
+    } else {
         this.strokecolor = strokecolor;
         stroke(strokecolor);
     }
-    if(fillcolor == undefined){
+    if (fillcolor == undefined) {
         this.fillcolor = fillcolor;
         fill(0);
-    }
-    else if(fillcolor == null){
+    } else if (fillcolor == null) {
         this.fillcolor = null;
         noFill();
-    }
-    else{
+    } else {
         this.fillcolor = fillcolor;
         fill(fillcolor);
     }
-    if(strokeweight == undefined){
+    if (strokeweight == undefined) {
         strokeWeight(1);
-    }
-    else{
+    } else {
         strokeWeight(strokeweight);
     }
 }
 Shape.prototype.createOnCircle = function(radius, count) {
-   
+
     this.p = [];
     var i = 0;
-    for (var angle = -PI; angle <(TWO_PI - (PI)) ; angle += (TWO_PI / count)) {  // 0 is bovenkant cirkel
+    for (var angle = -PI; angle < (TWO_PI - (PI)); angle += (TWO_PI / count)) { // 0 is bovenkant cirkel
         this.p[i] = createVector(0, 0);
         this.p[i].x = (radius / 2) * cos(angle);
         this.p[i].y = (radius / 2) * sin(angle);
@@ -58,10 +53,22 @@ Shape.prototype.createOnCircle = function(radius, count) {
     }
     return this.p;
 }
-Shape.prototype.moveTo = function(pos){
+Shape.prototype.createOnEllipse = function(width, height, count) {
+
+    this.p = [];
+    var i = 0;
+    for (var angle = 0; angle < (TWO_PI); angle += (TWO_PI / count)) { // 0 is bovenkant cirkel
+        this.p[i] = createVector(0, 0);
+        this.p[i].x = (width / 2) * cos(angle);
+        this.p[i].y = (height / 2) * sin(angle);
+        i++;
+    }
+    return this.p;
+}
+Shape.prototype.moveTo = function(pos) {
     //niet gebruiken in combinatie met translate in draw
     this.pos = pos.copy();
-    for(let i = 0; i < this.p.length; i++){
+    for (let i = 0; i < this.p.length; i++) {
         this.p[i].add(pos);
     }
     return this.p;
@@ -96,35 +103,35 @@ Shape.prototype.change = function(factor) {
         this.p[i].y += random(-factor, factor);
     }
 }
-Shape.prototype.getPath = function(){
+Shape.prototype.getPath = function() {
     //this.path = [];
-   // this.path  = this.path.concat(this.p);
+    // this.path  = this.path.concat(this.p);
     //append(this.path, this.p[0]);
     return this.path;
 }
 Shape.prototype.draw = function() {
     var max = this.p.length;
-    this.style(this.strokecolor,this.fillcolor,this.strokeweight);
+    this.style(this.strokecolor, this.fillcolor, this.strokeweight);
     this.path = [];
-    
+
 
     beginShape();
     for (var i = 1; i < max + 5; i++) {
-        if(i < max + 1){
-            let index1 = (i-1) % max
+        if (i < max + 1) {
+            let index1 = (i - 1) % max
             let index2 = (i) % max
-            let index3 = (i+1) % max
-            let index4 = (i+2) % max
-            for( let t = 0; t < 1; t += 0.2){
-                let x = curvePoint(this.p[index1].x,this.p[index2].x,this.p[index3].x,this.p[index4].x, t);
-                let y = curvePoint(this.p[index1].y,this.p[index2].y,this.p[index3].y,this.p[index4].y, t);
-                append(this.path, createVector(x,y));
+            let index3 = (i + 1) % max
+            let index4 = (i + 2) % max
+            for (let t = 0; t < 1; t += 0.2) {
+                let x = curvePoint(this.p[index1].x, this.p[index2].x, this.p[index3].x, this.p[index4].x, t);
+                let y = curvePoint(this.p[index1].y, this.p[index2].y, this.p[index3].y, this.p[index4].y, t);
+                append(this.path, createVector(x, y));
             }
         }
         curveVertex(this.p[i % max].x, this.p[i % max].y);
     }
     endShape();
     append(this.path, this.p[1]);
-   
+
 
 }
