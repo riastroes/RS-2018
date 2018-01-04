@@ -41,26 +41,26 @@ Shape.prototype.style = function(strokecolor, fillcolor, strokeweight) {
         strokeWeight(strokeweight);
     }
 }
-Shape.prototype.createOnCircle = function(radius, count) {
+Shape.prototype.createOnCircle = function(radius, list) {
 
     this.p = [];
     var i = 0;
-    for (var angle = -PI; angle < (TWO_PI - (PI)); angle += (TWO_PI / count)) { // 0 is bovenkant cirkel
+    for (let l = 0; l < list.length; l++) { 
         this.p[i] = createVector(0, 0);
-        this.p[i].x = (radius / 2) * cos(angle);
-        this.p[i].y = (radius / 2) * sin(angle);
+        this.p[i].x = (radius / 2) * cos(list[l]);
+        this.p[i].y = (radius / 2) * sin(list[l]);
         i++;
     }
     return this.p;
 }
-Shape.prototype.createOnEllipse = function(width, height, count) {
+Shape.prototype.createOnEllipse = function(width, height, list) {
 
     this.p = [];
     var i = 0;
-    for (var angle = 0; angle < (TWO_PI); angle += (TWO_PI / count)) { // 0 is bovenkant cirkel
+    for (let l = 0; l < list.length; l++) { 
         this.p[i] = createVector(0, 0);
-        this.p[i].x = (width / 2) * cos(angle);
-        this.p[i].y = (height / 2) * sin(angle);
+        this.p[i].x = (width / 2) * cos(list[l]);
+        this.p[i].y = (height / 2) * sin(list[l]);
         i++;
     }
     return this.p;
@@ -103,6 +103,7 @@ Shape.prototype.change = function(factor) {
         this.p[i].y += random(-factor, factor);
     }
 }
+
 Shape.prototype.getPath = function() {
     //this.path = [];
     // this.path  = this.path.concat(this.p);
