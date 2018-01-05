@@ -20,25 +20,26 @@ function setup() {
     layer = 0;
     startlayerheight = 0;
     maxskirt = 3;
-    print3D = new Print3D("Vlinders", "Anet", "PLA", "fine", maxlayers, startlayerheight, maxskirt);
+    print3D = new Print3D("Vlinders", "Anet", "PLAFLEX", "fine", maxlayers, startlayerheight, maxskirt);
     print3D.start();
-    
+
     issaved = false;
 }
 
 function mousePressed() {
     if (!issaved) {
-        if(print3D.checkPrint(printpath, 0, 0, width, height)){
+        if (print3D.checkPrint(printpath, 0, 0, width, height)) {
             print3D.save();
             issaved = true;
         }
-        
+
     }
 }
+
 function draw() {
     if (layer < maxlayers) {
-        print = new Print();  //begin in het centrum
-        print.create(layer, createVector(550,550));
+        print = new Print(); //begin in het centrum
+        print.create(layer, createVector(400, 400));
 
         printpath = print.getPrint();
         print3D.addToLayer(layer, printpath);
