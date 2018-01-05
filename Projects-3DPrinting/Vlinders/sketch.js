@@ -39,13 +39,18 @@ function mousePressed() {
 function draw() {
     if (layer < maxlayers) {
         print = new Print(); //begin in het centrum
-        print.create(layer, createVector(400, 400));
+        print.create(layer, createVector(400, 200));
 
         printpath = print.getPrint();
+        if (layer == maxlayers - 1) {
+            printpath = printpath.concat(createVector(350, 75));
+        }
         print3D.addToLayer(layer, printpath);
+
         print3D.print(layer);
     }
     if (layer == maxlayers) {
+
         print3D.stop();
         noLoop();
     }
