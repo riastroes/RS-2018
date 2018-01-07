@@ -15,11 +15,12 @@ Print.prototype.getPrint = function() {
 
     return this.path;
 }
-Print.prototype.create = function(layer, pos) {
+Print.prototype.create = function(layer) {
     this.path = [];
+    var pos = createVector(320,550);
     if (layer == 0) {
         this.path = this.path.concat(this.skirt());
-        this.path = this.path.concat(createVector(150, 600));
+        this.path = this.path.concat(createVector(20, 300));
         this.path = this.path.concat(this.createVlinder(pos));
         
         // this.path = this.path.concat(this.createVlinder(pos.add(20, 0)));

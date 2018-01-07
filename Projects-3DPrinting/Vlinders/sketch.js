@@ -38,7 +38,7 @@ function mousePressed() {
 function draw() {
     if (layer < maxlayers) {
         print = new Print();  //begin in het centrum
-        print.create(layer, createVector(550,550));
+        print.create(layer);
 
         printpath = print.getPrint();
         print3D.addToLayer(layer, printpath);
