@@ -16,7 +16,7 @@ function setup() {
 
     var canvas = createCanvas(1100, 1100);
 
-    maxlayers = 5;
+    maxlayers = 2;
     layer = 0;
     startlayerheight = 0;
     maxskirt = 3;
