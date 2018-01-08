@@ -45,7 +45,7 @@ Shape.prototype.createOnCircle = function(radius, list) {
 
     this.p = [];
     var i = 0;
-    for (let l = 0; l < list.length; l++) { 
+    for (let l = 0; l < list.length; l++) {
         this.p[i] = createVector(0, 0);
         this.p[i].x = (radius / 2) * cos(list[l]);
         this.p[i].y = (radius / 2) * sin(list[l]);
@@ -57,7 +57,7 @@ Shape.prototype.createOnEllipse = function(width, height, list) {
 
     this.p = [];
     var i = 0;
-    for (let l = 0; l < list.length; l++) { 
+    for (let l = 0; l < list.length; l++) {
         this.p[i] = createVector(0, 0);
         this.p[i].x = (width / 2) * cos(list[l]);
         this.p[i].y = (height / 2) * sin(list[l]);
@@ -117,12 +117,13 @@ Shape.prototype.draw = function() {
 
 
     beginShape();
-    for (var i = 1; i < max + 5; i++) {
-        if (i < max + 1) {
-            let index1 = (i - 1) % max
-            let index2 = (i) % max
-            let index3 = (i + 1) % max
-            let index4 = (i + 2) % max
+    for (var i = 0; i < max + 3; i++) {
+        if (i < max) {
+            var index1 = (i - 1) % max
+            if (i == 0) { index1 = max - 1; }
+            var index2 = (i) % max
+            var index3 = (i + 1) % max
+            var index4 = (i + 2) % max
             for (let t = 0; t < 1; t += 0.2) {
                 let x = curvePoint(this.p[index1].x, this.p[index2].x, this.p[index3].x, this.p[index4].x, t);
                 let y = curvePoint(this.p[index1].y, this.p[index2].y, this.p[index3].y, this.p[index4].y, t);
@@ -131,8 +132,9 @@ Shape.prototype.draw = function() {
         }
         curveVertex(this.p[i % max].x, this.p[i % max].y);
     }
+    append(this.path, createVector(this.p[0].x, this.p[0].y));
     endShape();
-    append(this.path, this.p[1]);
+
 
 
 }

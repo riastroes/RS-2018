@@ -96,9 +96,13 @@ Layer.prototype.generate = function(layer, gcode) {
         var y = this.p[i].y * this.scale;
         y = floor(y * 100) / 100;
         var z = floor(this.p[i].z * 100) / 100;
-
-        var dvector = p5.Vector.sub(this.p[i], this.p[i - 1]);
-        var d = dvector.mag() * this.scale;
+        var d;
+        if (i > 0) {
+            var dvector = p5.Vector.sub(this.p[i], this.p[i - 1]);
+            d = dvector.mag() * this.scale;
+        } else {
+            d = 0;
+        }
 
         if (this.p[i].z == -1) { //transport
 

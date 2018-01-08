@@ -40,54 +40,54 @@ Gcode.prototype.getCode = function(commands) {
     this.commands = concat(this.commands, commands);
 }
 Gcode.prototype.endCode = function() {
-    append(this.commands, ";end code");
-    //append(this.commands, "M107               ;fan off");
-    append(this.commands, "G1 Z15 F200        ;move Z up a bit");
-    append(this.commands, "G91                ;relative positioning");
-    //append(this.commands, "M104 S0            ;extruder heater off");
-    if (this.bedtemp > 0) {
-        //append(this.commands, "M140 S0            ;heated bed heater off");
+        append(this.commands, ";end code");
+        //append(this.commands, "M107               ;fan off");
+        append(this.commands, "G1 Z15 F200        ;move Z up a bit");
+        append(this.commands, "G91                ;relative positioning");
+        //append(this.commands, "M104 S0            ;extruder heater off");
+        if (this.bedtemp > 0) {
+            //append(this.commands, "M140 S0            ;heated bed heater off");
+        }
+        append(this.commands, "G1 Z+5 F200        ;move Z up a bit");
+        append(this.commands, "G28 X0 Y0          ;move X/Y to min endstops, so the head is out of the way");
+        append(this.commands, "M84                ;steppers off");
+        append(this.commands, "G90                ;absolute positioning");
     }
-    append(this.commands, "G1 Z+5 F200        ;move Z up a bit");
-    append(this.commands, "G28 X0 Y0          ;move X/Y to min endstops, so the head is out of the way");
-    append(this.commands, "M84                ;steppers off");
-    append(this.commands, "G90                ;absolute positioning");
-}
-Gcode.prototype.getCodeToStart = function(skirtlast, knittingfirst, thickness, speed, scale) {
-    var tostart = new Array("");
+    // Gcode.prototype.getCodeToStart = function(skirtlast, knittingfirst, thickness, speed, scale) {
+    //     var tostart = new Array("");
 
-    append(tostart, ";tostart");
-    append(tostart, "G1 F" + this.speed);
+//     append(tostart, ";tostart");
+//     append(tostart, "G1 F" + this.speed);
 
-    var v = p5.Vector.sub(skirtlast, knittingfirst);
-    v.mult(app.settings.scale);
-    this.extrude += (v.mag() * this.layerheight * this.thickness);
-    tostart = append(tostart, "G0  Z3");
-    tostart = append(tostart, "G1  X" + (knittingfirst.x * scale) + " Y" + (knittingfirst.y * scale));
-    tostart = append(tostart, "G0  Z" + (this.layer * this.layerheight));
-    this.commands.concat(tostart);
-}
+//     var v = p5.Vector.sub(skirtlast, knittingfirst);
+//     v.mult(app.settings.scale);
+//     this.extrude += (v.mag() * this.layerheight * this.thickness);
+//     tostart = append(tostart, "G0  Z3");
+//     tostart = append(tostart, "G1  X" + (knittingfirst.x * scale) + " Y" + (knittingfirst.y * scale));
+//     tostart = append(tostart, "G0  Z" + (this.layer * this.layerheight));
+//     this.commands.concat(tostart);
+// }
 
 
 Gcode.prototype.save = function(name) {
 
-    save(this.commands, name + ".gcode");
-    console.log(name + " is saved.");
-}
-Gcode.prototype.generate = function(layers, skirt, knittings) {
-
-    if (skirt != undefined) {
-        this.getCode(skirt.commands);
+        save(this.commands, name + ".gcode");
+        console.log(name + " is saved.");
     }
+    // Gcode.prototype.generate = function(layers, skirt, knittings) {
 
-    for (var i = 0; i < knittings.length; i++) {
-        if (i < layers.length) {
-            this.getCode(layers[i].commands);
-        }
-        this.getCode(knittings[i].commands);
-    }
+//     if (skirt != undefined) {
+//         this.getCode(skirt.commands);
+//     }
 
-}
+//     for (var i = 0; i < knittings.length; i++) {
+//         if (i < layers.length) {
+//             this.getCode(layers[i].commands);
+//         }
+//         this.getCode(knittings[i].commands);
+//     }
+
+// }
 
 Gcode.prototype.generateLayers = function(layers) {
 

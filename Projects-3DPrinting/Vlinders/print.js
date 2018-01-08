@@ -8,7 +8,7 @@ Print.prototype.skirt = function() {
     p[0] = createVector(150, 30, 0);
     p[1] = createVector(750, 30, 0);
     p[2] = createVector(150, 50, 0);
-    //p[3] = createVector(750, 50, 0);
+    //p[3] = createVector(450, 50, 0);
     return p;
 }
 Print.prototype.getPrint = function() {
@@ -17,66 +17,93 @@ Print.prototype.getPrint = function() {
 }
 Print.prototype.create = function(layer) {
     this.path = [];
-    var pos = createVector(320,550);
+    var pos = createVector(100,150);
     if (layer == 0) {
         this.path = this.path.concat(this.skirt());
-        this.path = this.path.concat(createVector(20, 300));
-        this.path = this.path.concat(this.createVlinder(pos));
         
         // this.path = this.path.concat(this.createVlinder(pos.add(20, 0)));
-    }
-    else{
-        
+     }
+        this.path = this.path.concat(createVector(80, 70));
         this.path = this.path.concat(this.createVlinder(pos));
-    }
+        this.path = this.path.concat(createVector(120, 70));
+        this.path = this.path.concat(createVector(250, 70));
+        this.path = this.path.concat(this.createVlinder(pos.copy().add(170,0)));
+        this.path = this.path.concat(createVector(290, 70));
+        this.path = this.path.concat(createVector(420, 70));
+        this.path = this.path.concat(this.createVlinder(pos.copy().add(340,0)));
+        this.path = this.path.concat(createVector(460, 70));
+        this.path = this.path.concat(createVector(590, 70));
+        this.path = this.path.concat(this.createVlinder(pos.copy().add(510,0)));
+        this.path = this.path.concat(createVector(630, 70));
+        this.path = this.path.concat(createVector(760, 70));
+        this.path = this.path.concat(this.createVlinder(pos.copy().add(680,0)));
+        this.path = this.path.concat(createVector(800, 70));
+        this.path = this.path.concat(createVector(920, 70));
+        this.path = this.path.concat(this.createVlinder(pos.copy().add(840,0)));
+        this.path = this.path.concat(createVector(960, 70));
 }
 Print.prototype.createVlinder = function(pos) {
-    
+
     let path = [];
     let shape = new Shape();
-    let list = [0,PI/2, PI, PI+(PI/2)]; 
-
-    //linkervleugel
-    shape.createOnEllipse(100, 300, list);
-    shape.p[0].add(100,0);
-    shape.moveTo(pos);
-    shape.style(color(255, 0, 0, 30), color(255, 0, 0, 30));
-    shape.draw();
-
-    path = shape.getPath();
-    
-    
-    //rechtervleugel
-    shape = new Shape();
-    list = [PI,PI/2, 0, -(PI/2)]; 
-    shape.createOnEllipse(100, 300, list);
-    shape.p[0].add(-100,0);
-    shape.moveTo(pos.add(300,0));
-    shape.style(color(255, 0, 0, 30), color(255, 0, 0, 30));
-    shape.draw();
-
-    path = path.concat(shape.getPath());
+    let list = [];
 
     //kop
     shape = new Shape();
-    list = [0, TWO_PI /5,  (TWO_PI /5)*2,  (TWO_PI /5)*3,  (TWO_PI /5)*4]; 
-    shape.createOnCircle(50,list);
-    shape.moveTo(pos.add(-150,50));
+    let a = TWO_PI / 4;
+    list = [a, a * 2, a * 3, a * 4];
+    shape.createOnCircle(25, list);
+    shape.moveTo(pos);
     shape.style(color(255, 0, 0, 30), color(255, 0, 0, 30));
     shape.draw();
-    path = path.concat(createVector(750, 700));
-    path = path.concat(shape.getPath());
+    path = shape.getPath();
 
     //lijf
     shape = new Shape();
-    list = [0, TWO_PI /5,  (TWO_PI /5)*2,  (TWO_PI /5)*3,  (TWO_PI /5)*4]; 
-    shape.createOnEllipse(50,200, list);
-    shape.moveTo(pos.add(0,-100));
+    a = TWO_PI / 4;
+    list = [a * 3, 0, a, a * 2];
+    shape.createOnEllipse(25, 100, list);
+    shape.moveTo(pos.add(0, 60));
     shape.style(color(255, 0, 0, 30), color(255, 0, 0, 30));
     shape.draw();
-    
+
     path = path.concat(shape.getPath());
-    path = path.concat(createVector(650, 700));
+
+
+    //linkervleugel
+    shape = new Shape();
+    list = [0, (PI + (PI / 2)), PI, PI / 2];
+    shape.createOnEllipse(50, 150, list);
+    shape.p[0].add(50, 0);
+    shape.p[2].add(40, -15);
+    shape.moveTo(pos.add(-75, -25));
+    shape.style(color(255, 0, 0, 30), color(255, 0, 0, 30));
+    shape.draw();
+
+    path = path.concat(shape.getPath());
+
+
+    //rechtervleugel
+    shape = new Shape();
+    list = [PI, (PI + (PI / 2)), 0, PI / 2]
+    shape.createOnEllipse(50, 150, list);
+    shape.p[0].add(-50, 0);
+    shape.p[2].add(-40, -15);
+    shape.moveTo(pos.add(150, 0));
+
+    shape.style(color(255, 0, 0, 30), color(255, 0, 0, 30));
+    shape.draw();
+
+
+    path = path.concat(shape.getPath());
+
+    path = path.concat(pos.add(-75, -25));
+
+
+
+
+
+
 
     return path;
 }
