@@ -12,11 +12,6 @@ var space
 
 var tree;
 
-var print3D;
-var maxlayers;
-var layer;
-var startlayerheight;
-var maxskirt;
 
 function setup() {
 
@@ -45,13 +40,6 @@ function setup() {
     space.scaleCells(0.9, 0.9);
 
 
-    maxlayers = 1;
-    layer = 0;
-    startlayerheight = 0;
-    maxskirt = 3
-    print3D = new Print3D("Ultimaker2+", "PLA", "fine", maxlayers, startlayerheight, maxskirt);
-
-
     issaved = false;
 }
 
@@ -67,9 +55,9 @@ function mousePressed() {
         var i = colShapes.length;
 
         colShapes[i] = new Shape(createVector(0, 0));
-        colShapes[i].style(color(0), colorstrip.color,1);
-        colShapes[i].createOnCircle(createVector(0, 0),  30,3);
-        colShapes[i].moveTo(colShapes[i].center);
+        colShapes[i].style(color(0), colorstrip.color, 1);
+        colShapes[i].createOnCircle(createVector(0, 0), 30, 3);
+        colShapes[i].moveTo(createVector(mouseX, mouseY));
 
 
     }
