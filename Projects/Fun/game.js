@@ -2,7 +2,7 @@
 /* @updated: september 2017  */
 
 
-
+var canvas;
 var issaved;
 var acolor, bcolor;
 var colorstrip;
@@ -11,11 +11,12 @@ var colShapes;
 var space
 
 var tree;
+var clicked;
 
 
 function setup() {
 
-    var canvas = createCanvas(windowWidth, windowHeight);
+    canvas = createCanvas(windowWidth, windowHeight);
 
     colorstrip = new ColorStrip(createVector(0, 0), width, 50);
     colorstrip.setTransparency(0.2);
@@ -39,31 +40,36 @@ function setup() {
     space.position(createVector(0, 50));
     space.scaleCells(0.9, 0.9);
 
-
+    canvas.mouseClicked(listenToMouse);
     issaved = false;
 }
 
-function mousePressed() {
+function listenToMouse() {
     if (!issaved) {
 
         issaved = true;
     }
 
-    if (colorstrip.isClicked(true)) {
-
+    if (colorstrip.isClicked(mouseX, mouseY, true)) {
+        colorstrip.isclicked = false;
     } else {
         var i = colShapes.length;
-
-        colShapes[i] = new Shape(createVector(0, 0));
+        var anglelist = [];
+        for (var a = 0; a < 3; a++) {
+            append(anglelist, (TWO_PI / 3) * a);
+        }
+        colShapes[i] = new Shape();
         colShapes[i].style(color(0), colorstrip.color, 1);
-        colShapes[i].createOnCircle(createVector(0, 0), 30, 3);
+        colShapes[i].createOnCircle(30, anglelist);
         colShapes[i].moveTo(createVector(mouseX, mouseY));
 
 
     }
+    return false;
 }
 
 function draw() {
+
     if (frameCount % 50 == 0) {
         for (var i = 0; i < colShapes.length; i++) {
             colShapes[i].changeDirection();
@@ -73,7 +79,7 @@ function draw() {
     if (frameCount % 1 == 0) {
         colorstrip.clearBackground(true);
         for (var i = 0; i < colShapes.length; i++) {
-            colShapes[i].move(1);
+            //colShapes[i].move(1);
             space.draw(colShapes[i]);
         }
     }

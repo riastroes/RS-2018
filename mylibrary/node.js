@@ -21,7 +21,7 @@ Node.prototype.add = function(val) {
     }
 }
 Node.prototype.visit = function() {
-    console.log(this.value);
+
     if (this.left != null) {
         this.left.visit();
     }
@@ -33,7 +33,7 @@ Node.prototype.search = function(val) {
     var found = false
     if (this.value == val) {
         found = true;
-        console.log(found, this);
+
     } else if (this.left != null) {
         this.left.search(val);
     } else if (this.right != null) {

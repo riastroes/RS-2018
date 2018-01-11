@@ -12,6 +12,7 @@ function Shape() {
     this.strokecolor = 0;
     this.fillcolor = 255;
     this.strokeweight = 1;
+    this.center;
 
 }
 Shape.prototype.style = function(strokecolor, fillcolor, strokeweight) {
@@ -117,8 +118,9 @@ Shape.prototype.draw = function() {
 
 
     beginShape();
-    for (var i = 0; i < max + 3; i++) {
-        if (i < max) {
+    if (max > 0) {
+        for (var i = 0; i < max + 3; i++) {
+
             var index1 = (i - 1) % max
             if (i == 0) { index1 = max - 1; }
             var index2 = (i) % max
@@ -128,11 +130,13 @@ Shape.prototype.draw = function() {
                 let x = curvePoint(this.p[index1].x, this.p[index2].x, this.p[index3].x, this.p[index4].x, t);
                 let y = curvePoint(this.p[index1].y, this.p[index2].y, this.p[index3].y, this.p[index4].y, t);
                 append(this.path, createVector(x, y));
+
             }
+            curveVertex(this.p[i % max].x, this.p[i % max].y);
         }
-        curveVertex(this.p[i % max].x, this.p[i % max].y);
+        append(this.path, createVector(this.p[0].x, this.p[0].y));
     }
-    append(this.path, createVector(this.p[0].x, this.p[0].y));
+
     endShape();
 
 

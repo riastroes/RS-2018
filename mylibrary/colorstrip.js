@@ -8,6 +8,7 @@ function ColorStrip(pos, w, h) {
     this.color = this.colors[0]; // de gekozen kleur
     this.max = this.colors.length; // het aantal kleuren
     this.alpha = 1;
+    this.isclicked = false;
 
 }
 ColorStrip.prototype.create = function(max, name) {
@@ -145,24 +146,24 @@ ColorStrip.prototype.setTransparency = function(alpha) {
         this.colors[i] = color(hue(this.colors[i]), saturation(this.colors[i]), lightness(this.colors[i]), this.alpha);
     }
 }
-ColorStrip.prototype.isClicked = function(show) {
+ColorStrip.prototype.isClicked = function(x, y, show) {
     var index = 0;
-    var isclicked = false;
-    if (mouseX > this.pos.x && mouseX < this.pos.x + this.palwidth && mouseY > this.pos.y && mouseY < this.pos.y + this.palheight) {
-        isclicked = true;
+    this.isclicked = false;
+    if (x > this.pos.x && x < this.pos.x + this.palwidth && y > this.pos.y && y < this.pos.y + this.palheight) {
+        this.isclicked = true;
         if (this.palwidth < this.palheight) {
             //vertikaal
             var cellheight = this.palheight / this.colors.length;
-            index = floor((mouseY - this.pos.y) / cellheight);
+            index = floor((y - this.pos.y) / cellheight);
         } else {
             //horizontaal
             var cellwidth = this.palwidth / this.colors.length;
-            index = floor((mouseX - this.pos.x) / cellwidth);
+            index = floor((x - this.pos.x) / cellwidth);
         }
         this.color = this.colors[index];
     }
 
-    if (isclicked && show) {
+    if (this.isclicked && show) {
         this.show();
         stroke(0);
         fill(this.color);
@@ -174,7 +175,7 @@ ColorStrip.prototype.isClicked = function(show) {
             rect(this.pos.x + (index * this.palwidth / this.max), this.pos.y, (this.palwidth / this.colors.length), this.palheight);
         }
     }
-    return isclicked;
+    return this.isclicked;
 
 }
 ColorStrip.prototype.getIndex = function(acolor) {

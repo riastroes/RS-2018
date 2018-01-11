@@ -1,3 +1,6 @@
+//Objecten die in deze space opgenomen kunnen worden.
+//moeten een draw-functie ondersteunen.
+
 function Space(spacewidth, spaceheight, cols, rows) {
     this.grid;
     this.cols = cols;
@@ -33,10 +36,10 @@ Space.prototype.scaleCells = function(scalex, scaley) {
     }
 }
 Space.prototype.get = function(x, y) {
-    return this.grid[x][y].value;
+    return this.grid[x][y].obj;
 }
-Space.prototype.set = function(x, y, value) {
-    this.grid[x][y].value = value;
+Space.prototype.set = function(x, y, obj) {
+    this.grid[x][y].obj = obj;
 }
 Space.prototype.draw = function(obj) {
     for (let c = 0; c < this.cols; c++) {
@@ -53,7 +56,7 @@ function Cell(c, r, w, h) {
     this.y = r * h; //top right corner
     this.w = w;
     this.h = h;
-    this.value = 0;
+    this.obj = null;
 }
 Cell.prototype.position = function(offset) {
     this.offset = offset.copy();
@@ -84,5 +87,5 @@ Cell.prototype.inCell = function(x, y) {
             found = true;
         }
     }
-
+    return found;
 }
