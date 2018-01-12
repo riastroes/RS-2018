@@ -1,4 +1,4 @@
-function Print3D(name, printer, material, style, maxlayers, startlayerheight, maxskirt) {
+function Print3D(name, printer, material, style, maxlayers, startlayerheight) {
     this.name = name;
     this.settings = new Settings(printer, material, style);
     this.gcode = new Gcode(name, this.settings);
