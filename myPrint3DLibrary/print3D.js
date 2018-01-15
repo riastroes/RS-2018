@@ -14,6 +14,20 @@ function Print3D(name, printer, material, style, maxlayers, startlayerheight) {
 
 
 }
+Print3D.prototype.optimizePath = function(path, mindistance) {
+    var newpath = [];
+    var from, to;
+    newpath[0] = path[0].copy();
+    from = newpath[0].copy();
+    for (var i = 1; i < path.length; i++) {
+        to = path[i].copy();
+        if (dist(from.x, from.y, to.x, to.y) >= mindistance) {
+            append(newpath, to.copy());
+            from = to.copy();
+        }
+    }
+    return newpath;
+}
 Print3D.prototype.createLayers = function() {
 
     for (var l = 0; l < this.maxlayers; l++) {
@@ -22,8 +36,9 @@ Print3D.prototype.createLayers = function() {
     }
 
 }
-Print3D.prototype.addToLayer = function(layer, path, show) {
-    this.layers[layer].add(path);
+Print3D.prototype.addToLayer = function(layer, path, offset, show) {
+
+    this.layers[layer].addPattern(offset, path);
     this.last = path[path.length - 1].copy();
     if (show) {
         strokeWeight(5);

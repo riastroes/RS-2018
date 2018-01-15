@@ -17,11 +17,10 @@ function Layer(layer, settings, startlayerheight) {
 
     this.p = [];
 }
-Layer.prototype.addPattern = function(offset, pos, path) {
+Layer.prototype.addPattern = function(pos, path) {
 
     for (var i = 0; i < path.length; i++) {
         var p = pos.copy();
-        p.add(offset);
         p.add(path[i]);
 
         if (p.x > 0 && p.x < width && p.y > 0 && p.y < height) {

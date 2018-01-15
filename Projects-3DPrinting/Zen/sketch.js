@@ -1,34 +1,39 @@
 /* Ria Stroes */
 /* @updated: november 2017  */
 /* Tracing a line
-*/
+ */
 
 
 var grid;
-var palette;
-var colors;
 var margew, margeh;
 
 var print3D;
 var layer;
 var maxlayers;
 var show;
+var printpath;
+var offset;
 
 var issaved;
 var model;
-var offset;
+
 
 var name;
 var pos;
 var path;
 var next;
 var acolor;
-var red;
+var ablack;
+var ared;
+var amax, n, k;
+
+
 
 
 
 function preload() {
-    model = loadImage("images/line04.jpg");
+    model = loadImage("images/Image.png");
+
 }
 
 function setup() {
@@ -41,48 +46,42 @@ function setup() {
     //rect(offset.x - 1, offset.y - 1, 1000 + 2, 1000 + 2);
     image(model, offset.x, offset.y);
     model.loadPixels();
+    //kleur van de achtergrond
     acolor = color(model.pixels[0], model.pixels[1], model.pixels[2], model.pixels[3]);
-
+    ablack = color(0, 0, 0, 255);
+    ared = color(255, 0, 0, 255);
     windowscale = 1;
-    palette = new Color();
-    colors = palette.create(10);
-    red = colors[0];
+
 
 
     layer = 0;
     maxlayers = 1;
     var startlayerheight = 0.5; // 1
-    var maxskirt = 2; //0 whithout skirt
-    //startlayerheight = 2;  // JellyBox
-    //print3D = new Print3D("JellyBox", "MAXXFLEX", "normal", maxlayers, startlayerheight, maxskirt);
-    print3D = new Print3D("Zen", "Annet", "PLA", "fine", maxlayers, startlayerheight);
-
-
-    maxw = 120; //200
-    maxh = 120; //35
-    margew = 30;
-    margeh = 150;
-    
-    
+    print3D = new Print3D("Zen", "Anet", "PLA", "fine", maxlayers, startlayerheight);
+    printpath = [];
     pos = findStart();
     next = 0;
     path = [];
     path[next] = [];
-    
+    var found = false;
+    var i = (pos.y * 1000 * 4) + (pos.x * 4);
+    var c = color(model.pixels[i], model.pixels[i + 1], model.pixels[i + 2], model.pixels[i + 3]);
+    var colormarge = 10;
+    if (red(c) == red(ared) && green(c) == green(ared) && blue(c) == blue(ared)) {
+        found = true;
+
+    }
+
     findPath(next, pos);
     model.updatePixels();
     image(model, offset.x, offset.y);
-    var m = showMaxPath();
-    
-    // showDifferencePath(m, colors[2]);
-    // showDifferencePath(m, colors[3]);
-    // showDifferencePath(m, colors[4]);
-    // showDifferencePath(m, colors[5]);
-    // showDifferencePath(m, colors[6]);
-    // showDifferencePath(m, colors[7]);
-    // showDifferencePath(m, colors[8]);
-    
-    
+    amax = [];
+    getMaxPath();
+    n = 0;
+    k = 0;
+    console.log(amax.length);
+
+
 
     print3D.start();
 
@@ -102,142 +101,161 @@ function mousePressed() {
 
 function draw() {
 
-    if (layer < maxlayers) {
+    if (n < path.length) {
+        if (path[n].length > 0) {
+            //showPath(n, color(0, 0, 0));
+            console.log(k + "," + n + "," + path[n].length);
+            path[n][0].z = -1;
+            printpath = printpath.concat(path[n]);
+            n += 1;
+            k += 1;
 
-        
+        } else if (path[n] == undefined) {
+            n += 1;
+        } else if (path[n].length == 0) {
+            n += 1;
+        }
+    } else {
+        if (layer < maxlayers) {
+            console.log(printpath.length);
 
-        name = "Zen";
-        //print3D.print(layer);
+            printpath = print3D.optimizePath(printpath, 3);
+            console.log(printpath.length);
+            print3D.addToLayer(layer, printpath, offset, true);
+            print3D.print(layer);
 
+        }
+        if (layer + 1 == maxlayers) {
+            print3D.stop();
+            noLoop();
+        }
+        layer++;
     }
-    if (layer + 1 == maxlayers) {
-        print3D.stop();
-        noLoop();
-    }
-    layer++;
+
+
+
 
 }
 
-function findPath(current, p){
-   
+function findPath(current, p) {
+
     append(path[current], p);
     //kijk naar de buren
     var buren = getBuren(p);
-   
-    for(var b = 0; b < buren.length; b++){
-        next++;
-        path[next] = [];
-        path[next] = path[next].concat(path[current]);
-        if(next < 6000){
-            //console.log(next);
-            var i = (buren[b].y * 1000 * 4) + (buren[b].x * 4);
-            model.pixels[i] = 255;
-            model.pixels[i+1] = 0;
-            model.pixels[i+2] = 0;
-            //model.pixels[i+3] = 255;
-        
-            findPath(next, buren[b]);
+
+    for (var b = 0; b < buren.length; b++) {
+        if (b > 0) {
+            next++;
+            path[next] = [];
+
+
         }
-        
+        var i = (buren[b].y * 1000 * 4) + (buren[b].x * 4);
+        model.pixels[i] = 255;
+        model.pixels[i + 1] = 0;
+        model.pixels[i + 2] = 0;
+        model.pixels[i + 3] = 255;
+        var newpath = [];
+
+        newpath = findPath(next, buren[b]);
+        if (newpath.length < 10) {
+            newpath = [];
+            path[next] = [];
+        }
+
+
+
     }
-    
-    
+    return path[current];
 }
-function getBuren(pos){
+
+
+
+function getBuren(pos) {
     var buren = [];
     var goedeburen = [];
-    buren[0] = pos.copy().add(1,0);
-    buren[1] = pos.copy().add(1,-1);
-    buren[2] = pos.copy().add(0,-1);
-    buren[3] = pos.copy().add(-1,-1);
-    buren[4] = pos.copy().add(-1,0);
-    buren[5] = pos.copy().add(-1,1);
-    buren[6] = pos.copy().add(0,1);
-    buren[7] = pos.copy().add(1,1);
+    buren[7] = pos.copy().add(1, 0);
+    buren[6] = pos.copy().add(1, -1);
+    buren[5] = pos.copy().add(0, -1);
+    buren[4] = pos.copy().add(-1, -1);
+    buren[3] = pos.copy().add(-1, 0);
+    buren[2] = pos.copy().add(-1, 1);
+    buren[1] = pos.copy().add(0, 1);
+    buren[0] = pos.copy().add(1, 1);
 
     var i = 0;
-    for(var b = 0; b < buren.length; b++){
-        if(checkColor(buren[b], colors[b])){
-            goedeburen[i]= buren[b].copy();
+    for (var b = 0; b < buren.length; b++) {
+        if (checkColor(buren[b])) {
+            goedeburen[i] = buren[b].copy();
             i++;
         }
     }
-
+    buren = [];
     return goedeburen;
 }
+
 function findStart() {
-    
+
     var colormarge = 50;
-    
+
     var found = false;
     var pos = createVector(0, 0);
-   
+
     //first black pixel
     for (var i = 0; i < model.pixels.length; i += 4) {
-        var c = color(model.pixels[i], model.pixels[i+1],model.pixels[i+2],model.pixels[i+3]);
-        if (palette.compare(c, color(0), 10) ) {
+        pos.x = floor((i / 4) % 1000);
+        pos.y = floor((i / 4) / 1000);
+        if (checkColor(pos)) {
 
             found = true;
-            pos.x = floor((i / 4) % 1000);
-            pos.y = floor((i / 4) / 1000);
+
 
             model.pixels[i] = 255;
-            model.pixels[i+1] =255;
-            model.pixels[i+2] =255;
-            model.pixels[i+3] = 255;
+            model.pixels[i + 1] = 0;
+            model.pixels[i + 2] = 0;
+            model.pixels[i + 3] = 255;
             break;
 
         }
     }
-         
+
     return pos;
 }
-function showMaxPath(){
+
+function getMaxPath() {
     var foundmax = 0;
     var max = 0;
-    for(var i = 0; i < path.length; i++){
-        if(max < path[i].length){
+
+    var m = 0;
+
+
+    for (var i = 0; i < path.length; i++) {
+        if (max <= path[i].length) {
             max = path[i].length;
             foundmax = i;
+            amax[m] = max;
+            m++;
         }
     }
 
-    console.log("langste pad: " + foundmax);
-    console.log(path[foundmax])
-    for(var i = 0; i < path[foundmax].length; i++){
-        stroke(0);
-        ellipse( path[foundmax][i].x, path[foundmax][i].y, 10,10);
-    }
-    return foundmax;
 }
 
-function showDifferencePath(m, acolor){
-    var diffpath= [];
-   
-    for(i = 0; i < path.length; i++){
-        diffpath[i] = [];
-        for(var j = 0; j < path[i].length; j++){
-            if(!contains(path[m],path[i][j])){
-                append(diffpath[i], path[i][j]);
-            }
-        }
+function showPath(m, acolor) {
+
+    for (var i = 0; i < path[m].length; i++) {
+        stroke(acolor);
+        ellipse(path[m][i].x + offset.x, path[m][i].y + offset.y, 10, 10);
     }
 
-    var max = 0;
-    var maxd = 0;
-    for(var d =0; d < diffpath.length; d++){
-        if(diffpath[d].length > max){
-            max = diffpath[d].length;
-            maxd = d;
-        }
-    }
-    console.log("langste diffpad: " + maxd);
-    console.log(diffpath[maxd])
-    for(var i = 0; i < diffpath[maxd].length; i++){
+}
+
+function showDifferencePaths(m, acolor) {
+
+    for (var i = 0; i < path[m].length; i++) {
         stroke(acolor);
-        ellipse( diffpath[maxd][i].x, diffpath[maxd][i].y, 10,10);
+        ellipse(path[m][i].x + offset.x, path[m][i].y + offset.y, 5, 5);
     }
-    path[m] = path[m].concat(diffpath[maxd]);
+
 }
 
 function contains(a, obj) {
@@ -248,43 +266,37 @@ function contains(a, obj) {
     }
     return false;
 }
-function checkColor(next, tracecolor){
-    var found = false;
-    var i = (next.y * 1000 * 4) + (next.x * 4);
-    var c = color(model.pixels[i], model.pixels[i+1],model.pixels[i+2],model.pixels[i+3]);
-    var colormarge = 10;
-    try{
 
-    if (palette.compare(c, acolor, colormarge) ){
-        //background
+function checkColor(pos) {
+    var found = false;
+    var i = (pos.y * 1000 * 4) + (pos.x * 4);
+
+    var c = color(model.pixels[i], model.pixels[i + 1], model.pixels[i + 2], model.pixels[i + 3]);
+    var colormarge = 50;
+    if (compareColors(c, ablack, colormarge)) {
+        found = true;
     }
-    else if(palette.compare(c, red, colormarge)){
-        // tracecolor
-    }
-    else{
-        found = true
-       // console.log(next.x + ", " + next.y);
-       // stroke(0);
-       // ellipse(next.x + offset.x, next.y + offset.y, 10, 10);
-    }
-}
-catch(exeption){
-    console.log("FOUT:" + i);
-}
+
     return found;
 }
-function inPos(next){
+
+function compareColors(acolor, bcolor, colormarge) {
+    var ok = false
+    if (abs(red(acolor) - red(bcolor) < colormarge) &&
+        abs(green(acolor) - green(bcolor) < colormarge) &&
+        abs(blue(acolor) - blue(bcolor) < colormarge)) {
+        ok = true;
+    }
+    return ok;
+}
+
+function inPos(next) {
     var found = false;
-    for(var i =0; i < pos.length; i++){
-        if(pos[i].x == next.x && pos[i].y == next.y){
+    for (var i = 0; i < pos.length; i++) {
+        if (pos[i].x == next.x && pos[i].y == next.y) {
             found = true;
             break;
         }
     }
     return found;
 }
-
-
-
-
-

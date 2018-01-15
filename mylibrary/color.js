@@ -9,8 +9,12 @@ function Color() {
 }
 Color.prototype.add = function(hue, saturation, lightness) {
     var i = this.colors.length;
-    
-    this.colors[i] = color(hue, saturation, lightness,this.alpha);
+
+    this.colors[i] = color(hue, saturation, lightness, this.alpha);
+}
+Color.prototype.randomcolor = function(alpha) {
+    var acolor = color(random(360), random(100), random(100), alpha);
+    return acolor;
 }
 Color.prototype.random = function(count, alpha) {
     this.alpha = alpha;
@@ -27,24 +31,24 @@ Color.prototype.random = function(count, alpha) {
         hue = random(360);
         saturation = random(100);
         lightness = random(100);
-        this.colors[i] = color(hue, saturation, lightness,this.alpha);
+        this.colors[i] = color(hue, saturation, lightness, this.alpha);
         step++;
     }
     return this.colors;
 }
 Color.prototype.create = function(count) {
     //create your colors here   //basis kleuren
-    this.add(color(0,100,50, this.alpha));  //rood
-    if(count > 1){ this.add(color(30,100,50, this.alpha));}   //oranje
-    if(count > 2){ this.add(color(60,100,50, this.alpha));}   //geel
-    if(count > 3){ this.add(color(90,100,50, this.alpha));} //groen
-    if(count > 4){ this.add(color(180,100,50, this.alpha));} //licht blauw
-    if(count > 5){ this.add(color(240,100,50, this.alpha));} //blauw
-    if(count > 6){ this.add(color(270,100,50, this.alpha));}    //paars
-    if(count > 7){ this.add(color(330,100,50, this.alpha));}   //violet
-    if(count > 8){ this.add(color(90,30,50, this.alpha));}   //mosgroen
-    if(count > 9){ this.add(color(0,30,50, this.alpha));} //bruin
-    
+    this.add(color(0, 100, 50, this.alpha)); //rood
+    if (count > 1) { this.add(color(30, 100, 50, this.alpha)); } //oranje
+    if (count > 2) { this.add(color(60, 100, 50, this.alpha)); } //geel
+    if (count > 3) { this.add(color(90, 100, 50, this.alpha)); } //groen
+    if (count > 4) { this.add(color(180, 100, 50, this.alpha)); } //licht blauw
+    if (count > 5) { this.add(color(240, 100, 50, this.alpha)); } //blauw
+    if (count > 6) { this.add(color(270, 100, 50, this.alpha)); } //paars
+    if (count > 7) { this.add(color(330, 100, 50, this.alpha)); } //violet
+    if (count > 8) { this.add(color(90, 30, 50, this.alpha)); } //mosgroen
+    if (count > 9) { this.add(color(0, 30, 50, this.alpha)); } //bruin
+
     return this.colors;
 }
 Color.prototype.addGrayPalette = function(count) {
@@ -56,7 +60,7 @@ Color.prototype.addGrayPalette = function(count) {
     var step = 0;
     for (var i = from; i <= to; i++) {
         lightness = step * (100 / count);
-        this.colors[i] = color(hue, saturation, lightness,this.alpha);
+        this.colors[i] = color(hue, saturation, lightness, this.alpha);
         step++;
     }
     return this.colors;
@@ -68,7 +72,7 @@ Color.prototype.addHuePalette = function(count, hue) {
     var to = from + count;
     var step = 0;
     for (var i = from; i <= to; i++) {
-        lightness = 5 + ( step * (85 / count));
+        lightness = 5 + (step * (85 / count));
         this.colors[i] = color(hue, 100, lightness, this.alpha);
         step++;
     }
@@ -93,12 +97,19 @@ Color.prototype.setTransparency = function(alpha) {
 }
 
 
-Color.prototype.compare = function (acolor, bcolor, colormarge){
+Color.prototype.compare = function(acolor, bcolor, colormarge) {
     var ok = false;
-    if(abs(hue(acolor) -  hue(bcolor)) <= colormarge && 
-    abs(saturation(acolor) - saturation(bcolor)) <= colormarge && 
-    abs(lightness(acolor) - lightness(bcolor))  <= colormarge){
+    if (abs(hue(acolor) - hue(bcolor)) <= colormarge &&
+        abs(saturation(acolor) - saturation(bcolor)) <= colormarge &&
+        abs(lightness(acolor) - lightness(bcolor)) <= colormarge) {
         ok = true;
     }
     return ok;
+}
+Color.prototype.getRGBA = function(r, g, b, a) {
+    var acolor = color(0, 100, 50, 1);
+    var alpha = a / 255;
+
+    //I DON'T KNOW rgb to hsl!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    return acolor;
 }
