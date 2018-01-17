@@ -18,6 +18,12 @@ function Layer(layer, settings, startlayerheight) {
     this.p = [];
 }
 Layer.prototype.addPattern = function(pos, path) {
+    if(this.layer == 0){
+        //skirt
+        append(this.p, createVector(150,30,0) );
+        append(this.p, createVector(750,40,0) );
+        append(this.p, createVector(300,50,0) );
+    }
 
     for (var i = 0; i < path.length; i++) {
         var p = pos.copy();
@@ -82,6 +88,7 @@ Layer.prototype.draw = function() {
 }
 
 Layer.prototype.generate = function(layer, gcode) {
+    var pull = 3;
     //var nz = (layer * this.layerheight); // nz = normaal niveau
     var nz = floor(this.totallayerheight * 100) / 100 // nz = normaal niveau;
     append(this.commands, "G0 Z" + nz);
@@ -96,19 +103,31 @@ Layer.prototype.generate = function(layer, gcode) {
         y = floor(y * 100) / 100;
         var z = floor(this.p[i].z * 100) / 100;
         var d;
+        
         if (i > 0) {
             var dvector = p5.Vector.sub(this.p[i], this.p[i - 1]);
             d = dvector.mag() * this.scale;
+            
         } else {
             d = 0;
         }
 
         if (this.p[i].z == -1) { //transport
-
-            append(this.commands, "G0 X" + x + " Y" + y);
+            d -= (2* pull);
+            gcode.extrude += (d * this.thickness);
+            append(this.commands, "G0 E" + gcode.extrude);
+            append(this.commands, "G0 X" + x + " Y" + y );
 
 
         } else if (z == 0) {
+            if(i > 0){
+                if(this.p[i-1].z == -1){
+                    //beginpunt na een move
+                    d += pull;
+                    gcode.extrude += (d * this.thickness);
+                    append(this.commands, "G1 X" + x + " Y" + y + " Z" + nz + " E" + gcode.extrude);
+                }
+            }
             gcode.extrude += (d * this.thickness);
             append(this.commands, "G1 X" + x + " Y" + y + " Z" + nz + " E" + gcode.extrude);
         } else if (z > 0) {
@@ -118,6 +137,13 @@ Layer.prototype.generate = function(layer, gcode) {
             } else {
                 z = this.startlayerheight + ((this.layer + 1) * this.layerheight) + z;
             }
+            if(this.p[i-1].z == -1){
+                //beginpunt na een move
+                d +=pull;
+                gcode.extrude += (d * this.thickness);
+                append(this.commands, "G1 X" + x + " Y" + y + " Z" + nz + " E" + gcode.extrude);
+            }
+           
             gcode.extrude += (d * this.thickness);
             append(this.commands, "G1 X" + x + " Y" + y + " Z" + z + " E" + gcode.extrude);
         }

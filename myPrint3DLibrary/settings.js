@@ -55,7 +55,8 @@ Settings.prototype.initMaterial = function() {
                         {
                             this.materialcode = "PLAFLEX";
                             if (this.style == "normal") {
-                                this.initStyle(0.4, 0.15, 800); //0.4 0.2 800 OK // 0.4 0.15. 80 niet getest - TE DUN 0.1
+                                this.initStyle(0.4, 0.15, 800); //0.4 0.2 800 OK 
+                                
                             } else if (this.style == "fine") {
 
                                 this.initStyle(0.4, 0.12, 800); //test OK

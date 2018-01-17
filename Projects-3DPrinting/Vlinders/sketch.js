@@ -20,7 +20,7 @@ function setup() {
     layer = 0;
     startlayerheight = 0;
     maxskirt = 3;
-    print3D = new Print3D("Vlinders", "Anet", "PLAFLEX", "fine", maxlayers, startlayerheight, maxskirt);
+    print3D = new Print3D("Vlinders", "Anet", "PLAFLEX", "normal", maxlayers, startlayerheight, maxskirt);
     print3D.start();
 
     issaved = false;

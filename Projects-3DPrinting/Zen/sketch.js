@@ -28,11 +28,15 @@ var ared;
 var amax, n, k;
 
 
-
+var current;
+var rest;
+var dx;
+var dy;
+var count;
 
 
 function preload() {
-    model = loadImage("images/Image.png");
+    model = loadImage("images/lines01.jpg");
 
 }
 
@@ -47,39 +51,51 @@ function setup() {
     image(model, offset.x, offset.y);
     model.loadPixels();
     //kleur van de achtergrond
-    acolor = color(model.pixels[0], model.pixels[1], model.pixels[2], model.pixels[3]);
-    ablack = color(0, 0, 0, 255);
-    ared = color(255, 0, 0, 255);
+    acolor = new Rgb(model.pixels[0], model.pixels[1], model.pixels[2]);
+    ablack = new Rgb(0, 0, 0);
+    ared = new Rgb(255, 0, 0);
     windowscale = 1;
-
-
+    printpath = [];
+    path = [];
+    next = 0;
+        
 
     layer = 0;
     maxlayers = 1;
-    var startlayerheight = 0.5; // 1
-    print3D = new Print3D("Zen", "Anet", "PLA", "fine", maxlayers, startlayerheight);
-    printpath = [];
+    var startlayerheight = 0.2; // 1
+    print3D = new Print3D("Zen", "Anet", "PLAFLEX", "normal", maxlayers, startlayerheight);
+    
     pos = findStart();
-    next = 0;
-    path = [];
-    path[next] = [];
+    
+    dx = [0,1,1,1,0,-1,-1,-1];
+    dy = [-1,-1,0,1,1,1,0,-1];
+    count = 0;
+     
     var found = false;
     var i = (pos.y * 1000 * 4) + (pos.x * 4);
-    var c = color(model.pixels[i], model.pixels[i + 1], model.pixels[i + 2], model.pixels[i + 3]);
+    var c = new Rgb(model.pixels[i], model.pixels[i + 1], model.pixels[i + 2]);
     var colormarge = 10;
-    if (red(c) == red(ared) && green(c) == green(ared) && blue(c) == blue(ared)) {
+    if (compareRGBColors(c, ared)) {
         found = true;
-
     }
-
-    findPath(next, pos);
+    var lastpos;
+    current  =0;
+    next = 0;
+    path[next] = [];
+    rest = [];
+    printpath = findPath2(pos, 6000);
+    
+   
     model.updatePixels();
     image(model, offset.x, offset.y);
-    amax = [];
-    getMaxPath();
-    n = 0;
-    k = 0;
-    console.log(amax.length);
+    checkRest();
+
+    // amax = [];
+    // getMaxPath();
+    // n = 0;
+    // k = 0;
+    // console.log("path "+ path.length);
+    // console.log("amax "+ amax.length);
 
 
 
@@ -101,26 +117,18 @@ function mousePressed() {
 
 function draw() {
 
-    if (n < path.length) {
-        if (path[n].length > 0) {
-            //showPath(n, color(0, 0, 0));
-            console.log(k + "," + n + "," + path[n].length);
-            path[n][0].z = -1;
-            printpath = printpath.concat(path[n]);
-            n += 1;
-            k += 1;
+    if( frameCount < printpath.length){
+        stroke(255,0,0);
 
-        } else if (path[n] == undefined) {
-            n += 1;
-        } else if (path[n].length == 0) {
-            n += 1;
-        }
-    } else {
+        ellipse(printpath[frameCount].x + offset.x,printpath[frameCount].y + offset.y,2,2);
+    }
+
+     else {
         if (layer < maxlayers) {
-            console.log(printpath.length);
+            //console.log(printpath.length);
 
-            printpath = print3D.optimizePath(printpath, 3);
-            console.log(printpath.length);
+            //printpath = print3D.optimizePath(path, 2);
+            //console.log(printpath.length);
             print3D.addToLayer(layer, printpath, offset, true);
             print3D.print(layer);
 
@@ -136,44 +144,80 @@ function draw() {
 
 
 }
+function findPath2(p, maxdepth) {
+    var i = (p.y * 1000 * 4) + (p.x * 4);
+    model.pixels[i] = 255;
+    model.pixels[i + 1] = 0;
+    model.pixels[i + 2] = 0;
+    model.pixels[i + 3] = 255;
+    var apath = [];
 
-function findPath(current, p) {
-
-    append(path[current], p);
-    //kijk naar de buren
-    var buren = getBuren(p);
-
-    for (var b = 0; b < buren.length; b++) {
-        if (b > 0) {
-            next++;
-            path[next] = [];
-
-
+    append(apath, p);
+    for (let b = 0; b < 8; b++) {
+        var np = p.copy().add(dx[b], dy[b]);
+        var npi = (np.y * 1000 * 4) + (np.x * 4);
+        if (maxdepth > 0 && model.pixels[npi] < 50 &&  model.pixels[npi+1] < 50 && model.pixels[npi+2] < 50) {
+            var subpath = findPath2 (np, maxdepth - 1);
+            //if (subpath.length > 5)
+                apath = apath.concat(subpath);
         }
-        var i = (buren[b].y * 1000 * 4) + (buren[b].x * 4);
-        model.pixels[i] = 255;
-        model.pixels[i + 1] = 0;
-        model.pixels[i + 2] = 0;
-        model.pixels[i + 3] = 255;
-        var newpath = [];
-
-        newpath = findPath(next, buren[b]);
-        if (newpath.length < 10) {
-            newpath = [];
-            path[next] = [];
-        }
-
-
-
     }
-    return path[current];
+    return apath;
 }
 
+function findPath(apath, p) {
+    if(apath.length < 20000){
+        //kijk naar de buren
+        append( apath, p);
+        var buren = getBuren(p);
+        for(var b = 0; b < buren.length; b++){
+            if(b > 0){
+                append(rest, buren[b]);
+            }
+            
+        }
+        if(buren.length >= 1){
+            var i = (buren[0].y * 1000 * 4) + (buren[0].x * 4);
+            model.pixels[i] = 255;
+            model.pixels[i + 1] = 0;
+            model.pixels[i + 2] = 0;
+            model.pixels[i + 3] = 255;
+        
+            
+            apath = findPath(apath, buren[0]);
+        }
+        
+       
+        
+    }
 
+    return apath;
+}
+
+function checkRest(){
+    for(var r = 0; r < rest.length; r++){
+        var last = printpath[printpath.length-1].copy();
+        if(dist(rest[r].x, rest[r].y, last.x, last.y) <5){
+            buren = getBuren(rest[r]);
+            for(var b = 0; b < buren.length; b++){
+                console.log(r + " gevonden " + buren.length + " :" +  buren[b]);
+                var newpath = [];
+                newpath = findPath(newpath, buren[b]);
+                if(newpath.length> 1){
+                    console.log("lang path gevonden: " + newpath.length);
+                    showPath(newpath, color(0, newpath.length, 0));
+                    printpath = printpath.concat(newpath);
+                }
+
+            }
+        }
+
+    }
+}
 
 function getBuren(pos) {
-    var buren = [];
-    var goedeburen = [];
+    buren = [];
+    goedeburen = [];
     buren[7] = pos.copy().add(1, 0);
     buren[6] = pos.copy().add(1, -1);
     buren[5] = pos.copy().add(0, -1);
@@ -183,8 +227,8 @@ function getBuren(pos) {
     buren[1] = pos.copy().add(0, 1);
     buren[0] = pos.copy().add(1, 1);
 
-    var i = 0;
-    for (var b = 0; b < buren.length; b++) {
+    let i = 0;
+    for (let b = 0; b < buren.length; b++) {
         if (checkColor(buren[b])) {
             goedeburen[i] = buren[b].copy();
             i++;
@@ -240,11 +284,11 @@ function getMaxPath() {
 
 }
 
-function showPath(m, acolor) {
+function showPath(path, acolor) {
 
-    for (var i = 0; i < path[m].length; i++) {
+    for (var i = 0; i < path.length; i++) {
         stroke(acolor);
-        ellipse(path[m][i].x + offset.x, path[m][i].y + offset.y, 10, 10);
+        ellipse(path[i].x + offset.x, path[i].y + offset.y, 2, 2);
     }
 
 }
@@ -268,20 +312,25 @@ function contains(a, obj) {
 }
 
 function checkColor(pos) {
-    var found = false;
-    var i = (pos.y * 1000 * 4) + (pos.x * 4);
-
-    var c = color(model.pixels[i], model.pixels[i + 1], model.pixels[i + 2], model.pixels[i + 3]);
-    var colormarge = 50;
-    if (compareColors(c, ablack, colormarge)) {
+    let found = false;
+    let i = (pos.y * 1000 * 4) + (pos.x * 4);
+    let c = new Rgb(model.pixels[i], model.pixels[i + 1], model.pixels[i + 2]);
+    
+    if (compareRGBColors(c, ablack, 50)) {
         found = true;
     }
 
     return found;
 }
-
+function compareRGBColors(acolor, bcolor, colormarge) {
+    let ok = false;
+    if ( abs(acolor.r - bcolor.r) < 50 && abs(acolor.g - bcolor.g) < 50 && abs(acolor.b - bcolor.b) < 50){
+        ok = true;
+    }
+    return ok;
+}
 function compareColors(acolor, bcolor, colormarge) {
-    var ok = false
+    let ok = false;
     if (abs(red(acolor) - red(bcolor) < colormarge) &&
         abs(green(acolor) - green(bcolor) < colormarge) &&
         abs(blue(acolor) - blue(bcolor) < colormarge)) {

@@ -14,13 +14,13 @@ function Print3D(name, printer, material, style, maxlayers, startlayerheight) {
 
 
 }
-Print3D.prototype.optimizePath = function(path, mindistance) {
+Print3D.prototype.optimizePath = function(apath, mindistance) {
     var newpath = [];
     var from, to;
-    newpath[0] = path[0].copy();
-    from = newpath[0].copy();
-    for (var i = 1; i < path.length; i++) {
-        to = path[i].copy();
+    newpath[0] = apath[0].copy();
+    from = apath[0].copy();
+    for (var i = 1; i < apath.length; i++) {
+        to = apath[i].copy();
         if (dist(from.x, from.y, to.x, to.y) >= mindistance) {
             append(newpath, to.copy());
             from = to.copy();
