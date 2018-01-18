@@ -22,7 +22,7 @@ Layer.prototype.addPattern = function(pos, path) {
         //skirt
         append(this.p, createVector(150,30,0) );
         append(this.p, createVector(750,40,0) );
-        append(this.p, createVector(300,50,0) );
+        append(this.p, createVector(550,50,0) );
     }
 
     for (var i = 0; i < path.length; i++) {
@@ -63,12 +63,13 @@ Layer.prototype.change = function(min, max) {
 Layer.prototype.draw = function() {
     strokeWeight(1);
     noFill();
+    
     if (this.p.length > 1) {
 
 
         for (var i = 1; i < this.p.length; i++) {
-
-
+           
+            
             if (this.p[i].z == 0) {
                 stroke(color(0, 0, 255));
             }
@@ -80,9 +81,8 @@ Layer.prototype.draw = function() {
             }
 
             line(this.p[i - 1].x, this.p[i - 1].y, this.p[i].x, this.p[i].y);
-
-
         }
+        
 
     }
 }
