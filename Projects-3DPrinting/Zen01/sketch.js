@@ -37,7 +37,7 @@ var oldlen, len;
 
 
 function preload() {
-    model = loadImage("images/lines02.png");
+    model = loadImage("images/lines03.jpeg");
 
 }
 
@@ -49,7 +49,7 @@ function setup() {
     offset = createVector(50, 50);
 
     stroke(0);
-    
+
     image(model, offset.x, offset.y);
     model.loadPixels();
 
@@ -60,32 +60,32 @@ function setup() {
     windowscale = 1;
     printpath = [];
     path = [];
-            
+
 
     layer = 0;
-    maxlayers = 2;
-    var startlayerheight = 0.2; // 1
-    print3D = new Print3D("Zen", "Anet", "PLA", "normal", maxlayers, startlayerheight);
-    
-    
-    dx = [0,1,1,1,0,-1,-1,-1];
-    dy = [-1,-1,0,1,1,1,0,-1];
-   
-    
-    
-    var start = createVector(550,50);
+    maxlayers = 1;
+    var startlayerheight = 0.5; // 1
+    print3D = new Print3D("Zen", "Ultimaker2+", "PLA", "normal", maxlayers, startlayerheight);
+
+
+    dx = [0, 1, 1, 1, 0, -1, -1, -1];
+    dy = [-1, -1, 0, 1, 1, 1, 0, -1];
+
+
+
+    var start = createVector(550, 50);
     oldlen = 0;
     len = 0;
     zoekLangstePad(start);
     len = printpath.length;
-    
+
     drawPath(printpath);
     console.log(len);
     model.updatePixels();
     image(model, offset.x, offset.y);
 
-   
-    
+
+
 
     issaved = false;
     tcount = 0;
@@ -96,9 +96,9 @@ function setup() {
 
 
 function draw() {
-   
-     if((len - oldlen > 10) && frameCount <40){
-        start = printpath[printpath.length -1].copy();
+
+    if ((len - oldlen > 10) && frameCount < 40) {
+        start = printpath[printpath.length - 1].copy();
         oldlen = len;
         zoekLangstePad(start);
         len = printpath.length;
@@ -106,19 +106,17 @@ function draw() {
         console.log(len);
         model.updatePixels();
         image(model, offset.x, offset.y);
-        showPoint(last, color(255,0,0));
-        
-       
-    }
-     else{
+        showPoint(last, color(255, 0, 0));
+
+
+    } else {
         if (layer < maxlayers) {
             print3D.start();
             printpath = print3D.optimizePath(printpath, 5);
-            
-            if(layer % 2 == 0){
+
+            if (layer % 2 == 0) {
                 print3D.addToLayer(layer, printpath, offset, true);
-            }
-            else{
+            } else {
                 print3D.addToLayer(layer, reversePath(printpath), offset, true);
             }
             print3D.print(layer);
@@ -137,50 +135,51 @@ function draw() {
 
 
 }
-function zoekLangstePad(start){
-    
+
+function zoekLangstePad(start) {
+
     reloadModel();
 
     //begin met een nieuwe start positie
-    if(printpath.length == 0){
-        start = createVector(550,50);
+    if (printpath.length == 0) {
+        start = createVector(550, 50);
+    } else {
+        start = printpath[printpath.length - 1].copy();
     }
-    else{
-        start = printpath[printpath.length-1].copy();
-    }
-   
+
     last = findStart(start);
-    
-    if(last.x != 999 && last.y != 999){
-        
+
+    if (last.x != 999 && last.y != 999) {
+
         var loop = 0;
-        while(loop < 20  && last.x < 999 && last.y < 999){
-             path = [];
+        while (loop < 20 && last.x < 999 && last.y < 999) {
+            path = [];
             path = findPath(last, 6000);
-            if(path.length <= 1){
+            if (path.length <= 1) {
                 loop++;
                 last = findStart(last);
-                if(last.x == 999 && last.y == 999){
+                if (last.x == 999 && last.y == 999) {
                     loop = 100;
                     path = [];
                 }
-            }
-            else{
+            } else {
                 printpath = printpath.concat(path);
             }
         }
     }
-   
+
 }
-function reloadModel(){
+
+function reloadModel() {
     model.loadPixels();
-    for( var i = 0; i < model.pixels.length; i += 4){
+    for (var i = 0; i < model.pixels.length; i += 4) {
         //rood wordt weer zwart
-        if(model.pixels[i] == 255 && model.pixels[i+1] == 0 && model.pixels[i+2] == 0){
+        if (model.pixels[i] == 255 && model.pixels[i + 1] == 0 && model.pixels[i + 2] == 0) {
             model.pixels[i] = 0;
         }
-     }
+    }
 }
+
 function mousePressed() {
     if (!issaved && isready) {
         print3D.save();
@@ -188,13 +187,14 @@ function mousePressed() {
     }
 }
 
-function reversePath(path){
+function reversePath(path) {
     var reverse = [];
-    for(var i = path.length-1; i >= 0; i--){
+    for (var i = path.length - 1; i >= 0; i--) {
         append(reverse, path[i]);
     }
     return reverse;
 }
+
 function findPath(p, maxdepth) {
     var i = (p.y * 1000 * 4) + (p.x * 4);
     model.pixels[i] = 255;
@@ -209,34 +209,34 @@ function findPath(p, maxdepth) {
     for (let b = 0; b < 8; b++) {
         var np = p.copy().add(dx[b], dy[b]);
         var npi = (np.y * 1000 * 4) + (np.x * 4);
-        if (maxdepth > 0 && model.pixels[npi] < 50 &&  model.pixels[npi+1] < 50 && model.pixels[npi+2] < 50) {
-            subpath[b] = findPath (np, maxdepth - 1);
-            
+        if (maxdepth > 0 && model.pixels[npi] < 50 && model.pixels[npi + 1] < 50 && model.pixels[npi + 2] < 50) {
+            subpath[b] = findPath(np, maxdepth - 1);
+
         }
-        
+
     }
-   
+
     var longest = 0;
     var i;
     for (let b = 0; b < 8; b++) {
-        
-        if(subpath[b] && subpath[b].length > longest){
+
+        if (subpath[b] && subpath[b].length > longest) {
             longest = subpath[b].length;
             i = b;
         }
     }
-    if(longest > 0){
+    if (longest > 0) {
         apath = apath.concat(subpath[i]);
-        last = apath[apath.length -1];
+        last = apath[apath.length - 1];
     }
-   
+
     return apath;
 }
 
 
 function findStart(start) {
 
-    
+
     var found = false;
     var pos = createVector(0, 0);
     var maxdis = 20;
@@ -247,21 +247,21 @@ function findStart(start) {
         pos.x = floor((i / 4) % 1000);
         pos.y = floor((i / 4) / 1000);
         if (checkColor(pos)) {
-            if(dist(start.x,  start.y, pos.x, pos.y) < maxdis){
-                maxdis = dist(start.x,  start.y, pos.x, pos.y);
+            if (dist(start.x, start.y, pos.x, pos.y) < maxdis) {
+                maxdis = dist(start.x, start.y, pos.x, pos.y);
                 min = i;
                 found = true;
             }
-          }
+        }
     }
-    if(found){
+    if (found) {
         model.pixels[min] = 255;
         model.pixels[min + 1] = 0;
         model.pixels[min + 2] = 0;
         model.pixels[min + 3] = 255;
         pos.x = floor((min / 4) % 1000);
         pos.y = floor((min / 4) / 1000);
-        
+
     }
     return pos;
 }
@@ -283,27 +283,30 @@ function getMaxPath() {
     }
 
 }
+
 function drawPath(path) {
     let i;
     let n;
     for (n = 0; n < path.length; n++) {
         i = (path[n].y * 1000 * 4) + (path[n].x * 4);
-       
+
         model.pixels[i] = 255;
-        model.pixels[i+1] = 0;
-        model.pixels[i+2] = 255;
+        model.pixels[i + 1] = 0;
+        model.pixels[i + 2] = 255;
     }
-    
+
 }
+
 function showPath(path, acolor) {
     let i;
     for (i = 0; i < path.length; i++) {
         stroke(acolor);
         ellipse(path[i].x + offset.x, path[i].y + offset.y, 2, 2);
     }
-    ellipse(path[i-1].x + offset.x, path[i-1].y + offset.y, 6, 6);
+    ellipse(path[i - 1].x + offset.x, path[i - 1].y + offset.y, 6, 6);
 
 }
+
 function showPoint(vector, acolor) {
     stroke(acolor);
     fill(acolor);
@@ -325,20 +328,22 @@ function checkColor(pos) {
     let found = false;
     let i = (pos.y * 1000 * 4) + (pos.x * 4);
     let c = new Rgb(model.pixels[i], model.pixels[i + 1], model.pixels[i + 2]);
-    
+
     if (compareRGBColors(c, ablack, 50)) {
         found = true;
     }
 
     return found;
 }
+
 function compareRGBColors(acolor, bcolor, colormarge) {
     let ok = false;
-    if ( abs(acolor.r - bcolor.r) < 50 && abs(acolor.g - bcolor.g) < 50 && abs(acolor.b - bcolor.b) < 50){
+    if (abs(acolor.r - bcolor.r) < 50 && abs(acolor.g - bcolor.g) < 50 && abs(acolor.b - bcolor.b) < 50) {
         ok = true;
     }
     return ok;
 }
+
 function compareColors(acolor, bcolor, colormarge) {
     let ok = false;
     if (abs(red(acolor) - red(bcolor) < colormarge) &&
