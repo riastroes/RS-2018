@@ -17,7 +17,7 @@ var start;
 
 var issaved;
 var isready;
-var model;
+var model1, model2;
 
 
 var name;
@@ -38,7 +38,8 @@ var oldlen, len;
 
 
 function preload() {
-    model = loadImage("images/zen02.png");
+    model1 = loadImage("images/kronkel3.png");
+    model2 = loadImage("images/kronkel4.png");
 
 }
 
@@ -46,16 +47,19 @@ function setup() {
 
     var canvas = createCanvas(1100, 1100);
     isready = false;
-    model.resize(1000, 1000);
+    model1.resize(1000, 1000);
+    model2.resize(1000, 1000);
     offset = createVector(50, 50);
 
     stroke(0);
 
-    image(model, offset.x, offset.y);
-    model.loadPixels();
+    image(model1, offset.x, offset.y);
+    image(model2, offset.x, offset.y);
+    model1.loadPixels();
+    model2.loadPixels();
 
     //kleur van de achtergrond
-    acolor = new Rgb(model.pixels[0], model.pixels[1], model.pixels[2]);
+    acolor = new Rgb(255,255,255);
     ablack = new Rgb(0, 0, 0);
     ared = new Rgb(255, 0, 0);
     windowscale = 1;
@@ -66,28 +70,16 @@ function setup() {
     layer = 0;
     maxlayers = 1;
     var startlayerheight = 0.5; // 1
-    print3D = new Print3D("Kronkels-", "Anet", "PLAFLEX", "normal", maxlayers, startlayerheight);
+    print3D = new Print3D("Zen01-", "Anet", "PLAFLEX", "normal", maxlayers, startlayerheight);
 
 
     dx = [0, 1, 1, 1, 0, -1, -1, -1];
     dy = [-1, -1, 0, 1, 1, 1, 0, -1];
 
-
-
-    start = createVector(550, 50);
     oldlen = 0;
     len = 11;
-   // zoekLangstePad(start);
-    //len = printpath.length;
-
-    //drawPath(printpath);
    
-   // model.updatePixels();
-    image(model, offset.x, offset.y);
-
-
-
-
+   
     issaved = false;
     tcount = 0;
 
@@ -98,35 +90,53 @@ function setup() {
 
 function draw() {
 
-    if ((len - oldlen > 10) && frameCount < 40) {
+    if (layer== 0 &&(len - oldlen > 10) && frameCount < 40) {
         
-        zoekLangstePad(start);
+        zoekLangstePad(model1, start);
         start = printpath[printpath.length - 1].copy();
         oldlen = len;
         len = printpath.length;
-        drawPath(printpath);
+        drawPath(model1, printpath);
         console.log(len);
-        model.updatePixels();
-        image(model, offset.x, offset.y);
+        model1.updatePixels();
+        image(model1, offset.x, offset.y);
         showPoint(last, color(255, 0, 0));
+        
+        start = printpath[printpath.length - 1].copy();
 
-
-    } else {
+    }
+    else if(frameCount == 40 || (len - oldlen <= 10)){
+        //reset
+        len = 11;
+        oldlen = 0;
+       
+      } 
+    else if( (len - oldlen > 10) &&  frameCount < 80){
+        //other model
+        start = printpath[printpath.length - 1].copy();
+        zoekLangstePad(model2, start);
+        start = printpath[printpath.length - 1].copy();
+        oldlen = len;
+        len = printpath.length;
+        drawPath(model2, printpath);
+        console.log(len);
+        model2.updatePixels();
+        image(model2, offset.x, offset.y);
+        showPoint(last, color(255, 0, 0));
+    } 
+    else {
         if (layer < maxlayers) {
             print3D.start();
             printpath = print3D.optimizePath(printpath, 5);
 
             if (layer % 2 == 0) {
                 print3D.addToLayer(layer, printpath, offset, true);
-                
             } else {
                 print3D.addToLayer(layer, reversePath(printpath), offset, true);
-                
             }
             background(255);
             print3D.print(layer);
-            fill(255,0,0);
-            ellipse(printpath[printpath.length - 1].x + offset.x, printpath[printpath.length - 1].y + offset.y, 10,10);
+            
 
         }
         if (layer + 1 == maxlayers) {
@@ -143,28 +153,28 @@ function draw() {
 
 }
 
-function zoekLangstePad(start) {
+function zoekLangstePad(model, start) {
 
-    reloadModel();
+    reloadModel(model);
 
     //begin met een nieuwe start positie
     if (printpath.length == 0) {
-        start = createVector(550, 50);
+        start = createVector(50, 50);
     } else {
         start = printpath[printpath.length - 1].copy();
     }
-
-    last = findStart(start);
+    ellipse(start.x, start.y, 20,20);
+    last = findStart(model, start);
 
     if (last.x != 999 && last.y != 999) {
 
         var loop = 0;
-        while (loop < 100 && last.x < 999 && last.y < 999) {
+        while (loop < 10 && last.x < 999 && last.y < 999) {
             path = [];
-            path = findPath(last, 5000);
+            path = findPath(model, last, 5000);
             if (path.length <= 1) {
                 loop++;
-                last = findStart(last);
+                last = findStart(model, last);
                 if (last.x == 999 && last.y == 999) {
                     loop = 100;
                     path = [];
@@ -177,7 +187,7 @@ function zoekLangstePad(start) {
 
 }
 
-function reloadModel() {
+function reloadModel(model) {
     model.loadPixels();
     for (var i = 0; i < model.pixels.length; i += 4) {
         //rood wordt weer zwart
@@ -202,7 +212,7 @@ function reversePath(path) {
     return reverse;
 }
 
-function findPath(p, maxdepth) {
+function findPath(model, p, maxdepth) {
     var i = (p.y * 1000 * 4) + (p.x * 4);
     model.pixels[i] = 255;
     model.pixels[i + 1] = 0;
@@ -217,7 +227,7 @@ function findPath(p, maxdepth) {
         var np = p.copy().add(dx[b], dy[b]);
         var npi = (np.y * 1000 * 4) + (np.x * 4);
         if (maxdepth > 0 && model.pixels[npi] < 50 && model.pixels[npi + 1] < 50 && model.pixels[npi + 2] < 50) {
-            subpath[b] = findPath(np, maxdepth - 1);
+            subpath[b] = findPath(model, np, maxdepth - 1);
 
         }
 
@@ -291,7 +301,7 @@ function getMaxPath() {
 
 }
 
-function drawPath(path) {
+function drawPath(model, path) {
     let i;
     let n;
     for (n = 0; n < path.length; n++) {
@@ -331,7 +341,7 @@ function contains(a, obj) {
     return false;
 }
 
-function checkColor(pos) {
+function checkColor(model, pos) {
     let found = false;
     let i = (pos.y * 1000 * 4) + (pos.x * 4);
     let c = new Rgb(model.pixels[i], model.pixels[i + 1], model.pixels[i + 2]);

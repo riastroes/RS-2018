@@ -226,10 +226,10 @@ Settings.prototype.initMaterial = function() {
                 this.scale = 0.20; //canvas = 1100 px, bed = 220 mm
                 this.filement = 2.85;
                 if ((this.material == "PLA" || this.material == "PLAz") && this.style == "fine") {
-                    this.initStyle(0.3, 0.04, 1600); // test dunner
+                    this.initStyle(0.3, 0.04, 1200); // test dunner
                 }
                 if ((this.material == "PLA" || this.material == "PLAz") && this.style == "normal") {
-                    this.initStyle(0.3, 0.1, 2400); // ok getest in knitting app  // ok getest in DUBAI KNITTING APP
+                    this.initStyle(0.3, 0.1, 1600); // ok getest in knitting app  // ok getest in DUBAI KNITTING APP
                 }
                 if (this.material == "PLAFLEX" && this.style == "fine") {
                     this.initStyle(0.2, 0.5, 800); // ok getest in knitting app  // ok getest in DUBAI KNITTING APP

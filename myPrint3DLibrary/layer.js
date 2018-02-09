@@ -22,7 +22,7 @@ Layer.prototype.addPattern = function(pos, path) {
         //skirt
         append(this.p, createVector(150,30,0) );
         append(this.p, createVector(750,40,0) );
-        append(this.p, createVector(550,50,0) );
+        append(this.p, createVector(50,50,0) );
     }
 
     for (var i = 0; i < path.length; i++) {
@@ -113,7 +113,7 @@ Layer.prototype.generate = function(layer, gcode) {
         }
 
         if (this.p[i].z == -1) { //transport
-            d -= (2* pull);
+            d -= pull;
             gcode.extrude += (d * this.thickness);
             append(this.commands, "G0 E" + gcode.extrude);
             append(this.commands, "G0 X" + x + " Y" + y );
@@ -123,7 +123,7 @@ Layer.prototype.generate = function(layer, gcode) {
             if(i > 0){
                 if(this.p[i-1].z == -1){
                     //beginpunt na een move
-                    d += pull;
+                    d = pull;
                     gcode.extrude += (d * this.thickness);
                     append(this.commands, "G1 X" + x + " Y" + y + " Z" + nz + " E" + gcode.extrude);
                 }
