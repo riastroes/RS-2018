@@ -1,6 +1,6 @@
 /* Ria Stroes */
 /* @updated: november 2017  */
-/* Tracing a line
+/* Metro
  */
 
 
@@ -14,6 +14,7 @@ var show;
 var printpath;
 var offset;
 
+var iscreated;
 var issaved;
 var isready;
 var model;
@@ -23,21 +24,21 @@ var name;
 var pos;
 var path;
 var next;
-var acolor;
-var ablack;
-var ared;
-var amax, n, k;
 
+var x;
+var y;
 
 var dx;
 var dy;
 
-var tcount;
+
 var oldlen, len;
+var kronkel;
+var k;
 
 
 function preload() {
-    model = loadImage("images/lines04.jpeg");
+    //model = loadImage("images/lines03.jpeg");
 
 }
 
@@ -45,18 +46,17 @@ function setup() {
 
     var canvas = createCanvas(1100, 1100);
     isready = false;
-    model.resize(1000, 1000);
-    offset = createVector(50, 50);
+    space = new Space(1000, 1000, 3, 3);
 
+
+    offset = createVector(350, 350);
+    x = 0;
+    y = 0;
+    k = 0;
     stroke(0);
+    kronkel = []
+    kronkel[k] = new Kronkel(createVector(0, 0), 150, 150);
 
-    image(model, offset.x, offset.y);
-    model.loadPixels();
-
-    //kleur van de achtergrond
-    acolor = new Rgb(model.pixels[0], model.pixels[1], model.pixels[2]);
-    ablack = new Rgb(0, 0, 0);
-    ared = new Rgb(255, 0, 0);
     windowscale = 1;
     printpath = [];
     path = [];
@@ -64,62 +64,38 @@ function setup() {
 
     layer = 0;
     maxlayers = 1;
-    var startlayerheight = 0.5; // 1
-    print3D = new Print3D("Zen", "Ultimaker2+", "PLA", "normal", maxlayers, startlayerheight);
+    var startlayerheight = 2; // 1
+    print3D = new Print3D("Metro", "Ultimaker2+", "PLA", "fine", maxlayers, startlayerheight);
 
 
-    dx = [0, 1, 1, 1, 0, -1, -1, -1];
-    dy = [-1, -1, 0, 1, 1, 1, 0, -1];
-
-
-
-    var start = createVector(550, 50);
-    oldlen = 0;
-    len = 0;
-    zoekLangstePad(start);
-    len = printpath.length;
-
-    drawPath(printpath);
-    console.log(len);
-    model.updatePixels();
-    image(model, offset.x, offset.y);
-
-
-
-
+    isready = false;
     issaved = false;
-    tcount = 0;
-
-
 
 }
 
 
 function draw() {
 
-    if ((len - oldlen > 10) && frameCount < 40) {
-        start = printpath[printpath.length - 1].copy();
-        oldlen = len;
-        zoekLangstePad(start);
-        len = printpath.length;
-        drawPath(printpath);
-        console.log(len);
-        model.updatePixels();
-        image(model, offset.x, offset.y);
-        showPoint(last, color(255, 0, 0));
-
+    if (!iscreated) {
+        //iscreated set by mouseclick.
+        if (kronkel[k].move(10)) {
+            space.grid[x][y].draw(kronkel[k]);
+        }
 
     } else {
         if (layer < maxlayers) {
-            print3D.start();
-            //printpath = print3D.optimizePath(printpath, 5);
 
-            if (layer % 2 == 0) {
-                print3D.addToLayer(layer, printpath, offset, true);
-            } else {
-                print3D.addToLayer(layer, reversePath(printpath), offset, true);
+            print3D.start();
+            print3D.addPointToLayer(layer, createVector(150, 30), true);
+            print3D.addPointToLayer(layer, createVector(750, 50), true);
+            print3D.addPointToLayer(layer, createVector(150, 50), true);
+            for (var i = 0; i < kronkel.length; i++) {
+                print3D.addToLayer(layer, kronkel[i].path, kronkel[i].offset, true);
+                print3D.addToLayer(layer, kronkel[i].toendpath(), kronkel[i].offset, true);
             }
+            //print3D.addPointToLayer(layer, createVector(990, 990), true);
             print3D.print(layer);
+            isready = true;
 
         }
         if (layer + 1 == maxlayers) {
@@ -136,52 +112,24 @@ function draw() {
 
 }
 
-function zoekLangstePad(start) {
-
-    reloadModel();
-
-    //begin met een nieuwe start positie
-    if (printpath.length == 0) {
-        start = createVector(550, 50);
-    } else {
-        start = printpath[printpath.length - 1].copy();
-    }
-
-    last = findStart(start);
-
-    if (last.x != 999 && last.y != 999) {
-
-        var loop = 0;
-        while (loop < 30 && last.x < 999 && last.y < 999) {
-            path = [];
-            path = findPath(last, 3000);
-            if (path.length <= 1) {
-                loop++;
-                last = findStart(last);
-                if (last.x == 999 && last.y == 999) {
-                    loop = 100;
-                    path = [];
-                }
-            } else {
-                printpath = printpath.concat(path);
-            }
-        }
-    }
-
-}
-
-function reloadModel() {
-    model.loadPixels();
-    for (var i = 0; i < model.pixels.length; i += 4) {
-        //rood wordt weer zwart
-        if (model.pixels[i] == 255 && model.pixels[i + 1] == 0 && model.pixels[i + 2] == 0) {
-            model.pixels[i] = 0;
-        }
-    }
-}
-
 function mousePressed() {
-    if (!issaved && isready) {
+    x += 1;
+    if (x == space.cols) {
+        x = 0;
+        y += 1;
+    }
+    if (x == 0 && y == space.rows) {
+        iscreated = true;
+    }
+
+    if (!iscreated) {
+        printpath = printpath.concat(kronkel[k].path);
+        k++;
+        kronkel[k] = new Kronkel(createVector(0, 0), 150, 150);
+
+
+
+    } else if (!issaved && isready) {
         print3D.save();
         issaved = true;
     }

@@ -57,6 +57,7 @@ function Cell(c, r, w, h) {
     this.w = w;
     this.h = h;
     this.obj = null;
+    this.center = createVector(floor(this.x + this.w / 2), floor(this.y + this.h / 2));
 }
 Cell.prototype.position = function(offset) {
     this.offset = offset.copy();

@@ -18,18 +18,18 @@ function Layer(layer, settings, startlayerheight) {
     this.p = [];
 }
 Layer.prototype.addPattern = function(pos, path) {
-    if(this.layer == 0){
+    if (this.layer == 0) {
         //skirt
-        append(this.p, createVector(150,30,0) );
-        append(this.p, createVector(750,40,0) );
-        append(this.p, createVector(550,50,0) );
+        append(this.p, createVector(150, 30, 0));
+        append(this.p, createVector(750, 40, 0));
+        append(this.p, createVector(550, 50, 0));
     }
 
     for (var i = 0; i < path.length; i++) {
         var p = pos.copy();
         p.add(path[i]);
 
-        if (p.x > 0 && p.x < width && p.y > 0 && p.y < height) {
+        if (p.x >= 0 && p.x <= width && p.y >= 0 && p.y <= height) {
             append(this.p, p);
         } else {
             console.log("FATAL ERROR IN PRINT");
@@ -41,9 +41,9 @@ Layer.prototype.addPoint = function(vector) {
     append(this.p, vector);
 }
 
-Layer.prototype.add = function(path) {
+Layer.prototype.add = function(offset, path) {
     for (var i = 0; i < path.length; i++) {
-        var p = path[i].copy();
+        var p = path[i].copy().add(offset);
         append(this.p, p);
     }
 }
@@ -63,13 +63,13 @@ Layer.prototype.change = function(min, max) {
 Layer.prototype.draw = function() {
     strokeWeight(1);
     noFill();
-    
+
     if (this.p.length > 1) {
 
 
         for (var i = 1; i < this.p.length; i++) {
-           
-            
+
+
             if (this.p[i].z == 0) {
                 stroke(color(0, 0, 255));
             }
@@ -82,7 +82,7 @@ Layer.prototype.draw = function() {
 
             line(this.p[i - 1].x, this.p[i - 1].y, this.p[i].x, this.p[i].y);
         }
-        
+
 
     }
 }
@@ -91,7 +91,7 @@ Layer.prototype.generate = function(layer, gcode) {
     var pull = 3;
     //var nz = (layer * this.layerheight); // nz = normaal niveau
     var nz = floor(this.totallayerheight * 100) / 100 // nz = normaal niveau;
-    append(this.commands, "G0 Z" + nz);
+        //append(this.commands, "G0 Z" + nz);
 
 
     for (var i = 0; i < this.p.length; i++) {
@@ -103,25 +103,25 @@ Layer.prototype.generate = function(layer, gcode) {
         y = floor(y * 100) / 100;
         var z = floor(this.p[i].z * 100) / 100;
         var d;
-        
+
         if (i > 0) {
             var dvector = p5.Vector.sub(this.p[i], this.p[i - 1]);
             d = dvector.mag() * this.scale;
-            
+
         } else {
             d = 0;
         }
 
         if (this.p[i].z == -1) { //transport
-            d -= (2* pull);
+            d -= (2 * pull);
             gcode.extrude += (d * this.thickness);
             append(this.commands, "G0 E" + gcode.extrude);
-            append(this.commands, "G0 X" + x + " Y" + y );
+            append(this.commands, "G0 X" + x + " Y" + y);
 
 
         } else if (z == 0) {
-            if(i > 0){
-                if(this.p[i-1].z == -1){
+            if (i > 0) {
+                if (this.p[i - 1].z == -1) {
                     //beginpunt na een move
                     d += pull;
                     gcode.extrude += (d * this.thickness);
@@ -137,13 +137,13 @@ Layer.prototype.generate = function(layer, gcode) {
             } else {
                 z = this.startlayerheight + ((this.layer + 1) * this.layerheight) + z;
             }
-            if(this.p[i-1].z == -1){
+            if (this.p[i - 1].z == -1) {
                 //beginpunt na een move
-                d +=pull;
+                d += pull;
                 gcode.extrude += (d * this.thickness);
                 append(this.commands, "G1 X" + x + " Y" + y + " Z" + nz + " E" + gcode.extrude);
             }
-           
+
             gcode.extrude += (d * this.thickness);
             append(this.commands, "G1 X" + x + " Y" + y + " Z" + z + " E" + gcode.extrude);
         }

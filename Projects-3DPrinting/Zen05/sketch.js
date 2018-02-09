@@ -1,6 +1,7 @@
 /* Ria Stroes */
 /* @updated: november 2017  */
 /* Tracing a line
+/*Maze
  */
 
 
@@ -37,7 +38,7 @@ var oldlen, len;
 
 
 function preload() {
-    model = loadImage("images/lines04.jpeg");
+    model = loadImage("images/bunny-maze.jpg");
 
 }
 
@@ -72,8 +73,7 @@ function setup() {
     dy = [-1, -1, 0, 1, 1, 1, 0, -1];
 
 
-
-    var start = createVector(550, 50);
+    var start = createVector(150, 200);
     oldlen = 0;
     len = 0;
     zoekLangstePad(start);
@@ -142,7 +142,7 @@ function zoekLangstePad(start) {
 
     //begin met een nieuwe start positie
     if (printpath.length == 0) {
-        start = createVector(550, 50);
+        start = createVector(150, 200);
     } else {
         start = printpath[printpath.length - 1].copy();
     }
@@ -239,7 +239,7 @@ function findStart(start) {
 
     var found = false;
     var pos = createVector(0, 0);
-    var maxdis = 20;
+    var maxdis = 100;
     var min = 0;
 
     //first black pixel
