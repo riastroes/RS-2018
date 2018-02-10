@@ -1,6 +1,7 @@
 /* Ria Stroes */
 /* @updated: november 2017  */
 /* Tracing a line
+/*Maze
  */
 
 
@@ -13,7 +14,6 @@ var maxlayers;
 var show;
 var printpath;
 var offset;
-var start;
 
 var issaved;
 var isready;
@@ -38,7 +38,7 @@ var oldlen, len;
 
 
 function preload() {
-    model = loadImage("images/lines04.jpeg");
+    model = loadImage("images/bunny-maze.jpg");
 
 }
 
@@ -66,23 +66,22 @@ function setup() {
     layer = 0;
     maxlayers = 1;
     var startlayerheight = 0.5; // 1
-    print3D = new Print3D("Kronkels-", "Anet", "PLAFLEX", "normal", maxlayers, startlayerheight);
+    print3D = new Print3D("Zen", "Ultimaker2+", "PLA", "normal", maxlayers, startlayerheight);
 
 
     dx = [0, 1, 1, 1, 0, -1, -1, -1];
     dy = [-1, -1, 0, 1, 1, 1, 0, -1];
 
 
-
-    start = createVector(550, 50);
+    var start = createVector(150, 200);
     oldlen = 0;
-    len = 11;
-   // zoekLangstePad(start);
-    //len = printpath.length;
+    len = 0;
+    zoekLangstePad(start);
+    len = printpath.length;
 
-    //drawPath(printpath);
-   
-   // model.updatePixels();
+    drawPath(printpath);
+    console.log(len);
+    model.updatePixels();
     image(model, offset.x, offset.y);
 
 
@@ -99,10 +98,9 @@ function setup() {
 function draw() {
 
     if ((len - oldlen > 10) && frameCount < 40) {
-        
-        zoekLangstePad(start);
         start = printpath[printpath.length - 1].copy();
         oldlen = len;
+        zoekLangstePad(start);
         len = printpath.length;
         drawPath(printpath);
         console.log(len);
@@ -118,15 +116,10 @@ function draw() {
 
             if (layer % 2 == 0) {
                 print3D.addToLayer(layer, printpath, offset, true);
-                
             } else {
                 print3D.addToLayer(layer, reversePath(printpath), offset, true);
-                
             }
-            background(255);
             print3D.print(layer);
-            fill(255,0,0);
-            ellipse(printpath[printpath.length - 1].x + offset.x, printpath[printpath.length - 1].y + offset.y, 10,10);
 
         }
         if (layer + 1 == maxlayers) {
@@ -149,7 +142,7 @@ function zoekLangstePad(start) {
 
     //begin met een nieuwe start positie
     if (printpath.length == 0) {
-        start = createVector(550, 50);
+        start = createVector(150, 200);
     } else {
         start = printpath[printpath.length - 1].copy();
     }
@@ -241,19 +234,19 @@ function findPath(p, maxdepth) {
 }
 
 
-function findStart(model, start) {
+function findStart(start) {
 
 
     var found = false;
     var pos = createVector(0, 0);
-    var maxdis = 20;
+    var maxdis = 100;
     var min = 0;
 
     //first black pixel
     for (var i = 0; i < model.pixels.length; i += 4) {
         pos.x = floor((i / 4) % 1000);
         pos.y = floor((i / 4) / 1000);
-        if (checkColor(model, pos)) {
+        if (checkColor(pos)) {
             if (dist(start.x, start.y, pos.x, pos.y) < maxdis) {
                 maxdis = dist(start.x, start.y, pos.x, pos.y);
                 min = i;

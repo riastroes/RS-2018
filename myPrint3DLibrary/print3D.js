@@ -38,8 +38,8 @@ Print3D.prototype.createLayers = function() {
 }
 Print3D.prototype.addToLayer = function(layer, path, offset, show) {
 
-    this.layers[layer].addPattern(offset, path);
-    this.last = path[path.length - 1].copy().add(offset.x, offset.y);
+    this.layers[layer].add(offset, path);
+    this.last = path[path.length - 1].copy();
     if (show) {
         strokeWeight(5);
         point(this.last.x, this.last.y);
