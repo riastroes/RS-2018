@@ -21,20 +21,14 @@ function setup() {
 
     var canvas = createCanvas(1100, 1100);
     isready = false;
-    
+
 
     layer = 0;
-    maxlayers = 1;
+    maxlayers = 5;
     var startlayerheight = 0.2; // 1
     print3D = new Print3D("Spanten-", "Anet", "PLA", "normal", maxlayers, startlayerheight);
     printpath = [];
-    offset = createVector(50,50);
-
-
-    
-    
-
-
+    offset = createVector(50, 50);
 
 
 }
@@ -42,36 +36,69 @@ function setup() {
 
 function draw() {
 
-    
-        if (layer == 0){
-            createSpant(createVector(550,550),500,0, PI);
 
-        }
-        else if( layer == maxlayers) {
-            print3D.start();
-           // printpath = print3D.optimizePath(printpath, 5);
-
-            if (layer % 2 == 0) {
-                print3D.addToLayer(layer-1, printpath, offset, true);
-                
+    if (layer < maxlayers) {
+        for (var i = 0; i < 5; i += 1) {
+            if (i % 2 == 0) {
+                createSpant(createVector(500, 550), 450 + (i * 3), 0, PI);
             } else {
-                print3D.addToLayer(layer-1, reversePath(printpath), offset, true);
-                
+                createSpant(createVector(500, 550), 450 + (i * 3), PI, 0);
             }
-           // background(255);
-            print3D.print(layer-1);
-            //last
-            fill(255,0,0);
-            ellipse(printpath[printpath.length - 1].x + offset.x, printpath[printpath.length - 1].y + offset.y, 10,10);
 
         }
-        else if (layer + 1 == maxlayers) {
-            print3D.stop();
-            noLoop();
-            isready = true;
+        append(printpath, createVector(25, 400));
+        for (var i = 1; i < 8; i += 1) {
+            if (i % 2 == 0) {
+                createSpant(createVector(500, 400), 450 - (i * 3), 0, PI);
+            } else {
+                createSpant(createVector(500, 400), 450 - (i * 3), PI, 0);
+            }
+
         }
-        layer++;
-    
+        append(printpath, createVector(1025, 250));
+        for (var i = 0; i < 10; i += 1) {
+            if (i % 2 == 0) {
+                createSpant(createVector(500, 250), 450 - (i * 3), 0, PI);
+            } else {
+                createSpant(createVector(500, 250), 450 - (i * 3), PI, 0);
+            }
+
+        }
+        append(printpath, createVector(1025, 50));
+        for (var i = 0; i < 10; i += 1) {
+            if (i % 2 == 0) {
+                createSpant(createVector(500, 50), 400 + (i * 3), 0, PI);
+            } else {
+                createSpant(createVector(500, 50), 400 + (i * 3), PI, 0);
+            }
+
+        }
+        append(printpath, createVector(1025, 50));
+
+    } else if (layer == maxlayers) {
+        print3D.start();
+        // printpath = print3D.optimizePath(printpath, 5);
+
+        if (layer % 2 == 0) {
+            print3D.addToLayer(layer - 1, printpath, offset, true);
+
+        } else {
+            print3D.addToLayer(layer - 1, reversePath(printpath), offset, true);
+
+        }
+        // background(255);
+        print3D.print(layer - 1);
+        //last
+        fill(255, 0, 0);
+        ellipse(printpath[printpath.length - 1].x + offset.x, printpath[printpath.length - 1].y + offset.y, 10, 10);
+
+    } else if (layer + 1 == maxlayers) {
+        print3D.stop();
+        noLoop();
+        isready = true;
+    }
+    layer++;
+
 
 
 
@@ -94,19 +121,23 @@ function reversePath(path) {
     }
     return reverse;
 }
-function createSpant(center, size, startangle, endangle){
-    let x,y;
-    for(var angle = startangle; angle <= endangle; angle+=(PI / 30)){
-        x = center.x + (size * cos(angle));
-        y = center.y + (size * sin(angle));
-        append(printpath, createVector(x, y));
+
+function createSpant(center, size, startangle, endangle) {
+    let x, y;
+    let step = (PI / 30);
+    if (startangle < endangle) {
+        for (var angle = startangle; angle <= endangle; angle += step) {
+            x = center.x + (size * cos(angle));
+            y = center.y + (size * sin(angle));
+            append(printpath, createVector(x, y));
+        }
+    } else {
+        for (var angle = startangle; angle >= endangle; angle -= step) {
+            x = center.x + (size * cos(angle));
+            y = center.y + (size * sin(angle));
+            append(printpath, createVector(x, y));
+        }
     }
 
+
 }
-
-
-
-
-
-
-
