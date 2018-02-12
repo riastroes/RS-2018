@@ -26,9 +26,12 @@ function setup() {
     layer = 0;
     maxlayers = 5;
     var startlayerheight = 0.2; // 1
-    print3D = new Print3D("Spanten-", "Anet", "PLA", "normal", maxlayers, startlayerheight);
+    print3D = new Print3D("Spanten" + maxlayers + "-", "Anet", "PLA", "normal", maxlayers, startlayerheight);
     printpath = [];
     offset = createVector(50, 50);
+    
+    print3D.start();
+
 
 
 }
@@ -38,24 +41,25 @@ function draw() {
 
 
     if (layer < maxlayers) {
-        for (var i = 0; i < 5; i += 1) {
-            if (i % 2 == 0) {
-                createSpant(createVector(500, 550), 450 + (i * 3), 0, PI);
-            } else {
-                createSpant(createVector(500, 550), 450 + (i * 3), PI, 0);
-            }
+        printpath =[];
+        // for (var i = 0; i < 5; i += 1) {
+        //     if (i % 2 == 0) {
+        //         createSpant(createVector(500, 550), 450 + (i * 3), 0, PI);
+        //     } else {
+        //         createSpant(createVector(500, 550), 450 + (i * 3), PI, 0);
+        //     }
 
-        }
-        append(printpath, createVector(25, 400));
-        for (var i = 1; i < 8; i += 1) {
-            if (i % 2 == 0) {
-                createSpant(createVector(500, 400), 450 - (i * 3), 0, PI);
-            } else {
-                createSpant(createVector(500, 400), 450 - (i * 3), PI, 0);
-            }
+        // }
+        // append(printpath, createVector(25, 400));
+        // for (var i = 1; i < 8; i += 1) {
+        //     if (i % 2 == 0) {
+        //         createSpant(createVector(500, 400), 450 - (i * 3), 0, PI);
+        //     } else {
+        //         createSpant(createVector(500, 400), 450 - (i * 3), PI, 0);
+        //     }
 
-        }
-        append(printpath, createVector(1025, 250));
+        // }
+       // append(printpath, createVector(1025, 250));
         for (var i = 0; i < 10; i += 1) {
             if (i % 2 == 0) {
                 createSpant(createVector(500, 250), 450 - (i * 3), 0, PI);
@@ -64,31 +68,26 @@ function draw() {
             }
 
         }
-        append(printpath, createVector(1025, 50));
-        for (var i = 0; i < 10; i += 1) {
-            if (i % 2 == 0) {
-                createSpant(createVector(500, 50), 400 + (i * 3), 0, PI);
-            } else {
-                createSpant(createVector(500, 50), 400 + (i * 3), PI, 0);
-            }
+        // append(printpath, createVector(1025, 50));
+        // for (var i = 0; i < 10; i += 1) {
+        //     if (i % 2 == 0) {
+        //         createSpant(createVector(500, 50), 400 + (i * 3), 0, PI);
+        //     } else {
+        //         createSpant(createVector(500, 50), 400 + (i * 3), PI, 0);
+        //     }
 
-        }
-        append(printpath, createVector(1025, 50));
+        // }
+        // append(printpath, createVector(1025, 50));
+        print3D.addToLayer(layer, printpath, offset, true);
 
+        
     } else if (layer == maxlayers) {
-        print3D.start();
-        // printpath = print3D.optimizePath(printpath, 5);
-
-        if (layer % 2 == 0) {
-            print3D.addToLayer(layer - 1, printpath, offset, true);
-
-        } else {
-            print3D.addToLayer(layer - 1, reversePath(printpath), offset, true);
-
+        isready = true;
+        for(var i = 0; i < maxlayers; i++){
+            print3D.print(i);
         }
-        // background(255);
-        print3D.print(layer - 1);
-        //last
+
+        
         fill(255, 0, 0);
         ellipse(printpath[printpath.length - 1].x + offset.x, printpath[printpath.length - 1].y + offset.y, 10, 10);
 
