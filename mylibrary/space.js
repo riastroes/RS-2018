@@ -35,12 +35,13 @@ Space.prototype.scaleCells = function(scalex, scaley) {
         }
     }
 }
-Space.prototype.get = function(x, y) {
-    return this.grid[x][y].obj;
-}
 Space.prototype.set = function(x, y, obj) {
-    this.grid[x][y].obj = obj;
+    this.grid[x][y] = obj;
 }
+Space.prototype.get = function(x, y) {
+    return this.grid[x][y];
+}
+
 Space.prototype.draw = function(obj) {
     for (let c = 0; c < this.cols; c++) {
         for (let r = 0; r < this.rows; r++) {
@@ -76,8 +77,8 @@ Cell.prototype.scale = function(scalex, scaley) {
     this.y = this.center.y - sy;
 
 }
-Cell.prototype.draw = function(obj) {
-    obj.draw(this.center);
+Cell.prototype.draw = function() {
+    this.obj.draw();
 
 }
 

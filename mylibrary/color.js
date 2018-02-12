@@ -27,7 +27,7 @@ Color.prototype.random = function(count, alpha) {
     var from = this.colors.length;
     var to = from + count;
     var step = 0;
-    for (var i = from; i <= to; i++) {
+    for (var i = from; i < to; i++) {
         hue = random(360);
         saturation = random(100);
         lightness = random(100);
@@ -71,7 +71,7 @@ Color.prototype.addHuePalette = function(count, hue) {
     var from = this.colors.length;
     var to = from + count;
     var step = 0;
-    for (var i = from; i <= to; i++) {
+    for (var i = from; i < to; i++) {
         lightness = 5 + (step * (85 / count));
         this.colors[i] = color(hue, 100, lightness, this.alpha);
         step++;
@@ -84,7 +84,7 @@ Color.prototype.addLightnessPalette = function(count, lightness) {
     var from = this.colors.length;
     var to = from + count;
     var step = 0;
-    for (var i = from; i <= to; i++) {
+    for (var i = from; i < to; i++) {
         hue = random(360);
         this.colors[i] = color(hue, saturation, lightness, this.alpha);
         step++;
