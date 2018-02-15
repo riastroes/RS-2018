@@ -48,7 +48,7 @@ function setup() {
 
 function draw() {
     background(255);
-    colorstrip.show();
+
     if (frameCount == 1) {
         //plaats in elke cel een random kleur
         for (let x = 0; x < 10; x++) {
@@ -60,6 +60,17 @@ function draw() {
         }
 
     } else {
+
+        //deze code versnellen
+        // let x = floor((mouseX - offset.x) / (space.width / space.cols));
+        // let y = floor((mouseY - offset.y) / (space.height / space.rows));
+        // if (x > 0 && x < space.cols && y > 0 && y < space.rows) {
+        //     let cell = space.get(x, y);
+        //     cell.obj.size++;
+        //     cell.draw();
+        // }
+
+
         for (let x = 0; x < 10; x++) {
             for (let y = 0; y < 10; y++) {
                 var cell = space.get(x, y);
@@ -71,4 +82,5 @@ function draw() {
             }
         }
     }
+    colorstrip.show();
 }
