@@ -9,6 +9,7 @@ function ColorStrip(pos, w, h) {
     this.max = this.colors.length; // het aantal kleuren
     this.alpha = 1;
     this.isclicked = false;
+    this.next =0;
 
 }
 ColorStrip.prototype.create = function(max, name) {
@@ -137,6 +138,17 @@ ColorStrip.prototype.randomColor = function(show) {
         fill(this.colors[index]);
         rect(this.pos.x + (index * this.palwidth / this.max) - 1, this.pos.y, (this.palwidth / this.colors.length), this.palheight - 1);
     }
+    return this.colors[index];
+}
+ColorStrip.prototype.nextColor = function(show) {
+    let index = this.next % this.colors.length;
+    if (show) {
+        this.show();
+        stroke(0);
+        fill(this.colors[index]);
+        rect(this.pos.x + (index * this.palwidth / this.max) - 1, this.pos.y, (this.palwidth / this.colors.length), this.palheight - 1);
+    }
+    this.next++;
     return this.colors[index];
 }
 ColorStrip.prototype.setTransparency = function(alpha) {

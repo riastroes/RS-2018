@@ -78,7 +78,15 @@ Cell.prototype.scale = function(scalex, scaley) {
 
 }
 Cell.prototype.draw = function() {
-    this.obj.draw();
+    if(this.obj !=null){
+        this.obj.draw();
+    }
+    else{
+        fill(0);
+        strokeWeight(10);
+        point(this.center.x, this.center.y);
+    }
+    
 
 }
 
