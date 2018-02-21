@@ -40,7 +40,7 @@ function setup() {
     canvas = createCanvas(windowWidth, windowHeight);
 
     
-    offset = createVector(100,100);
+    offset = createVector(100,150);
 
     // tree = new Tree();
     // for (var i = 0; i < 10; i++) {
@@ -88,11 +88,15 @@ function draw() {
         for(var y = 0; y< space.rows; y++){
             var cell = space.get(x,y);
             
+            // var tx = curveTangent(cell.center.x, cell.center.x, width/2,height/2, 0.5);
+            // var ty = curveTangent(cell.center.y, cell.center.y, width/2,height/2, 0.5);
+            // var angle = atan2(ty, tx);
+            
             push();
             
             translate(cell.center.x,cell.center.y );
-            scale(.7);
-            //rotate(x * PI /space.rows );
+            scale(.6);
+           // rotate(angle);
             
             if(x2 < -(cell.w) || x2 > (cell.w) || x1 < -(cell.w) || x1 > (cell.w) ) {
                // wisselen van richting
@@ -103,13 +107,14 @@ function draw() {
             x1 = aline(y1, a, b);
             x2 = aline(y2, a, b);
          
-            var t = map((x*y)%100,0,100, -5,5);
+            var t = map(frameCount%50,0,50, -20,20);
             curveTightness(t);
+            
             stroke(colors[x*y]);
             strokeWeight(1);
             noFill();
-            curve(cx1,cy1,x1,y1,x2,y2,cx2,cy2);
-            curve(cx2,cy2, -x1,y1,-x2,y2,cx1,cy1);
+            curve(cx1,cy1,  x1,y1-100,   x2,y2+100, cx2,cy2);
+            curve(cx2,cy2, -x1,y1-100,  -x2,y2+100, cx1,cy1);
             
             pop();
         }
