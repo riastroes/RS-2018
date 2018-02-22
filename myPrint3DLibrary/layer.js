@@ -74,7 +74,7 @@ Layer.prototype.draw = function() {
                 stroke(color(0, 0, 255));
             }
             if (this.p[i].z > 0) {
-                stroke(colors[2]);
+                stroke(0);
             }
             if (this.p[i].z == -1) {
                 stroke(0, 255, 255);

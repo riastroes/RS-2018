@@ -1,6 +1,6 @@
 /* Ria Stroes */
 /* @updated: november 2017  */
-/* Metro
+/*
  */
 
 
@@ -25,7 +25,7 @@ var pos;
 var path;
 var next;
 
-var figuur1,figuur2;
+var zeester;
 
 
 function setup() {
@@ -40,10 +40,10 @@ function setup() {
 
     layer = 0;
     maxlayers = 1;
-    var startlayerheight = 1; // 1
-    print3D = new Print3D("Gordijn", "Anet", "TRANS", "normal", maxlayers, startlayerheight);
-    figuur1 = new Figuur();
-    figuur2 = new Figuur();
+    var startlayerheight = 5; // 1 CM
+    print3D = new Print3D("Zeester", "Anet", "TRANS", "normal", maxlayers, startlayerheight);
+    
+   
     frameRate(1);
     isready = false;
     issaved = false;
@@ -58,14 +58,14 @@ function draw() {
         push();
         scale(0.7);
         
-        for (var i = 0; i < 3; i++) {
+        for (var i = 0; i < 5; i++) {
 
+            zeester = new Zeester();
+            zeester.print2(i);
+           
             
-            figuur1.print(i);
-            figuur2.print(i);
-            
-            printpath = printpath.concat(figuur1.path);
-            printpath = printpath.concat(figuur2.path);
+            printpath = printpath.concat(zeester.path);
+           
         }
         pop();
         iscreated = true;

@@ -202,6 +202,20 @@ Settings.prototype.initMaterial = function() {
                             }
                             break;
                         }
+                    case "TRANS":
+                        {
+                            this.materialcode = "TRANS";
+                            if (this.style == "normal") {
+                                this.initStyle(0.5, 0.2, 1200); //TEST OK
+                            }
+                            if (this.style == "fine") {
+                                this.initStyle(0.18, 0.1, 800); //NIET GETEST
+                            }
+                            if (this.style == "extrafine") {
+                                this.initStyle(0.08, 0.07, 800); //NIET GETEST
+                            }
+                            break;
+                        }   
                     case "NYLON":
                         {
                             this.materialcode = "RTRANS";
@@ -394,7 +408,7 @@ Settings.prototype.initPrinter = function() {
         case "TRANS":
             {
                 this.nozzletemp = 200;
-                this.bedtemp = 30;
+                this.bedtemp = 50;
                 break;
 
             }
