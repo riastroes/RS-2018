@@ -33,9 +33,9 @@ Settings.prototype.initMaterial = function() {
                         {
                             this.materialcode = "PLA";
                             if (this.style == "fine") {
-                                this.initStyle(0.4, 0.07, 800); //test OK 0.3, 0.07, 800
+                                this.initStyle(0.4, 0.05, 800); //test OK 0.3, 0.07, 800
                             } else if (this.style == "normal") {
-                                this.initStyle(0.4, 0.12, 800); //test OK
+                                this.initStyle(0.4, 0.07, 800); //test OK
                             } else if (this.style == "kant") {
                                 this.initStyle(0.4, 0.04, 800); //test OK 0.3, 0.07, 800
                             }

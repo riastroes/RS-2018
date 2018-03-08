@@ -28,7 +28,7 @@ Gcode.prototype.startCode = function() {
     append(this.commands, "G0 X0 Y0           ;HOME");
     append(this.commands, "G1 F200 E20        ;extrude 10mm of feed stock");
     append(this.commands, "G92 E0             ;zero the extruded length again");
-    append(this.commands, "G0 Z10             ;move the platform up 15mm");
+    append(this.commands, "G0 Z" + this.layerheight + "             ;move the platform to layerheight");
 
     //append(this.commands, "M106            ;fan on");
     append(this.commands, "M117 Printing...");
