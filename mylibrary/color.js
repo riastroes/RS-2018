@@ -106,6 +106,7 @@ Color.prototype.compare = function(acolor, bcolor, colormarge) {
     }
     return ok;
 }
+
 Color.prototype.getRGBA = function(r, g, b, a) {
     var acolor = color(0, 100, 50, 1);
     var alpha = a / 255;
