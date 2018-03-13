@@ -107,6 +107,11 @@ ColorStrip.prototype.create = function(max, name) {
     this.max = this.colors.length;
 
 }
+ColorStrip.prototype.add = function(acolor){
+    this.palette.add(acolor);
+    this.color = this.colors[this.colors.length-1];
+    this.max = this.colors.length;
+}
 ColorStrip.prototype.show = function() {
     noStroke();
     fill(255);
