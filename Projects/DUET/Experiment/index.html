@@ -25,6 +25,101 @@
 
     <script src="sketch.js" type="text/javascript"></script>
     <script src="stamp.js" type="text/javascript"></script>
+    <style>
+        body {
+            color: white;
+        }
+        
+        label {
+            color: fixed;
+            width: 120px;
+        }
+        
+        input {
+            position: relative;
+            left: calc(width-200);
+        }
+    </style>
+    <table>
+        <tr>
+            <td id="tdcanvas">
+
+            </td>
+            <td style="width:400px; background-color:black; vertical-align:top; padding:20px">
+                <h3>Create Pattern</h3>
+                <table>
+                    <tr>
+                        <td>
+                            <h4>Inspiration</h4>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <image id="imgInspiration">
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            created by Jolanta Izabela Pawlak
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <h4>Canvas</h4>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><label>width (pixels):</label></td>
+                        <td><input type="text" id="incanvaswidth" value="1000" /></td>
+                    </tr>
+                    <tr>
+                        <td><label>height (pixels):</label></td>
+                        <td><input type="text" id="incanvasheight" value="1000" /></td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h4>Pattern</h4>
+                        </td>
+                        <td></td>
+
+                    </tr>
+                    <tr>
+                        <td><label>cols:</label></td>
+                        <td><input type="text" id="inpatterncols" value="2" /></td>
+                    </tr>
+                    <tr>
+                        <td><label>rows:</label></td>
+                        <td><input type="text" id="inpatternrows" value="2" /></td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h4>Stamp</h4>
+                        </td>
+                        <td></td>
+            </td>
+            </tr>
+            <tr>
+                <td><label>width (pixels):</label></td>
+                <td><input type="text" id="instampwidth" value="200" /></td>
+            </tr>
+            <tr>
+                <td><label>height (pixels):</label></td>
+                <td><input type="text" id="instampheight" value="200" /></td>
+            </tr>
+            <tr>
+                <td><input type="submit" id="btnEnter" value="Change" onclick="changeSettings()" /></td>
+                <td></td>
+            </tr>
+            </table>
+            </td>
+        </tr>
+    </table>
 
 
 </head>
