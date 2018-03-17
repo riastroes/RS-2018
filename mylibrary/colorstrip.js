@@ -9,7 +9,7 @@ function ColorStrip(pos, w, h) {
     this.max = this.colors.length; // het aantal kleuren
     this.alpha = 1;
     this.isclicked = false;
-    this.next =0;
+    this.next = 0;
 
 }
 ColorStrip.prototype.create = function(max, name) {
@@ -107,9 +107,9 @@ ColorStrip.prototype.create = function(max, name) {
     this.max = this.colors.length;
 
 }
-ColorStrip.prototype.add = function(acolor){
+ColorStrip.prototype.add = function(acolor) {
     this.palette.add(acolor);
-    this.color = this.colors[this.colors.length-1];
+    this.color = this.colors[this.colors.length - 1];
     this.max = this.colors.length;
 }
 ColorStrip.prototype.show = function() {
@@ -129,9 +129,9 @@ ColorStrip.prototype.show = function() {
         }
     }
 }
-ColorStrip.prototype.get = function(x, y) {
-
-    return this.color;
+ColorStrip.prototype.getColor = function(x, y) {
+    var i = floor(x / (width / this.colors.length));
+    return this.colors[i];
 }
 ColorStrip.prototype.randomColor = function(show) {
     var max = this.colors.length;

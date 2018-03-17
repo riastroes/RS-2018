@@ -27,11 +27,8 @@
     <script src="stamp.js" type="text/javascript"></script>
     <style>
         body {
-            overflow:hidden;
+            overflow: hidden;
             color: white;
-            text-size:12px;
-            
-           
         }
         
         label {
@@ -43,19 +40,19 @@
             position: relative;
             left: calc(width-200);
         }
-        #layout{
-            display:none;
-        }
-        #divcanvas{
-            overflow:auto;
+        
+        #layout {
+            display: none;
         }
         
+        #divcanvas {
+            overflow: auto;
+        }
     </style>
-    </head>
-    <body>
-            <img id="inspiration" src="images/img8.jpg" alt="inspiration" style="display:none; " >
-            <img id="biginspiration" src="images/img8.jpg" alt="inspiration" style="display:none; " >
-            <canvas id="canvasbiginspiration" style="display:none;" ></canvas>
+</head>
+
+<body>
+
     <table id="layout">
         <tr>
             <td>
@@ -65,10 +62,18 @@
                 <h3>Create Pattern</h3>
                 <table>
                     <tr>
-                        <td>
+                        <td colspan="2">
                             <h4>Inspiration</h4>
+                            <input type="button" value="1" onclick="changeInspiration(this.value)" />
+                            <input type="button" value="2" onclick="changeInspiration(this.value)" />
+                            <input type="button" value="3" onclick="changeInspiration(this.value)" />
+                            <input type="button" value="4" onclick="changeInspiration(this.value)" />
+                            <input type="button" value="5" onclick="changeInspiration(this.value)" />
+                            <input type="button" value="6" onclick="changeInspiration(this.value)" />
+                            <input type="button" value="7" onclick="changeInspiration(this.value)" />
+                            <input type="button" value="8" onclick="changeInspiration(this.value)" />
                         </td>
-                        <td></td>
+
                     </tr>
                     <tr>
                         <td colspan="2">
@@ -132,11 +137,11 @@
                 <td><input type="submit" id="btnEnter" value="Change" onclick="changeSettings()" /></td>
                 <td></td>
             </tr>
-                <tr>
-                    <td></td>
-                    <td ><canvas id="canvassample" ></canvas></td>
-                    
-                </tr>
+            <tr>
+                <td></td>
+                <td><canvas id="canvassample"></canvas></td>
+
+            </tr>
             </table>
             </td>
         </tr>
@@ -145,8 +150,8 @@
 
 
 
-<body>
+    <body>
 
-</body>
+    </body>
 
 </html>
