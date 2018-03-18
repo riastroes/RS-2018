@@ -8,8 +8,6 @@ var colors;
 var colorstrip;
 
 var offset;
-var imgpixels;
-
 var img;
 
 var isfilterd;
@@ -68,9 +66,10 @@ function changeSettings() {
 
 
     canvasinspiration.onclick = function() {
-            var x = event.offsetX - 10;
-            var y = event.offsetY - 20
-                //
+            console.log("position: ", event.mouseX, event.mouseY);
+            var x = event.offsetX;
+            var y = event.offsetY;
+            //
             var i = (floor(x) * this.width * 4) + (floor(x) * 4);
             console.log(x, y, i);
 
@@ -169,6 +168,10 @@ function changeInspiration(nr) {
     } else if (nr === "8") {
         inspiration2.image(img[7], 0, 0, 360, 240);
         inspiration.image(img[7], 0, 0, 3600, 2400);
+
+    } else if (nr === "9") {
+        inspiration2.image(img[8], 0, 0, 360, 240);
+        inspiration.image(img[8], 0, 0, 3600, 2400);
     }
     inspiration2.loadPixels();
     inspiration.loadPixels();
@@ -184,8 +187,6 @@ function changeInspiration(nr) {
     ctx.putImageData(imgData, 0, 0);
 
 
-
-
 }
 
 function preload() {
@@ -198,6 +199,7 @@ function preload() {
     img[5] = loadImage("images/img6.jpg");
     img[6] = loadImage("images/img7.jpg");
     img[7] = loadImage("images/img8.jpg");
+    img[8] = loadImage("images/img9.jpg");
 
     softborder = loadImage("images/softborder200x200.png");
     //softborder = loadImage("images/triangle200x200.png");
@@ -207,12 +209,6 @@ function setup() {
     pixelDensity(1);
     changeSettings();
 
-    var imginspiration = document.getElementById("imgInspiration");
-
-    // imginspiration.src =  "images/img6.jpg";
-    // imginspiration.width = 300;
-
-
 
     colorstrip = new ColorStrip(createVector(0, 0), width, 50);
     //colorstrip.create(10, "lichte_kleuren");
@@ -221,25 +217,12 @@ function setup() {
     colorstrip.show();
 
     offset = createVector(50, 50);
-    imgpixels = [];
 
-
-
-
-    isfilterd = false;
     issaved = false;
 }
 
 
 function draw() {
-    //background(255);
-
-
-    // if (stamp.isloaded) {
-
-    //stamp.draw(random(-stamp.width/2, this.width + (stamp.width/2)), random(-stamp.height/2, this.height+(stamp.height/2)));
-    //}
-
 
     colorstrip.show();
 }
@@ -268,8 +251,8 @@ function keyPressed() {
     if (keyCode === BACKSPACE) {
         background(255);
     } else if (keyCode === UP_ARROW) {
-        stamp.grow(10);
+        stamp.grow(30);
     } else if (keyCode === DOWN_ARROW) {
-        stamp.shrink(10);
+        stamp.shrink(30);
     }
 }
