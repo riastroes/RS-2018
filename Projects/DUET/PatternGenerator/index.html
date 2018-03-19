@@ -26,9 +26,14 @@
     <script src="sketch.js" type="text/javascript"></script>
     <script src="stamp.js" type="text/javascript"></script>
     <style>
-        body {
+        body{
             overflow: hidden;
             color: white;
+            font-family:Arial, Helvetica, sans-serif;
+            font-size:12px;
+        }
+        h3,h4{
+            font-size:14px;
         }
         
         label {
@@ -56,11 +61,16 @@
     <table id="layout">
         <tr>
             <td>
-                <div id="divcanvas"></div>
+                <div id="divcanvas" class="nocontextmenu" ></div>
             </td>
             <td style="width:400px; background-color:black; vertical-align:top; padding:20px">
-                <h3>Create Pattern</h3>
+                <h3>Pattern Creator</h3>
                 <table>
+                    <tr><td colspan="2">Create your own pattern:<br/>
+                    1. Select your inspiration.<br/>
+                    2. Click on this image to create a stamp.<br/>
+                    3. 'Stamp' on the left screen (canvas).<br/>
+                    4. If you like a different backgroundcolor, click on the colorpanel on the top of your screen. </td></tr>
                     <tr>
                         <td colspan="2">
                             <h4>Inspiration</h4>
@@ -73,6 +83,7 @@
                             <input type="button" value="7" onclick="changeInspiration(this.value)" />
                             <input type="button" value="8" onclick="changeInspiration(this.value)" />
                             <input type="button" value="9" onclick="changeInspiration(this.value)" />
+                            <input type="button" value="10" onclick="changeInspiration(this.value)" />
                         </td>
 
                     </tr>
@@ -88,59 +99,49 @@
                         </td>
 
                     </tr>
+                    
                     <tr>
-                        <td>
-                            <h4>Canvas</h4>
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td><label>width (pixels):</label></td>
-                        <td><input type="text" id="incanvaswidth" value="1000" /></td>
-                    </tr>
-                    <tr>
-                        <td><label>height (pixels):</label></td>
-                        <td><input type="text" id="incanvasheight" value="1000" /></td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <h4>Pattern</h4>
-                        </td>
-                        <td></td>
+                        <td><label>Canvas size (pixels): </label></td>
+                        <td><input type="text" size="4" id="incanvaswidth" value="1000" />X
+                            <input type="text" size="4" id="incanvasheight" value="1000" /></td>
 
                     </tr>
                     <tr>
-                        <td><label>cols:</label></td>
-                        <td><input type="text" id="inpatterncols" value="2" /></td>
-                    </tr>
-                    <tr>
-                        <td><label>rows:</label></td>
-                        <td><input type="text" id="inpatternrows" value="2" /></td>
+                        <td></td>
+                        <td></td>
                     </tr>
 
                     <tr>
-                        <td>
-                            <h4>Stamp</h4>
-                        </td>
-                        <td></td>
-            </td>
-            </tr>
+                        <td><label>Pattern repeat (cols x rows):</label></td>
+                        <td><input type="text" size="4" id="inpatterncols" value="2" />X
+                            <input type="text" size="4" id="inpatternrows" value="2" /></td>
+                    </tr>
+                  
+                    <tr>
+                            <td><label>Stamp size (pixels): </label></td>
+                            <td><input type="text" size="4" id="instampwidth" value="200" />X
+                                <input type="text" size="4" id="instampheight" value="200" /></td>
+                    </tr>
+                
+           
             <tr>
-                <td><label>width (pixels):</label></td>
-                <td><input type="text" id="instampwidth" value="200" /></td>
-            </tr>
-            <tr>
-                <td><label>height (pixels):</label></td>
-                <td><input type="text" id="instampheight" value="200" /></td>
-            </tr>
-            <tr>
+                    <td></td>
                 <td><input type="submit" id="btnEnter" value="Change" onclick="changeSettings()" /></td>
-                <td></td>
+                
             </tr>
             <tr>
-                <td></td>
-                <td><canvas id="canvassample"></canvas></td>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td colspan="2"> <input id="btnstamp" type="button" value="1" onclick="changeStamp(this.value)" />
+                    <input type="button" value="2" onclick="changeStamp(this.value)" />
+                    <input type="button" value="3" onclick="changeStamp(this.value)" />
+                    <input type="button" value="4" onclick="changeStamp(this.value)" />
+                    <input type="button" value="5" onclick="changeStamp(this.value)" />
+                  </td>
+                </tr>
+                <tr>
+                <td colspan="2"><canvas id="canvassample"></canvas></td>
 
             </tr>
             </table>
@@ -148,10 +149,12 @@
         </tr>
     </table>
 
-
-
-
-    <body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>
+        $('.nocontextmenu').bind('contextmenu', function(e) {
+            return false;
+        }); 
+    </script>
 
     </body>
 

@@ -67,14 +67,19 @@ Stamp.prototype.loadInk = function(inspiration, px, py, ahue,asat, alight,  rang
 
             param = rgbToHsl(inspiration.pixels[i], inspiration.pixels[i + 1], inspiration.pixels[i + 2]);
             if ((  param[0] * 360) > (ahue - range) && (param[0] * 360) < (ahue + range)
-                && (param[1] * 100) > (asat - range) && (param[1] * 100) < (asat + range)
-                && (param[2] * 100) > (alight - range) && (param[1] * 100) < (alight + range)) {
+               // && (param[1] * 100) > (asat - range) && (param[1] * 100) < (asat + range)
+               // && (param[2] * 100) > (alight - range) && (param[1] * 100) < (alight + range)
+               && (stampmasker.pixels[j+3] != 0)
+            ) {
                 this.image.pixels[j] = inspiration.pixels[i];
                 this.image.pixels[j + 1] = inspiration.pixels[i + 1];
                 this.image.pixels[j + 2] = inspiration.pixels[i + 2];
-                this.image.pixels[j + 3] = 255;
+                this.image.pixels[j + 3] = stampmasker.pixels[j+3] ;
                 
 
+            }
+            else{
+                this.image.pixels[j + 3] = stampmasker.pixels[j+3] ;
             }
                             
             j += 4;
@@ -92,7 +97,9 @@ Stamp.prototype.mask = function(img) {
 }
 Stamp.prototype.getData = function(imgdata) {
     for (var i = 0; i < this.image.pixels.length; i++) {
-        imgdata.data[i] = this.image.pixels[i];
+        if(imgdata.data[i+3] != 0){
+            imgdata.data[i] = this.image.pixels[i];
+        }
     }
 
 }
