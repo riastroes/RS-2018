@@ -75,10 +75,9 @@ function setup() {
     colorstrip.show();
 
     offset = createVector(50, 50);
-    var btnstart = document.getElementById("btnstart");
-    btnstart.click();
-    var btnstamp  = document.getElementById("btnstamp");
-    btnstamp.click();
+    nr ="1";
+
+    
 
 
     issaved = false;
@@ -109,8 +108,7 @@ function mousePressed() {
         }
     }
     else if (mouseButton === RIGHT) {
-        var timestamp = Math.floor(Date.now() / 1000);
-        saveCanvas(canvas, "JIPpattern" + timestamp.toString(), ".jpg");
+        saveJIPPattern();
     }
     return true;
 
@@ -185,21 +183,23 @@ function changeSettings() {
                 colorstrip.add(hslcolor);
                 
                 stamp.loadInk(inspiration, floor(x-(stampwidth/2)), floor(y-(stampheight/2)), ahue,asat,alight, range);
-                //stamp.mask(stampmasker);
-                //stampmasker.loadPixels();
+                stamp.mask(stampmasker);
+                stampmasker.loadPixels();
 
                 var ctxsample = canvassample.getContext("2d");
 
-                var bgSampleData = ctxsample.getImageData(0, 0, stampwidth, stampheight);
-                for (var i = 0; i < bgSampleData.data.length; i += 4) {
-                    imgData.data[i] = stampmasker.pixels[i];
-                    imgData.data[i + 1] = stampmasker.pixels[i+1];
-                    imgData.data[i + 2] = stampmasker.pixels[i+2];
-                    imgData.data[i + 3] = stampmasker.pixels[i+3];
+               
+                var stampData  = ctxsample.getImageData(0, 0, stampwidth, stampheight);
+                for (var i = 0; i < stampData.data.length; i += 4) {
+                    stampData.data[i] = 255;
+                    stampData.data[i + 1] = 255;
+                    stampData.data[i + 2] = 255;
+                    stampData.data[i + 3] = 255;
                 }
-                ctxsample.putImageData(bgSampleData, 0, 0);
-                stamp.getData(bgSampleData);
-                ctxsample.putImageData(bgSampleData, 0, 0);
+                
+                stamp.getData(stampData);
+               
+                ctxsample.putImageData(stampData, 0, 0);
             }
 
 
@@ -216,6 +216,9 @@ function changeSettings() {
     stampwidth = parseInt(document.getElementById("instampwidth").value);
     stampheight = parseInt(document.getElementById("instampheight").value);
     stamp = new Stamp(stampwidth, stampheight);
+    changeStamp("1");
+   
+    stampmasker.loadPixels();
 
     canvassample = document.getElementById("canvassample");
     canvassample.width = stampwidth;
@@ -232,15 +235,19 @@ function changeSettings() {
     }
     ctxsample.putImageData(imgData, 0, 0);
 
-
+    var btnstart = document.getElementById("btnstart");
+    btnstart.click();
+    var btnstamp  = document.getElementById("btnstamp");
+    btnstamp.click();
 
 
 }
 function changeStamp(nr) {
     var i = parseInt(nr) - 1;
-    
-        stampmasker = imgstamp[i];
-        stampmasker.loadPixels();
+   
+    imgstamp[i].resize(stampwidth, stampheight);
+    stampmasker = imgstamp[i];
+    stampmasker.loadPixels();
     
 }
 
@@ -283,6 +290,10 @@ function changeInspiration(nr) {
         inspiration2.image(img[8], 0, 0, 300, 240);
         inspiration.image(img[8], 0, 0, 1500, 1200);
     }
+    else if (nr === "10") {
+        inspiration2.image(img[9], 0, 0, 300, 240);
+        inspiration.image(img[9], 0, 0, 1500, 1200);
+    }
     inspiration2.loadPixels();
     inspiration.loadPixels();
 
@@ -297,4 +308,8 @@ function changeInspiration(nr) {
     ctx.putImageData(imgData, 0, 0);
 
 
+}
+function saveJIPPattern(){
+    var timestamp = Math.floor(Date.now() / 1000);
+    saveCanvas(canvas, "JIPpattern" + timestamp.toString(), ".jpg");
 }

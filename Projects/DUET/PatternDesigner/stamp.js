@@ -69,7 +69,7 @@ Stamp.prototype.loadInk = function(inspiration, px, py, ahue, asat, alight, rang
             if ((  param[0] * 360) > (ahue - range) && (param[0] * 360) < (ahue + range)
                // && (param[1] * 100) > (asat - range) && (param[1] * 100) < (asat + range)
                // && (param[2] * 100) > (alight - range) && (param[1] * 100) < (alight + range)
-               && (stampmasker.pixels[j+3] != 0)
+              
             ) {
                 this.image.pixels[j] = inspiration.pixels[i];
                 this.image.pixels[j + 1] = inspiration.pixels[i + 1];
@@ -78,9 +78,13 @@ Stamp.prototype.loadInk = function(inspiration, px, py, ahue, asat, alight, rang
                 
 
             }
-            else{
-                this.image.pixels[j + 3] = stampmasker.pixels[j+3] ;
-            }
+            // else{
+            //    // this.image.pixels[j] = 255;
+            //     this.image.pixels[j + 1] = 255;
+            //     this.image.pixels[j + 2] = 255;
+            //     this.image.pixels[j + 3] = 255 ;
+            // }
+           
                             
             j += 4;
         }
