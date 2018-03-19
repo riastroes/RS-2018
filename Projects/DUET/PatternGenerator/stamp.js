@@ -3,7 +3,7 @@ function Stamp(stampwidth, stampheight) {
     this.height = stampheight;
     this.isloaded = false;
     this.image;
-   // this.mask;
+    // this.mask;
 
     this.pixels = this.init();
 
@@ -39,7 +39,7 @@ Stamp.prototype.shrink = function(force) {
     this.init();
 }
 
-Stamp.prototype.loadInk = function(inspiration, px, py, ahue,asat, alight,  range) {
+Stamp.prototype.loadInk = function(inspiration, px, py, ahue, asat, alight, range) {
     // load this.pixels with the hue at position x,y on a given image.
     // if (px < this.width) { px = this.width }
     // if (px > acanvas.width - this.width) { px = img.width - this.width }
@@ -66,14 +66,21 @@ Stamp.prototype.loadInk = function(inspiration, px, py, ahue,asat, alight,  rang
             //j = ((a - y) * this.image.width * 4) + ((b - x) * 4);
 
             param = rgbToHsl(inspiration.pixels[i], inspiration.pixels[i + 1], inspiration.pixels[i + 2]);
+<<<<<<< HEAD:Projects/DUET/PatternGenerator/stamp.js
             if ((  param[0] * 360) > (ahue - range) && (param[0] * 360) < (ahue + range)
                // && (param[1] * 100) > (asat - range) && (param[1] * 100) < (asat + range)
                // && (param[2] * 100) > (alight - range) && (param[1] * 100) < (alight + range)
                && (stampmasker.pixels[j+3] != 0)
+=======
+            if ((param[0] * 360) > (ahue - range) && (param[0] * 360) < (ahue + range)
+                //&& (param[1] * 100) > (asat - range) && (param[1] * 100) < (asat + range)
+                //&& (param[2] * 100) > (alight - range) && (param[1] * 100) < (alight + range)
+>>>>>>> origin/master:Projects/DUET/PatternGenerator/stamp.js
             ) {
                 this.image.pixels[j] = inspiration.pixels[i];
                 this.image.pixels[j + 1] = inspiration.pixels[i + 1];
                 this.image.pixels[j + 2] = inspiration.pixels[i + 2];
+<<<<<<< HEAD:Projects/DUET/PatternGenerator/stamp.js
                 this.image.pixels[j + 3] = stampmasker.pixels[j+3] ;
                 
 
@@ -82,11 +89,18 @@ Stamp.prototype.loadInk = function(inspiration, px, py, ahue,asat, alight,  rang
                 this.image.pixels[j + 3] = stampmasker.pixels[j+3] ;
             }
                             
+=======
+                this.image.pixels[j + 3] = 255;
+
+
+            }
+
+>>>>>>> origin/master:Projects/DUET/PatternGenerator/stamp.js
             j += 4;
         }
     }
     this.image.updatePixels();
-   
+
 }
 Stamp.prototype.draw = function(x, y) {
     image(this.image, x, y);
