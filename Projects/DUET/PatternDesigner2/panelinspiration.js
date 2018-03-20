@@ -1,13 +1,16 @@
-function PanelInspiration(){
-    
-   
-    
-    this.s1 = function( p ) {
-        var img;
-        var inspiration;
-        var selectedindex;
+function PanelInspiration() {
+    var img;
+    var inspiration;
+    var imginspirationindex;
+    var canvasinspiration;
+    var x, y;
 
-        p.preload = function(){
+
+
+
+    this.s1 = function(p) {
+
+        p.preload = function() {
             img = [];
             img[0] = loadImage("images/img1.jpg");
             img[1] = loadImage("images/img2.jpg");
@@ -19,31 +22,34 @@ function PanelInspiration(){
             img[7] = loadImage("images/img8.jpg");
             img[8] = loadImage("images/img9.jpg");
             img[9] = loadImage("images/img10.jpg");
-            
-
-    
         }
 
         p.setup = function() {
-            var canvasinspiration = p.createCanvas(400,300);
+            canvasinspiration = p.createCanvas(400, 300);
             canvasinspiration.parent("panelinspiration");
-            canvasinspiration.mousePressed = clickInspiration;
-            selectedindex = 0;
+            imginspirationindex = 0;
+            x = 0;
+            y = 0;
 
-            
-            
         }
         p.draw = function() {
-            p.image(img[selectedindex], 0,0);
+            p.image(img[imginspirationindex], 0, 0);
+            p.fill(255, 0, 0);
+            p.ellipse(x, y, 10, 10);
         }
-        function clickInspiration(){
-          alert("hoi");
+        p.mousePressed = function() {
+            x = floor(p.mouseX);
+            y = floor(p.mouseY);
+            bigx = x * factor;
+            bigy = y * factor;
         }
-        
-    };
-    var my2 = new p5(this.s1, 'c1');
 
-    this.select  = function(i){
-        selectedindex = parseInt(i);
+    };
+    this.activepanel = new p5(this.s1, 'c1');
+
+    this.select = function(i) {
+        imginspirationindex = parseInt(i) - 1;
     }
+
+
 }

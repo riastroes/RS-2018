@@ -1,25 +1,22 @@
-function PanelColorstrip(){
-    
-    this.s2 = function( p ) {
-        
-        var colorstrip;
+function PanelColorstrip() {
+    this.colorstrip;
 
+    this.s2 = function(p) {
         p.setup = function() {
-            var canvascolorstrip = p.createCanvas(p.windowWidth,50);
+            var canvascolorstrip = p.createCanvas(p.windowWidth, 50);
             canvascolorstrip.parent("panelcolorstrip");
 
-            colorstrip = new PColorStrip(p, p.createVector(0, 0), canvascolorstrip.width, 50);
-            colorstrip.add(p.color(0));
-            colorstrip.add(p.color(255));
-           
-           
-            
+            this.colorstrip = new PColorStrip(p, p.createVector(0, 0), canvascolorstrip.width, 50);
+            this.colorstrip.add(p.color(0));
+            this.colorstrip.add(p.color(255));
+            this.colorstrip.show();
+
         }
         p.draw = function() {
-            colorstrip.show();
+            //this.colorstrip.show();
         }
-        
-        
+
+
     };
-    var my1 = new p5(this.s2, 'c1');
+    this.activepanel = new p5(this.s2, 'c2');
 }
