@@ -53,17 +53,20 @@
             images = new Array();
             imgsrc = new Array();
             imgstampsrc = new Array();
+            count = 0;
 
 
             for (var i = 0; i < 10; i++) {
                 images[i] = new Image();
                 imgsrc[i] = "images/img" + i.toString() + ".jpg";
+                imgsrc[i].onload = function () {count++}
                 images[i].src = imgsrc[i];
 
             }
-            for (var i = 0; i < 5; i++) {
+            for (var i = 0; i < 6; i++) {
                 images[10 + i] = new Image();
                 imgstampsrc[i] = "images/stamp" + i.toString() + ".png";
+                images[10 + i].onload = function () {count++}
                 images[10 + i].src = imgstampsrc[i];
 
             }
@@ -73,7 +76,7 @@
 
 </head>
 
-<body onload="javascript:preloader(); start()">
+<body onload="javascript:preloader(); start();">
 
     <!-- Sidebar/menu -->
     <nav class="w3-sidebar w3-black w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:300px;font-weight:bold;" id="mySidebar"><br>
@@ -115,8 +118,7 @@
 
             <div class="w3-container"></div>
             <div id="panelchooseinspiration" class="w3-half">
-                <input id="btnstart" type="button" value="0" onclick="inspiration.changeInspiration(this.value)" />
-                <input type="button" value="1" onclick="inspiration.changeInspiration(this.value)" />
+                <input id="btnstart" type="button" value="1" onclick="inspiration.changeInspiration(this.value)" />
                 <input type="button" value="2" onclick="inspiration.changeInspiration(this.value)" />
                 <input type="button" value="3" onclick="inspiration.changeInspiration(this.value)" />
                 <input type="button" value="4" onclick="inspiration.changeInspiration(this.value)" />
@@ -125,7 +127,8 @@
                 <input type="button" value="7" onclick="inspiration.changeInspiration(this.value)" />
                 <input type="button" value="8" onclick="inspiration.changeInspiration(this.value)" />
                 <input type="button" value="9" onclick="inspiration.changeInspiration(this.value)" />
-                <input type="button" value="10" onclick="inspiration.changeInspiration(this.value)" /><br/>
+                <input type="button" value="10" onclick="inspiration.changeInspiration(this.value)" />
+               <br/>
                 <div id="panelinspiration">
                     <canvas id="canvasinspiration" onclick="inspiration.loadStamp();" />
                 </div>
@@ -137,7 +140,8 @@
                 <input type="button" value="2" onclick="stamp.changeStamp(this.value)" />
                 <input type="button" value="3" onclick="stamp.changeStamp(this.value)" />
                 <input type="button" value="4" onclick="stamp.changeStamp(this.value)" />
-                <input type="button" value="5" onclick="stamp.changeStamp(this.value)" /><br/>
+                <input type="button" value="5" onclick="stamp.changeStamp(this.value)" />
+                <input type="button" value="6" onclick="stamp.changeStamp(this.value)" /><br/>
                 <div id="panelstamp">
                     <canvas id="canvasstamp" />
                 </div>

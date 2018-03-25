@@ -3,6 +3,7 @@
 ;
 
 
+//preloading
 
 // inspiration
 var inspiration;
@@ -26,13 +27,12 @@ var design;
 
 
 function start() {
-
+    
     inspiration = new Inspiration();
-    inspiration.init(images[0], 400, 300);
     palette = new Palette();
     stamp = new Stamp();
     design = new Design();
-
+    inspiration.changeInspiration(1);
 
 }
 
