@@ -13,7 +13,8 @@ function Inspiration() {
     this.pixel;
 
     this.density = 1;
-    this.color;
+    this.rgb;
+    this.hue;
     this.ctx.drawImage(this.image, 0, 0);
 
 
@@ -39,16 +40,17 @@ Inspiration.prototype.loadStamp = function() {
     if (y < 50) {
         sy = y
     }
-
-
-
     this.imgData = this.ctx.getImageData(x, y, 1, 1);
     this.pixel = this.imgData.data;
-    this.color = new RGB(this.pixel[0], this.pixel[1], this.pixel[2]);
-    this.hue = this.color.hue();
-    palette.add(this.color.color);
+    this.rgb = new RGB(this.pixel[0], this.pixel[1], this.pixel[2]);
+    this.hue = this.rgb.hue();
+    
+    palette.add(this.rgb.color);
+    
+    var count = 0;
 
     this.imgData = this.ctx.getImageData(x - sx, y - sy, 100, 100);
+<<<<<<< HEAD
     var pixel = this.imgData.data;
     for (var i = 0; i < pixel.length; i += 4) {
         var hue = new RGB(pixel[i], pixel[i + 1], pixel[i + 2]).hue();
@@ -61,6 +63,13 @@ Inspiration.prototype.loadStamp = function() {
     this.imgData.data = pixel;
 
     stamp.createStamp(this.imgData)
+=======
+    
+    stamp.loadStamp(this.imgData, this.hue);
+    
+    
+    //stamp.createStamp(this.imgData)
+>>>>>>> origin/master
 
 
 }
