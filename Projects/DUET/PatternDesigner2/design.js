@@ -23,7 +23,6 @@ Design.prototype.stamp = function() {
         for (var j = -1; j <= this.rows; j++) {
             var ax = (j * w) + px;
             var ay = (i * h) + py;
-            this.ctx.createImageData(stamp.width, stamp.height);
             this.ctx.putImageData(stamp.stampData, ax, ay);
 
         }
