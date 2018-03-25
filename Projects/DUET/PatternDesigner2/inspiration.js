@@ -52,7 +52,7 @@ Inspiration.prototype.loadStamp = function() {
     var pixel = this.imgData.data;
     for (var i = 0; i < pixel.length; i += 4) {
         var hue = new RGB(pixel[i], pixel[i + 1], pixel[i + 2]).hue();
-        if (this.hue >= hue - 30 && this.hue <= hue + 30) {
+        if (this.hue - 30 >= hue && this.hue + 30 <= hue) {
             pixel[i + 3] = 255;
         } else {
             pixel[i + 3] = 0;
