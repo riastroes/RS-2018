@@ -6,7 +6,8 @@ function Stamp() {
     this.image = document.createElement("IMG");
     this.image.src = imgstampsrc[0];
     this.image.style.display = "none";
-    this.resize(100, 100);
+    this.width = 100;
+    this.height = 100;
 
     this.pixels;
 
@@ -14,7 +15,8 @@ function Stamp() {
     this.density = 1;
     this.color;
     this.ctx.drawImage(this.image, 0, 0);
-    this.stampData = this.ctx.getImageData(0, 0, this.width, this.height);
+    this.filter = this.ctx.getImageData(0, 0, this.width, this.height); //filter
+    this.stampData = this.ctx.createImageData(this.width, this.height); //empty stamp
 
 
 }
@@ -24,37 +26,49 @@ Stamp.prototype.resize = function(w, h) {
 }
 
 Stamp.prototype.changeStamp = function(nr) {
-    var i = parseInt(nr) - 1;
-    this.image.src = imgstampsrc[i];
-    this.ctx.fillStyle = "transparent";
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-    this.ctx.drawImage(this.image, 0, 0, this.width, this.height);
-    this.stampData = this.ctx.getImageData(0, 0, this.width, this.height);
-}
-Stamp.prototype.createStamp = function(inspirationData) {
-    for (var i = 0; i < this.stampData.data.length; i += 4) {
-        this.stampData.data[i] = inspirationData.data[i];
-        this.stampData.data[i] = inspirationData.data[i + 2];
-        this.stampData.data[i] = inspirationData.data[i + 3];
+        var i = parseInt(nr) - 1;
+        this.image.src = imgstampsrc[i];
+        this.ctx.fillStyle = "#000000";
+        this.ctx.fillRect(0, 0, this.width, this.height);
+
+        this.ctx.drawImage(this.image, 0, 0, this.image.width, this.image.height, 0, 0, this.canvas.width, this.canvas.height);
+        this.filter = this.ctx.getImageData(0, 0, this.width, this.height); //filter
+        //this.stampData = this.ctx.createImageData(this.width, this.height); //empty stamp
     }
-    this.ctx.putImageData(this.stampData, 0, 0);
-    console.log("stamp pixels: " + this.stampData.data.length)
-}
+    // Stamp.prototype.createStamp = function(inspirationData) {
+
+//     this.stampData = this.ctx.createImageData(this.width, this.height); //empty stamp
+//     for (var i = 0; i < this.stampData.data.length; i += 4) {
+//         if (this.filter.data[i + 3] != 0) {
+//             this.stampData.data[i] = inspirationData.data[i];
+//             this.stampData.data[i + 1] = inspirationData.data[i + 1];
+//             this.stampData.data[i + 2] = inspirationData.data[i + 2];
+//             //this.stampData.data[i] = inspirationData.data[i + 3];
+//         } else {
+//             //this.stampData.data
+//         }
+
+//     }
+//     this.ctx.putImageData(this.stampData, 0, 0);
+//     console.log("stamp pixels: " + this.stampData.data.length)
+// }
 
 Stamp.prototype.loadStamp = function(inspirationData, hue) {
+    this.stampData = this.ctx.createImageData(this.width, this.height); //empty stamp
 
     for (var i = 0; i < inspirationData.data.length; i += 4) {
         var rgb = new RGB(inspirationData.data[i], inspirationData.data[i + 1], inspirationData.data[i + 2]);
         var datahue = rgb.hue();
-        if (datahue > (hue - 30) && datahue <= (hue + 30)) {
-            inspirationData.data[i + 3] = this.stampData.data[i + 3];
-        } else {
-            inspirationData.data[i] = this.stampData.data[i];
-            inspirationData.data[i + 1] = this.stampData.data[i + 1];
-            inspirationData.data[i + 2] = this.stampData.data[i + 2];
-            inspirationData.data[i + 3] = this.stampData.data[i + 3];
+        if (datahue >= (hue - 30) && datahue <= (hue + 30) &&
+            this.filter.data[i] > 200) {
+            this.stampData.data[i] = inspirationData.data[i];
+            this.stampData.data[i + 1] = inspirationData.data[i + 1];
+            this.stampData.data[i + 2] = inspirationData.data[i + 2];
+            this.stampData.data[i + 3] = this.filter.data[i + 3];
         }
     }
-    this.ctx.putImageData(inspirationData, 0, 0);
-    console.log("stamp pixels: " + inspirationData, inspirationData.data.length)
+    this.ctx.fillStyle = "#000000";
+    this.ctx.fillRect(0, 0, this.width, this.height);
+    this.ctx.putImageData(this.stampData, 0, 0);
+    console.log("stamp pixels: " + inspirationData, inspirationData.data.length);
 }

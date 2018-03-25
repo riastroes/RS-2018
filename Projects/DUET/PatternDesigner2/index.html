@@ -61,7 +61,7 @@
                 images[i].src = imgsrc[i];
 
             }
-            for (var i = 0; i < 5; i++) {
+            for (var i = 0; i < 6; i++) {
                 images[10 + i] = new Image();
                 imgstampsrc[i] = "images/stamp" + i.toString() + ".png";
                 images[10 + i].src = imgstampsrc[i];
@@ -115,8 +115,7 @@
 
             <div class="w3-container"></div>
             <div id="panelchooseinspiration" class="w3-half">
-                <input id="btnstart" type="button" value="0" onclick="inspiration.changeInspiration(this.value)" />
-                <input type="button" value="1" onclick="inspiration.changeInspiration(this.value)" />
+                <input id="btnstart" type="button" value="1" onclick="inspiration.changeInspiration(this.value)" />
                 <input type="button" value="2" onclick="inspiration.changeInspiration(this.value)" />
                 <input type="button" value="3" onclick="inspiration.changeInspiration(this.value)" />
                 <input type="button" value="4" onclick="inspiration.changeInspiration(this.value)" />
@@ -125,7 +124,7 @@
                 <input type="button" value="7" onclick="inspiration.changeInspiration(this.value)" />
                 <input type="button" value="8" onclick="inspiration.changeInspiration(this.value)" />
                 <input type="button" value="9" onclick="inspiration.changeInspiration(this.value)" />
-                <input type="button" value="10" onclick="inspiration.changeInspiration(this.value)" /><br/>
+                <input type="button" value="10" onclick="inspiration.changeInspiration(this.value)" />
                 <div id="panelinspiration">
                     <canvas id="canvasinspiration" onclick="inspiration.loadStamp();" />
                 </div>
@@ -137,7 +136,8 @@
                 <input type="button" value="2" onclick="stamp.changeStamp(this.value)" />
                 <input type="button" value="3" onclick="stamp.changeStamp(this.value)" />
                 <input type="button" value="4" onclick="stamp.changeStamp(this.value)" />
-                <input type="button" value="5" onclick="stamp.changeStamp(this.value)" /><br/>
+                <input type="button" value="5" onclick="stamp.changeStamp(this.value)" />
+                <input type="button" value="6" onclick="stamp.changeStamp(this.value)" /><br/>
                 <div id="panelstamp">
                     <canvas id="canvasstamp" />
                 </div>
