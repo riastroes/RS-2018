@@ -38,9 +38,9 @@ Inspiration.prototype.loadStamp = function() {
     
     this.rgb = new RGB(this.pixelData.data[0], this.pixelData.data[1], this.pixelData.data[2]);
     this.hue = this.rgb.hue();
-    
+
     palette.add(this.rgb.color);
-    
+
     var count = 0;
 
     this.imgData = this.ctx.getImageData(x - sx, y - sy, 100, 100);
