@@ -24,16 +24,18 @@ Inspiration.prototype.changeInspiration = function(nr) {
     console.log(this.image.width, this.image.height);
 }
 Inspiration.prototype.loadStamp = function() {
-    var x = event.offsetX;
-    var y = event.offsetY;
-    var sx = 50;
-    var sy = 50;
-    if (x < 50) {
-        sx = x;
-    }
-    if (y < 50) {
-        sy = y
-    }
+
+    var x = event.offsetX ;
+    var y = event.offsetY ;
+    
+    var sx = (stamp.width/2);
+    var sy = (stamp.height/2);
+    // if (x < 50) {
+    //     sx = x;
+    // }
+    // if (y < 50) {
+    //     sy = y
+    // }
     this.pixelData = this.ctx.getImageData(x, y, 1, 1);
     
     this.rgb = new RGB(this.pixelData.data[0], this.pixelData.data[1], this.pixelData.data[2]);
@@ -43,8 +45,8 @@ Inspiration.prototype.loadStamp = function() {
 
     var count = 0;
 
-    this.imgData = this.ctx.getImageData(x - sx, y - sy, 100, 100);
-    var pixel = this.imgData.data;
+    this.inspirationData = this.ctx.getImageData(x - sx, y - sy, stamp.width, stamp.height);
+    var pixel = this.inspirationData;
     for (var i = 0; i < pixel.length; i += 4) {
         var hue = new RGB(pixel[i], pixel[i + 1], pixel[i + 2]).hue();
         if (this.hue - 30 >= hue && this.hue + 30 <= hue) {
@@ -53,9 +55,8 @@ Inspiration.prototype.loadStamp = function() {
             pixel[i + 3] = 0;
         }
     }
-    this.imgData.data = pixel;
+    this.inspirationData.data = pixel;
+    stamp.loadStamp(this.inspirationData, this.hue);
 
-    stamp.createStamp(this.imgData)
-
-
+    
 }

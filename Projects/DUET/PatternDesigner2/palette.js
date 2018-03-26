@@ -24,9 +24,10 @@ Palette.prototype.add = function(acolor) {
     this.show();
 }
 Palette.prototype.background = function() {
-    var x = event.x;
+    var x = event.offsetX;
     var w = this.canvas.width / this.colors.length;
     var i = Math.floor(x / w);
+    console.log(x,w,i);
     if (i >= 0 && i < this.colors.length) {
         var bgcolor = this.colors[i];
         this.colors = new Array();

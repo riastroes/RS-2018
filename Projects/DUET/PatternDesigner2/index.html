@@ -47,6 +47,9 @@
         .w3-half img:hover {
             opacity: 1
         }
+        #panelstamp{
+            width: 400px;
+        }
     </style>
     <script language="JavaScript">
         function preloader() {
@@ -87,7 +90,10 @@
         <div class="w3-bar-block">
             <a href="#" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Home</a>
             <a href="#designer" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Designer</a>
-            <a href="#showcase" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Showcase</a>
+            <a href="#palette" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Your Palette</a>
+            <a href="#design" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">New Design</a>
+            <a href="#design" onclick="w3_close(); design.save();" class="w3-bar-item w3-button w3-hover-white">     save your design</a>
+            <a href="#designs" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Your Designs</a>
             <a href="#services" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Service</a>
             <a href="#designers" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Designers</a>
             <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Contact</a>
@@ -104,11 +110,7 @@
     <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
     <!-- !PAGE CONTENT! -->
-    <div class="w3-main" style="margin-left:340px;margin-right:40px">
-
-
-
-
+    <div id="main" class="w3-main" style="margin-left:340px;margin-right:40px">
 
         <!-- Designer -->
         <div class="w3-container" id="designer" style="margin-top:75px">
@@ -118,6 +120,9 @@
 
             <div class="w3-container"></div>
             <div id="panelchooseinspiration" class="w3-half">
+                <h3>Inspiration</h3>
+                <p>Buttons : select a button to change your inspiration source.<br/>
+                    click   : click on the canvas to fill your stamp.<br/></p>
                 <input id="btnstart" type="button" value="1" onclick="inspiration.changeInspiration(this.value)" />
                 <input type="button" value="2" onclick="inspiration.changeInspiration(this.value)" />
                 <input type="button" value="3" onclick="inspiration.changeInspiration(this.value)" />
@@ -129,43 +134,49 @@
                 <input type="button" value="9" onclick="inspiration.changeInspiration(this.value)" />
                 <input type="button" value="10" onclick="inspiration.changeInspiration(this.value)" />
                <br/>
+               
                 <div id="panelinspiration">
                     <canvas id="canvasinspiration" onclick="inspiration.loadStamp();" />
                 </div>
 
             </div>
 
-            <div id="panelstamp" class="w3-half">
+            <div id="panelstamp" class="w3-half w3-left">
+                <h3>Stamp</h3>
+                <p>Buttons : select a button to change the shape of your stamp.<br/>
+                    slider  : push the slider to the right for a bigger stamp.<br/></p>
                 <input id="btnstamp" type="button" value="1" onclick="stamp.changeStamp(this.value)" />
                 <input type="button" value="2" onclick="stamp.changeStamp(this.value)" />
                 <input type="button" value="3" onclick="stamp.changeStamp(this.value)" />
                 <input type="button" value="4" onclick="stamp.changeStamp(this.value)" />
                 <input type="button" value="5" onclick="stamp.changeStamp(this.value)" />
                 <input type="button" value="6" onclick="stamp.changeStamp(this.value)" /><br/>
-                <div id="panelstamp">
-                    <canvas id="canvasstamp" />
-                </div>
-
+                
+                <canvas id="canvasstamp" ></canvas><br/>
+                <input type="range" min="100" max="300" class="w3-slider" value="100" onclick="stamp.resize(this.value)" /> 
+                
+                
             </div>
 
 
         </div>
-        <div id="panelpalette">
+        <div id="palette">
             <h3>Your palette</h3>
             <p>click : select the backgroundcolor of your design.</p>
             <canvas id="canvaspalette" onclick="palette.background();"></canvas>
         </div>
-        <div>
+        <div id="design">
             <h1 class="w3-xxxlarge w3-text-red"><b>Your Design</b></h1>
             <div id="paneldesign">
                 <canvas id="canvasdesign" onclick="design.stamp();"></canvas>
             </div>
         </div>
         <!-- Header -->
-        <div class="w3-container" style="margin-top:80px" id="showcase">
-            <h1 class="w3-jumbo"><b>Pattern Designer</b></h1>
-            <h1 class="w3-xxxlarge w3-text-red"><b>Showcase.</b></h1>
+        <div class="w3-container" style="margin-top:80px" id="designs">
+            
+            <h1 class="w3-xxxlarge w3-text-red"><b>Your Designs.</b></h1>
             <hr style="width:50px;border:5px solid red" class="w3-round">
+            <div id ="divdesigns"></div>
         </div>
 
         <!-- Photo grid (modal) 
