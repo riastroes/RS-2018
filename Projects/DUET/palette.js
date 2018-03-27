@@ -37,3 +37,12 @@ Palette.prototype.background = function() {
         this.show();
     }
 }
+Palette.prototype.save = function(){
+    
+    var pal = document.createElement('a');
+    
+    pal.href = this.canvas.toDataURL();
+    pal.download = "JIP-palette.jpg";
+    pal.click();
+    
+}

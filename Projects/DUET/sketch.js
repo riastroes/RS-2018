@@ -22,6 +22,7 @@ function start() {
     design = new Design();
     inspiration.changeInspiration(1);
     stamp.changeStamp(1);
+    stamp.init(200,200);
 
 
 }
