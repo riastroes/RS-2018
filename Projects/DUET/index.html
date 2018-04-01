@@ -8,12 +8,8 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
     <script src="/RS-2018/library/google.js" type="text/javascript"></script>
-
-    <script src="/RS-2018/library/canvas2pdf.js" type="text/javascript"></script>
-
     <script src="/RS-2018/mylibrary/functions.js" type="text/javascript"></script>
     <script src="/RS-2018/mylibrary/colorconversion.js" type="text/javascript"></script>
-
     <script src="sketch.js" type="text/javascript"></script>
 
     <script src="inspiration.js" type="text/javascript"></script>
@@ -36,6 +32,15 @@
             font-size: 16px;
         }
         
+        .ocean {
+            background-color: teal;
+            color: white;
+        }
+        
+        .text-ocean {
+            color: teal;
+        }
+        
         .w3-half img {
             margin-bottom: -6px;
             margin-top: 16px;
@@ -44,20 +49,21 @@
         }
         
         .w3-half img:hover {
-            opacity: 1
+            opacity: 1;
         }
         
         #panelstamp {
             width: 400px;
         }
         
-        .subitem {
-            margin-left: 30px;
-            font-size: 16px;
-        }
-        
         .rs-button {
             background-color: #eaeaea;
+            margin-right: 4px;
+        }
+        
+        .selected {
+            background: #5d5d5d;
+            color: white;
         }
         
         .float {
@@ -67,68 +73,44 @@
         .rs-frame {
             padding: 10px;
             background-color: #eaeaea;
-            width: 1020px;
+        }
+        
+        .view {
+            position: absolute;
+            z-index: 1;
         }
     </style>
     <script language="JavaScript">
-        function preloader() {
-            images = new Array();
-            imgsrc = new Array();
-            imgstampsrc = new Array();
-            count = 0;
-
-
-            for (var i = 0; i < 15; i++) {
-                images[i] = new Image();
-                imgsrc[i] = "images/img" + i.toString() + ".jpg";
-                imgsrc[i].onload = function() {
-                    count++
-                }
-                images[i].src = imgsrc[i];
-
-            }
-            for (var i = 0; i < 7; i++) {
-                images[10 + i] = new Image();
-                imgstampsrc[i] = "images/stamp" + i.toString() + ".png";
-                images[10 + i].onload = function() {
-                    count++
-                }
-                images[10 + i].src = imgstampsrc[i];
-
-            }
-
-        }
     </script>
 
 </head>
 
-<body onload="javascript:preloader(); start();">
+<body onload="start();">
 
     <!-- Sidebar/menu -->
-    <nav class="w3-sidebar w3-black w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:300px;font-weight:bold;" id="mySidebar"><br>
+    <nav class="w3-sidebar ocean w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:300px;font-weight:bold;" id="mySidebar"><br>
         <a href="javascript:void(0)" onclick="w3_close()" class="w3-button w3-hide-large w3-display-topleft" style="width:100%;font-size:22px">Close Menu</a>
-        <div class="w3-container">
-            <h1 class="w3-xxxlarge w3-text-red"><b>DUET</b></h1>
-        </div>
-        <div class="w3-bar-block">
-            <a href="#" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Home</a>
-            <a href="#designer" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Designer</a>
-            <a href="#palette" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Your Palette</a>
-            <a href="#palette" onclick="w3_close(); palette.save();" class="w3-bar-item w3-button w3-hover-white subitem">save your palette</a>
-            <a href="#design" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">New Design</a>
-            <a href="#designs" onclick="w3_close(); design.save();" class="w3-bar-item w3-button w3-hover-white subitem">save your design</a>
-            <a href="#designs" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Your Designs</a>
-
-            <a href="#designers" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Designers</a>
-            <a href="#services" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Services</a>
-            <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Contact</a>
+        <div id="menu">
+            <div class="w3-container">
+                <h1 class="w3-xxxlarge w3-text-red"><b>DUET</b></h1>
+            </div>
+            <div class="w3-bar-block">
+                <a href="#" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Home</a>
+                <a href="#designer" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Designer</a>
+                <a href="#palette" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Your Palette</a>
+                <a href="#design" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">New Design</a>
+                <a href="#designsteps" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Your Designsteps</a>
+                <a href="#designers" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Designers</a>
+                <a href="#services" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Services</a>
+                <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Contact</a>
+            </div>
         </div>
     </nav>
 
     <!-- Top menu on small screens -->
     <header class="w3-container w3-top w3-hide-large w3-red w3-xlarge w3-padding">
         <a href="javascript:void(0)" class="w3-button w3-red w3-margin-right" onclick="w3_open()">☰</a>
-        <span>Pattern Designer</span>
+        <span>DUET, Pattern Designer</span>
     </header>
 
     <!-- Overlay effect when opening sidebar on small screens -->
@@ -138,91 +120,77 @@
     <div id="main" class="w3-main" style="margin-left:340px;margin-right:40px">
 
         <!-- Designer -->
-        <div class="w3-container" id="designer" style="margin-top:75px">
-            <h1 class="w3-xxxlarge w3-text-red"><b>Pattern Designer</b></h1>
+        <div class="w3-container" id="designer">
+            <h1 class="w3-xxxlarge text-ocean" style="margin-top:45px"><b>Pattern Designer</b></h1>
             <hr style="width:50px;border:5px solid red" class="w3-round">
+            <div class="w3-row">
+                <div id="panelchooseinspiration" class="w3-twothird">
+                    <h3 class="text-ocean">Inspiration Theme: Screenprints on fabric, </h3>
+                    <h5> inspired by the coral and underwater world of the Caribbean. </h5>
+                    <p class="w3-text-red"><b>Buttons 1 t/m 10</b>: click a button to change your inspiration source.<br/> <b>click</b> : click on the canvas to add colors to your background-palette and to fill your stamp.<br/></p>
+                    <input type="button" value="1" id="btninspire1" class="rs-button selected" onclick="inspiration.changeInspiration(this.value)" />
+                    <input type="button" value="2" id="btninspire2" class="rs-button" onclick="inspiration.changeInspiration(this.value)" />
+                    <input type="button" value="3" id="btninspire3" class="rs-button" onclick="inspiration.changeInspiration(this.value)" />
+                    <input type="button" value="4" id="btninspire4" class="rs-button" onclick="inspiration.changeInspiration(this.value)" />
+                    <input type="button" value="5" id="btninspire5" class="rs-button" onclick="inspiration.changeInspiration(this.value)" />
+                    <input type="button" value="6" id="btninspire6" class="rs-button" onclick="inspiration.changeInspiration(this.value)" />
+                    <input type="button" value="7" id="btninspire7" class="rs-button" onclick="inspiration.changeInspiration(this.value)" />
+                    <input type="button" value="8" id="btninspire8" class="rs-button" onclick="inspiration.changeInspiration(this.value)" />
+                    <input type="button" value="9" id="btninspire9" class="rs-button" onclick="inspiration.changeInspiration(this.value)" />
+                    <input type="button" value="10" id="btninspire10" class="rs-button" onclick="inspiration.changeInspiration(this.value)" />
+                    <br/> <br/>
 
+                    <div id="panelinspiration" oncontextmenu="return false;">
+                        <canvas id="canvasinspiration" onclick="inspiration.loadStamp();" />
+                    </div>
 
-            <div class="w3-container"></div>
-            <div id="panelstamp" class="w3-half w3-left">
-                <h3>Stamp</h3>
-                <p>Buttons : select a button to change the shape of your stamp.<br/> slider : push the slider to the right for a bigger stamp.<br/></p>
-                <input id="btnstamp" type="button" value="1" onclick="stamp.changeStamp(this.value)" />
-                <input type="button" value="2" onclick="stamp.changeStamp(this.value)" />
-                <input type="button" value="3" onclick="stamp.changeStamp(this.value)" />
-                <input type="button" value="4" onclick="stamp.changeStamp(this.value)" />
-                <input type="button" value="5" onclick="stamp.changeStamp(this.value)" />
-                <input type="button" value="6" onclick="stamp.changeStamp(this.value)" />
-                <input type="button" value="7" onclick="stamp.changeStamp(this.value)" />
-                <br/>
-
-                <canvas id="canvasstamp"></canvas><br/>
-                <input type="range" min="50" max="300" class="w3-slider" value="200" step="50" onclick="stamp.resize(this.value)" />
-                <label id="lblstampsize"> 200</label>
-
-
-            </div>
-            <div id="panelchooseinspiration" class="w3-half">
-                <h3>Inspiration</h3>
-                <p>Buttons : select a button to change your inspiration source.<br/> click : click on the canvas to fill your stamp.<br/></p>
-                <input id="btnstart" type="button" value="1" onclick="inspiration.changeInspiration(this.value)" />
-                <input type="button" value="2" onclick="inspiration.changeInspiration(this.value)" />
-                <input type="button" value="3" onclick="inspiration.changeInspiration(this.value)" />
-                <input type="button" value="4" onclick="inspiration.changeInspiration(this.value)" />
-                <input type="button" value="5" onclick="inspiration.changeInspiration(this.value)" />
-                <input type="button" value="6" onclick="inspiration.changeInspiration(this.value)" />
-                <input type="button" value="7" onclick="inspiration.changeInspiration(this.value)" />
-                <input type="button" value="8" onclick="inspiration.changeInspiration(this.value)" />
-                <input type="button" value="9" onclick="inspiration.changeInspiration(this.value)" />
-                <input type="button" value="10" onclick="inspiration.changeInspiration(this.value)" />
-                <input type="button" value="11" onclick="inspiration.changeInspiration(this.value)" />
-                <input type="button" value="12" onclick="inspiration.changeInspiration(this.value)" />
-                <input type="button" value="13" onclick="inspiration.changeInspiration(this.value)" />
-                <input type="button" value="14" onclick="inspiration.changeInspiration(this.value)" />
-                <br/>
-
-                <div id="panelinspiration">
-                    <canvas id="canvasinspiration" onclick="inspiration.loadStamp();" />
                 </div>
+                <div id="panelstamp" class="w3-third w3-left">
+                    <h3 class="text-ocean">Stamp</h3>
+                    <p class="w3-text-red"><b>Buttons 1 t/m 7</b>: click on a button to change the shape of your stamp.<br/> <b>slider</b> : push the slider to the right for a bigger stamp.<br/></p>
+                    <input type="button" id="btnstamp1" value="1" class="rs-button selected" onclick="stamp.changeStamp(this.value)" />
+                    <input type="button" id="btnstamp2" value="2" class="rs-button" onclick="stamp.changeStamp(this.value)" />
+                    <input type="button" id="btnstamp3" value="3" class="rs-button" onclick="stamp.changeStamp(this.value)" />
+                    <input type="button" id="btnstamp4" value="4" class="rs-button" onclick="stamp.changeStamp(this.value)" />
+                    <input type="button" id="btnstamp5" value="5" class="rs-button" onclick="stamp.changeStamp(this.value)" />
+                    <input type="button" id="btnstamp6" value="6" class="rs-button" onclick="stamp.changeStamp(this.value)" />
+                    <input type="button" id="btnstamp7" value="7" class="rs-button" onclick="stamp.changeStamp(this.value)" />
+                    <br/><br/>
+                    <label id="lblstampsize">size: 200px </label><input id="instampsize" type="range" min="50" max="500" class="w3-slider" value="200" step="50" onclick="stamp.resize(this.value)" style="width:250px" />
+                    <br/>
+                    <canvas id="canvasstamp"></canvas>
+                </div>
+            </div>
+            <div id="palette">
+                <h3 class="text-ocean">Your palette</h3>
+                <p class="w3-text-red"><b>click</b> : click on a color to select the backgroundcolor of your design.</p>
+                <canvas id="canvaspalette" onclick="palette.background();"></canvas>
+            </div>
+            <div id="design">
+                <h1 class="w3-xxxlarge text-ocean"><b>New Design</b></h1>
+                <p>slider : push the slider to the left to increase your patternsize.<br/></p>
+                <input id="inpatternsize" type="range" min="1" max="10" class="w3-slider" value="2" step="1" onclick="design.resizePattern(this.value)" />
+                <label id="lblpatternsize"> 2</label>
+
+                <div id="paneldesign" class="rs-frame">
+                    <canvas id="canvasdesign" onclick="design.stamp();"></canvas>
+                </div>
+            </div>
+            <div id="download">
+                <h5 class="w3-xxxlarge text-ocean"><b>Download</b></h5>
+                <p>Click on this <a id="lnkdownload" href="">link</a> to download your design</p>
 
             </div>
-        </div>
-        <div id="palette">
-            <h3>Your palette</h3>
-            <p>click : select the backgroundcolor of your design.</p>
-            <canvas id="canvaspalette" onclick="palette.background();"></canvas>
-        </div>
-        <div id="design">
-            <h1 class="w3-xxxlarge w3-text-red"><b>New Design</b></h1>
-            <p>slider : push the slider to the left to increase your patternsize.<br/></p>
-            <input id="inpatternsize" type="range" min="0" max="8" class="w3-slider" value="2" step="2" onclick="design.resizePattern(this.value)" />
-            <label id="lblpatternsize"> 2</label>
+            <div id="designsteps">
+                <h1 class="w3-xxxlarge text-ocean"><b>Your Designsteps</b></h1>
+                <p class="w3-text-red"><b>click</b> : click on an image to go back to this designstep.</p>
 
-            <div id="paneldesign" class="rs-frame">
-                <canvas id="canvasdesign" onclick="design.stamp();"></canvas>
-            </div>
-        </div>
-        <!-- Header -->
-        <div class="w3-container" style="margin-top:80px" id="designs">
-
-            <h1 class="w3-xxxlarge w3-text-red"><b>Your Designs.</b></h1>
-            <hr style="width:50px;border:5px solid red" class="w3-round">
-            <div id="divdesigns" class="w3-container"></div>
-        </div>
-
-
-
-        <!-- Modal for full size images on click-->
-        <div id="modal01" class="w3-modal w3-black" style="padding-top:0" onclick="this.style.display='none'">
-            <span class="w3-button w3-black w3-xxlarge w3-display-topright">×</span>
-            <div class="w3-modal-content w3-animate-zoom w3-center w3-transparent w3-padding-64">
-                <img id="img01" class="w3-image">
-                <p id="caption"></p>
+                <div id="divdesignsteps" class="w3-container float"></div>
             </div>
         </div>
         <!-- Designers -->
         <div class="w3-container" id="designers" style="margin-top:75px">
-            <h1 class="w3-xxxlarge w3-text-red"><b>Designers.</b></h1>
+            <h1 class="w3-xxxlarge text-ocean"><b>Designers.</b></h1>
             <hr style="width:50px;border:5px solid red" class="w3-round">
             <p>The best team in the world.</p>
             <p>We combine the trandition artscraft and the modern digatal art in DUET, het pattern designer. With DUET you can work together with us and develop your one patterns voor textiles, wallpaper, prints, etc. First start designing, this tool will
@@ -261,7 +229,7 @@
 
         <!-- Packages / Pricing Tables -->
         <div class="w3-container" id="services" style="margin-top:75px">
-            <h1 class="w3-xxxlarge w3-text-red"><b>Services.</b></h1>
+            <h1 class="w3-xxxlarge text-ocean"><b>Services.</b></h1>
             <hr style="width:50px;border:5px solid red" class="w3-round">
             <p>Some text our prices. Lorem ipsum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
                 aute irure</p>
@@ -270,7 +238,7 @@
         <div class="w3-row-padding">
             <div class="w3-half w3-margin-bottom">
                 <ul class="w3-ul w3-light-grey w3-center">
-                    <li class="w3-dark-grey w3-xlarge w3-padding-32">Textile</li>
+                    <li class="ocean w3-xlarge w3-padding-32">Textile</li>
                     <li class="w3-padding-16">With your own design</li>
                     <li class="w3-padding-16">On a nice jersey</li>
                     <li class="w3-padding-16">Order per meter</li>
@@ -286,7 +254,7 @@
 
             <div class="w3-half">
                 <ul class="w3-ul w3-light-grey w3-center">
-                    <li class="w3-red w3-xlarge w3-padding-32">Wallpaper</li>
+                    <li class="ocean w3-xlarge w3-padding-32">Wallpaper</li>
                     <li class="w3-padding-16">With your own design</li>
                     <li class="w3-padding-16">Top quality</li>
                     <li class="w3-padding-16">per 10 meter wallpaper</li>
@@ -303,7 +271,7 @@
         <div class="w3-row-padding">
             <div class="w3-half">
                 <ul class="w3-ul w3-light-grey w3-center">
-                    <li class="w3-red w3-xlarge w3-padding-32">Advice</li>
+                    <li class="ocean w3-xlarge w3-padding-32">Advice</li>
                     <li class="w3-padding-16">We help and create your wishes.</li>
                     <li class="w3-padding-16">Tailor made</li>
                     <li class="w3-padding-16">step 1. Design your Patterns</li>
@@ -322,7 +290,7 @@
             </div>
             <div class="w3-half">
                 <ul class="w3-ul w3-light-grey w3-center">
-                    <li class="w3-red w3-xlarge w3-padding-32">Sewing Service</li>
+                    <li class="ocean w3-xlarge w3-padding-32">Sewing Service</li>
                     <li class="w3-padding-16">Skirt</li>
                     <li class="w3-padding-16">With your own designs</li>
                     <li class="w3-padding-16">Tailor made</li>
@@ -343,7 +311,7 @@
 
         <!-- Contact -->
         <div class="w3-container" id="contact" style="margin-top:75px">
-            <h1 class="w3-xxxlarge w3-text-red"><b>Contact.</b></h1>
+            <h1 class="w3-xxxlarge text-ocean"><b>Contact.</b></h1>
             <hr style="width:50px;border:5px solid red" class="w3-round">
             <p>Do you want us to style your outfit of your home? Fill out the form and fill me in with the details :) We love meeting new people! Or meet us in the ArtShop at Haarlemmerstraat 100, AMSTERDAM.
             </p>

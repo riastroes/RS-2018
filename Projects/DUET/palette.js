@@ -1,6 +1,7 @@
-function Palette() {
+function Palette(mwidth) {
+    this.width = mwidth;
     this.canvas = document.getElementById("canvaspalette");
-    this.canvas.width = 1000;
+    this.canvas.width = this.width;
     this.canvas.height = 50;
     this.ctx = this.canvas.getContext("2d");
     this.colors = new Array();
@@ -24,10 +25,11 @@ Palette.prototype.add = function(acolor) {
     this.show();
 }
 Palette.prototype.background = function() {
+
     var x = event.offsetX;
     var w = this.canvas.width / this.colors.length;
     var i = Math.floor(x / w);
-    console.log(x,w,i);
+
     if (i >= 0 && i < this.colors.length) {
         var bgcolor = this.colors[i];
         this.colors = new Array();
@@ -36,13 +38,14 @@ Palette.prototype.background = function() {
         design.background(this.colors[0]);
         this.show();
     }
+
 }
-Palette.prototype.save = function(){
-    
+Palette.prototype.save = function() {
+
     var pal = document.createElement('a');
-    
+
     pal.href = this.canvas.toDataURL();
-    pal.download = "JIP-palette.jpg";
+    pal.download = "DUET-palette.jpg";
     pal.click();
-    
+
 }
