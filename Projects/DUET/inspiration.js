@@ -7,15 +7,12 @@ function Inspiration(mwidth) {
     this.canvas.width = this.width;
     this.canvas.height = this.height;
     this.ctx = this.canvas.getContext('2d');
-    //this.image = document.createElement("IMG");
-    //this.image.src = imgsrc[0];
-
-
+    
     this.nr = 1;
     this.inspirationData;
     this.pixelData;
 
-    //this.density = 1;
+   
     this.rgb;
     this.x = this.width / 2;
     this.y = this.height / 2;
@@ -62,35 +59,41 @@ Inspiration.prototype.loadStamp = function(ischanged) {
     var count = 0;
 
     this.inspirationData = this.ctx.getImageData(this.x - sx, this.y - sy, stamp.width, stamp.height);
-    var pixels = this.inspirationData.data;
-    for (var i = 0; i < pixels.length; i += 4) {
-        if (this.stamptype == "hue") {
-            this.hue = this.rgb.hue();
-            var hue = new RGB(pixels[i], pixels[i + 1], pixels[i + 2]).hue();
-            if (this.hue - 30 >= hue && this.hue + 30 <= hue) {
-                pixels[i + 3] = 255;
-            } else {
-                pixels[i + 3] = 0;
-            }
-        } else if (this.stamptype == "saturation") {
-            this.saturation = this.rgb.saturation();
-            var saturation = new RGB(pixels[i], pixels[i + 1], pixels[i + 2]).saturation();
-            if (this.saturation - 10 >= saturation && this.saturation + 10 <= saturation) {
-                pixels[i + 3] = 255;
-            } else {
-                pixels[i + 3] = 0;
-            }
-        } else if (this.stamptype == "lightness") {
-            this.lightness = this.rgb.lightness();
-            var lightness = new RGB(pixels[i], pixels[i + 1], pixels[i + 2]).lightness();
-            if (this.lightness - 10 >= lightness && this.lightness + 10 <= lightness) {
-                pixels[i + 3] = 255;
-            } else {
-                pixels[i + 3] = 0;
-            }
-        }
-    }
-    this.inspirationData.data = pixels;
+    // var pixels = this.inspirationData.data;
+    // for (var i = 0; i < pixels.length; i += 4) {
+    //     if (this.stamptype == "hue") {
+    //         this.hue = this.rgb.hue();
+    //         var hue = new RGB(pixels[i], pixels[i + 1], pixels[i + 2]).hue();
+    //         if (this.hue - 30 >= hue && this.hue + 30 <= hue) {
+    //             pixels[i + 3] = 255;
+    //         } else {
+    //             pixels[i + 3] = 0;
+    //         }
+    //     } else if (this.stamptype == "saturation") {
+    //         this.saturation = this.rgb.saturation();
+    //         var saturation = new RGB(pixels[i], pixels[i + 1], pixels[i + 2]).saturation();
+    //         if (this.saturation - 10 >= saturation && this.saturation + 10 <= saturation) {
+    //             pixels[i + 3] = 255;
+    //         } else {
+    //             pixels[i + 3] = 0;
+    //         }
+    //     } else if (this.stamptype == "lightness") {
+    //         this.lightness = this.rgb.lightness();
+    //         var lightness = new RGB(pixels[i], pixels[i + 1], pixels[i + 2]).lightness();
+    //         if (this.lightness - 10 >= lightness && this.lightness + 10 <= lightness) {
+    //             pixels[i + 3] = 255;
+    //         } else {
+    //             pixels[i + 3] = 0;
+    //         }
+    //     } else if (this.stamptype == "copy") {
+    //         if (pixels[i + 3] != 0) {
+    //             pixels[i + 3] = 255;
+    //         } else {
+    //             pixels[i + 3] = 0;
+    //         }
+    //     }
+    // }
+    // this.inspirationData.data = pixels;
     stamp.loadStamp(this.inspirationData, this.stamptype, this.rgb);
 
 
