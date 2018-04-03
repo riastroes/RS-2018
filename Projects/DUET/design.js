@@ -105,9 +105,9 @@ Design.prototype.stamp = function() {
     }
 
     this.save();
-    var link = document.getElementById("lnkdownload");
-    link.download = this.name[this.index];
-    link.href = this.dataURL[this.index];
+    // var link = document.getElementById("lnkdownload");
+    // link.download = this.name[this.index];
+    // link.href = this.dataURL[this.index];
     this.index++;
 
 }
@@ -117,17 +117,16 @@ Design.prototype.restore = function(id) {
     document.href = "#design";
     var index = parseInt(id.substring(4));
 
-    var link = document.getElementById("lnkdownload");
-    link.download = design.name[index];
-    link.href = design.dataURL[index];
+    // var link = document.getElementById("lnkdownload");
+    // link.download = design.name[index];
+    // link.href = design.dataURL[index];
 }
 
 
 Design.prototype.save = function() {
 
-    //var dataImg = this.ctx.getImageData(0, 0, this.width, this.height);
-    this.dataURL[this.index] = this.canvas.toDataURL('image/jpg', 1.0);
-    this.name[this.index] = "DUET-pattern-" + this.index + ".jpg";
+    this.dataURL[this.index] = this.canvas.toDataURL('image/png', 1.0);
+    this.name[this.index] = "DUET-pattern-" + this.index + ".png";
     this.id[this.index] = "DUET" + this.index;
     if (this.dataURL[design.index].length > 0) {
         var adiv = document.createElement("div");
@@ -143,9 +142,6 @@ Design.prototype.save = function() {
         }
         img.width = 100;
         img.height = 100;
-        // var link = document.getElementById("linkdownload");
-        // link.download = this.name[this.index];
-        // link.href = this.dataURL[this.index];
 
         var divdesigns = document.getElementById("divdesignsteps");
         divdesigns.appendChild(adiv);
@@ -155,28 +151,6 @@ Design.prototype.save = function() {
 
     }
 
-    // this.dataURL[this.index] = this.tempcanvas.toDataURL('image/jpeg', 1.0);
-    // document.getElementById("divdesigns").innerHTML += "<br><img id='DUET" + this.index + "' src='" + this.dataURL + "' alt='DUET" + this.index + "' onclick='design.restore(\"duet" + this.index + "\")'/><br/>"
-    // this.name[this.index] = "DUET" + this.index + ".jpg";
-    // this.link[this.index] = document.createElement("a");
-    // this.link[this.index].innerHTML = "download pattern: duet" + this.index;
-    // this.link[this.index].download = this.name[this.index];
-    // this.link[this.index].href = this.dataURL[this.index];
-    // //this.link[this.index].href = document.getElementById("DUET" + this.index).src;
-    // document.getElementById("divdesigns").appendChild(this.link[this.index]);
 
 
-
-
-
-
-}
-
-
-Design.prototype.startDownload = function(index) {
-    try {
-        download(this.dataURL[index], this.name[index], 'image/png');
-    } catch (error) {
-        alert("sorry, something went wrong: " + error.message);
-    }
 }

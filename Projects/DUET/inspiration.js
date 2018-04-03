@@ -17,8 +17,9 @@ function Inspiration(mwidth) {
 
     //this.density = 1;
     this.rgb;
-    this.hue;
-
+    this.x = this.width / 2;
+    this.y = this.height / 2;
+    this.stamptype = "hue";
 }
 
 
@@ -33,41 +34,64 @@ Inspiration.prototype.changeInspiration = function(nr) {
     this.inspirationData = this.ctx.getImageData(0, 0, this.width, this.height);
 
 }
-Inspiration.prototype.loadStamp = function() {
+Inspiration.prototype.loadStamp = function(ischanged) {
+    if (ischanged) {
+        this.x = event.offsetX;
+        this.y = event.offsetY;
+    }
 
-    if (event.ctrlKey) {
-        event.defaultPrevented = true;
-        event.cancleBubble = true;
-        return false;
-    } else {
+    var instamptypes = document.getElementsByName("instamptype");
+    for (var i = 0; i < instamptypes.length; i++) {
+        if (instamptypes[i].checked) {
+            this.stamptype = instamptypes[i].value;
+        }
+    }
 
-        var x = event.offsetX;
-        var y = event.offsetY;
 
-        var sx = (stamp.width / 2);
-        var sy = (stamp.height / 2);
 
-        this.pixelData = this.ctx.getImageData(x, y, 1, 1);
+    var sx = (stamp.width / 2);
+    var sy = (stamp.height / 2);
 
-        this.rgb = new RGB(this.pixelData.data[0], this.pixelData.data[1], this.pixelData.data[2]);
-        this.hue = this.rgb.hue();
+    this.pixelData = this.ctx.getImageData(this.x, this.y, 1, 1);
 
-        palette.add(this.rgb.color);
+    this.rgb = new RGB(this.pixelData.data[0], this.pixelData.data[1], this.pixelData.data[2]);
 
-        var count = 0;
 
-        this.inspirationData = this.ctx.getImageData(x - sx, y - sy, stamp.width, stamp.height);
-        var pixel = this.inspirationData;
-        for (var i = 0; i < pixel.length; i += 4) {
-            var hue = new RGB(pixel[i], pixel[i + 1], pixel[i + 2]).hue();
+    palette.add(this.rgb.color);
+
+    var count = 0;
+
+    this.inspirationData = this.ctx.getImageData(this.x - sx, this.y - sy, stamp.width, stamp.height);
+    var pixels = this.inspirationData.data;
+    for (var i = 0; i < pixels.length; i += 4) {
+        if (this.stamptype == "hue") {
+            this.hue = this.rgb.hue();
+            var hue = new RGB(pixels[i], pixels[i + 1], pixels[i + 2]).hue();
             if (this.hue - 30 >= hue && this.hue + 30 <= hue) {
-                pixel[i + 3] = 255;
+                pixels[i + 3] = 255;
             } else {
-                pixel[i + 3] = 0;
+                pixels[i + 3] = 0;
+            }
+        } else if (this.stamptype == "saturation") {
+            this.saturation = this.rgb.saturation();
+            var saturation = new RGB(pixels[i], pixels[i + 1], pixels[i + 2]).saturation();
+            if (this.saturation - 10 >= saturation && this.saturation + 10 <= saturation) {
+                pixels[i + 3] = 255;
+            } else {
+                pixels[i + 3] = 0;
+            }
+        } else if (this.stamptype == "lightness") {
+            this.lightness = this.rgb.lightness();
+            var lightness = new RGB(pixels[i], pixels[i + 1], pixels[i + 2]).lightness();
+            if (this.lightness - 10 >= lightness && this.lightness + 10 <= lightness) {
+                pixels[i + 3] = 255;
+            } else {
+                pixels[i + 3] = 0;
             }
         }
-        this.inspirationData.data = pixel;
-        stamp.loadStamp(this.inspirationData, this.hue);
     }
+    this.inspirationData.data = pixels;
+    stamp.loadStamp(this.inspirationData, this.stamptype, this.rgb);
+
 
 }

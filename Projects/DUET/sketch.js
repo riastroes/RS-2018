@@ -25,7 +25,7 @@ function preloader() {
         images[i].src = "images/img" + i.toString() + ".jpg";
 
     }
-    for (var i = 1; i <= 7; i++) {
+    for (var i = 1; i <= 8; i++) {
         stamps[i] = new Image();
         stamps[i].src = "images/stamp" + i.toString() + ".png";
 
@@ -34,15 +34,17 @@ function preloader() {
 
 
 function start() {
-    maxwidth = calcWidth("main");
-    if (maxwidth < (1040)) {
-        maxwidth = 1040;
-    }
+    maxwidth = calcWidth("panelinspiration");
+    // if (maxwidth < (860)) {
+    //     maxwidth = 860;
+    // }
+    // alert(calcWidth("row") + "= " + calcWidth("panelinspiration") + "+ " + calcWidth("panelstamp"));
 
-    design = new Design(maxwidth - 40);
-    inspiration = new Inspiration((maxwidth / 3 * 2) - 40);
-    palette = new Palette(maxwidth - 40);
-    stamp = new Stamp((maxwidth / 4) - 20);
+
+    design = new Design(calcWidth("paneldesign") - 16);
+    inspiration = new Inspiration(calcWidth("panelinspiration") - 16);
+    palette = new Palette(calcWidth("panelpalette") - 16);
+    stamp = new Stamp(calcWidth("panelstamp") - 16);
 
     inspiration.changeInspiration(1);
     palette.add("#ffffff");

@@ -1,4 +1,6 @@
 function Palette(mwidth) {
+    this.width = Math.floor(mwidth - 20);
+    this.width += (this.width % 2);
     this.width = mwidth;
     this.canvas = document.getElementById("canvaspalette");
     this.canvas.width = this.width;
