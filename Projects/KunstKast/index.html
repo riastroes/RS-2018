@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>DUET, Pattern Designer</title>
+<title>DE KUNSTKAST</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -32,6 +32,17 @@
     
     body {
         font-size: 16px;
+        background-color: rgb(217, 248, 243)
+    }
+    
+    #mySidebar {
+        background-image: url('images/bg/bg02.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 100%;
+        z-index: 3;
+        width: 300px;
+        font-weight: bold;
     }
     
     .w3-half img {
@@ -47,26 +58,36 @@
     
     .kast {
         cursor: pointer;
-        padding: 0px;
-        background-image: url('images/bg/bg02.jpg');
-        background-size: 1400px;
-        position: relative;
         padding: 10px;
+        background-image: url('images/bg/bg02.jpg');
+        position: relative;
+        border: solid 1px black;
+    }
+    
+    .float {
+        float: left;
+    }
+    
+    #divcanvas {
+        position: relative;
+        padding: 2px;
+        margin: 0px;
+        background-color: rgb(59, 22, 5);
     }
     
     .thumbnail {
         position: relative;
-        width: 240px;
-        height: 200px;
-        padding: 10px;
-        background-image: url('images/lijst.jpg');
+        width: 150px;
+        height: 120px;
+        padding-top: 0px;
+        border: solid 5px black;
     }
 </style>
 
 <body>
 
     <!-- Sidebar/menu -->
-    <nav class="w3-sidebar w3-black w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:300px;font-weight:bold;" id="mySidebar"><br>
+    <nav class="w3-sidebar w3-black w3-collapse w3-top w3-large w3-padding" id="mySidebar"><br>
         <a href="javascript:void(0)" onclick="w3_close()" class="w3-button w3-hide-large w3-display-topleft" style="width:100%;font-size:22px">Close Menu</a>
         <div class="w3-container">
             <h3 class="w3-padding-64"><b>KUNSTKAST</b></h3>
@@ -98,9 +119,9 @@
         <div class="w3-container" id="kunstkast">
             <h1 class="w3-xxxlarge w3-text-red"><b>Kunstkast</b></h1>
             <hr style="width:50px;border:5px solid red" class="w3-round">
-            <div class="kast w3-container">
+            <div class="kast w3-container; overflow:hidden;">
 
-                <div id="divcanvas">
+                <div id="divcanvas" style="border:solid black 2px;padding:0px;margin:0px;">
 
                 </div>
             </div>
@@ -110,12 +131,14 @@
 
         <div class="w3-row-padding" id="ontdekkingen">
             <h3 class="w3-xxxlarge w3-text-red">Ontdekkingen</h3>
-            <div id="snapshots">
+            <div id="snapshots" style="float:left">
 
             </div>
-            <p id="comment">Wacht af, zoek en klik ... </p>
-        </div>
 
+        </div>
+        <div class="w3-container">
+            <p id="comment" class="w3-text-red">Wacht af, zoek en klik ... </p>
+        </div>
 
         <!-- Project Kunstkast -->
         <div class="w3-container" id="project" style="margin-top:75px">
@@ -124,11 +147,11 @@
             <p>Kunstkast is een samenwerkingsproject van Jori Stoop en Ria Stroes.</p>
             <p>Al een aantal jaren komen wij elke dinsdag bij elkaar en hebben we al heel wat creatieve uren, plezier doorgebracht. In dit project willen we jullie laten zien wat wij doen. Onze Kustkast zal langzamerhand gevuld worden met steeds meer kunstschatten,
                 hierbij zullen wij de creatieve weg van associatie volgen. Van het één komt het ander. Hierbij blijft het uitgangspunt om digitale technieken te combineren met analoge technieken als tekenen, schilderen, collage, papier maché, drukwerk
-                e.a. We nodigen je van harte uit om te ondekken wat je in onze Kunstkast kunt vinden. De kunstkast is interactief, dat betekent dat je als kijker actief op zoek kunt gaan om onze kunstschatten te ondekken. En kom gerust later nog eens
-                terug, want voorlopig zijn wij nog niet uitgespeeld en zal de Kijkkast blijven groeien.
+                e.a. We nodigen je van harte uit om te ondekken wat je in onze Kunstkast kunt vinden. De KUNSTKAST is interactief, dat betekent dat je als kijker actief op zoek kunt gaan om onze kunstschatten te ondekken. En kom gerust later nog eens
+                terug, want voorlopig zijn wij nog niet uitgespeeld en zal de KUNSTKAST blijven groeien.
             </p>
             <p style="font-family: Chicle; font-size: 36px; color:red;" class=" w3-center">
-                Veel Plezier met onze Kijkkast!
+                Veel Plezier met onze KUNSTKAST!
             </p>
 
         </div>

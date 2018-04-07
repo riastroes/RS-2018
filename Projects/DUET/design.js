@@ -11,6 +11,14 @@ function Design(mwidth) {
     this.link = [];
     this.id = [];
     this.index = 0;
+    // var scale = window.devicePixelRatio;
+    // console.log(scale);
+    // this.pnlcanvas = document.getElementById("paneldesign");
+    // this.pnlcanvas.width = this.width;
+    // this.pnlcanvas.height = this.height;
+    // this.pnlcanvas.style.overflow = "hidden";
+    // this.width *= scale;
+    // this.height *= scale;
     this.canvas = document.getElementById("canvasdesign");
     this.canvas.width = this.width;
     this.canvas.height = this.height;
@@ -18,6 +26,7 @@ function Design(mwidth) {
     this.patternsize = 2;
     this.maxpatternsize = 1;
     this.ctx = this.canvas.getContext('2d');
+    // this.ctx.scale(scale, scale);
     //this.canvas.onmouseover = this.showView();
     this.rows = this.patternsize;
     this.cols = this.patternsize;

@@ -34,11 +34,9 @@ function preloader() {
 
 
 function start() {
+    window.devicePixelRatio = 4;
+
     maxwidth = calcWidth("panelinspiration");
-    // if (maxwidth < (860)) {
-    //     maxwidth = 860;
-    // }
-    // alert(calcWidth("row") + "= " + calcWidth("panelinspiration") + "+ " + calcWidth("panelstamp"));
 
 
     design = new Design(calcWidth("paneldesign") - 16);
