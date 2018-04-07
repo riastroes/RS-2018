@@ -34,7 +34,7 @@ function preloader() {
 
 
 function start() {
-    window.devicePixelRatio = 4;
+
 
     maxwidth = calcWidth("panelinspiration");
 

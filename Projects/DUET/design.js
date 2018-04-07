@@ -22,6 +22,10 @@ function Design(mwidth) {
     this.canvas = document.getElementById("canvasdesign");
     this.canvas.width = this.width;
     this.canvas.height = this.height;
+    this.bgcanvas = document.createElement("canvas");
+    this.bgcanvas.width = this.width;
+    this.bgcanvas.height = this.height;
+    this.bgctx = this.bgcanvas.getContext('2d');
     this.bgcolor = "#ffffff";
     this.patternsize = 2;
     this.maxpatternsize = 1;
@@ -30,11 +34,13 @@ function Design(mwidth) {
     //this.canvas.onmouseover = this.showView();
     this.rows = this.patternsize;
     this.cols = this.patternsize;
-    this.background(this.bgcolor);
+
     this.tempcanvas = document.createElement("canvas");
-    this.tempcanvas.width = this.width;
-    this.tempcanvas.height = this.height;
+    this.tempcanvas.width = this.canvas.width;
+    this.tempcanvas.height = this.canvas.height;
+    this.tempcanvas.id = "tempcanvas";
     this.tempctx = this.tempcanvas.getContext('2d');
+    this.background(this.bgcolor);
 
     this.view = document.createElement("canvas");
     this.view.className = "view";
@@ -46,9 +52,12 @@ function Design(mwidth) {
 
 }
 Design.prototype.background = function(acolor) {
+
         this.bgcolor = acolor;
         this.ctx.fillStyle = acolor;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.drawImage(this.tempcanvas, 0, 0);
+
     }
     // Design.prototype.showView = function() {
     //     var x = event.offsetX;
@@ -75,7 +84,7 @@ Design.prototype.resizePattern = function(size) {
 }
 
 Design.prototype.stamp = function() {
-    var imgData = this.ctx.createImageData(stamp.width, stamp.height);
+    var imgData = this.tempctx.createImageData(stamp.width, stamp.height);
 
     var x = event.offsetX;
     var y = event.offsetY;
@@ -88,7 +97,7 @@ Design.prototype.stamp = function() {
         for (var j = -1; j <= this.rows; j++) {
             var ax = (i * w) + px;
             var ay = (j * h) + py;
-            var bg = this.ctx.getImageData(ax, ay, stamp.width, stamp.height);
+            var bg = this.tempctx.getImageData(ax, ay, stamp.width, stamp.height);
             for (var p = 0; p < bg.data.length; p += 4) {
                 if (stamp.stampData.data[p + 3] != 255) {
                     imgData.data[p] = bg.data[p];
@@ -108,12 +117,13 @@ Design.prototype.stamp = function() {
                     imgData.data[p + 3] = stamp.stampData.data[p + 3];
                 }
             }
-            this.ctx.putImageData(imgData, ax, ay);
+            this.tempctx.putImageData(imgData, ax, ay);
 
         }
     }
-
+    this.ctx.drawImage(this.tempcanvas, 0, 0);
     this.save();
+
     // var link = document.getElementById("lnkdownload");
     // link.download = this.name[this.index];
     // link.href = this.dataURL[this.index];
@@ -122,9 +132,13 @@ Design.prototype.stamp = function() {
 }
 Design.prototype.restore = function(id) {
     var img = document.getElementById(id);
-    design.ctx.drawImage(img, 0, 0);
-    document.href = "#design";
-    var index = parseInt(id.substring(4));
+    var divimg = document.getElementById("div" + id);
+    design.ctx.clearRect(0, 0, design.canvas.width, design.canvas.height);
+    design.tempctx.clearRect(0, 0, design.canvas.width, design.canvas.height);
+    design.tempctx.drawImage(img, 0, 0);
+    design.background(divimg.style.backgroundColor);
+    //document.href = "#design";
+    //var index = parseInt(id.substring(4));
 
     // var link = document.getElementById("lnkdownload");
     // link.download = design.name[index];
@@ -134,7 +148,7 @@ Design.prototype.restore = function(id) {
 
 Design.prototype.save = function() {
 
-    this.dataURL[this.index] = this.canvas.toDataURL('image/png', 1.0);
+    this.dataURL[this.index] = this.tempcanvas.toDataURL('image/png', 1.0);
     this.name[this.index] = "DUET-pattern-" + this.index + ".png";
     this.id[this.index] = "DUET" + this.index;
     if (this.dataURL[design.index].length > 0) {
@@ -154,6 +168,8 @@ Design.prototype.save = function() {
 
         var divdesigns = document.getElementById("divdesignsteps");
         divdesigns.appendChild(adiv);
+        adiv.style.backgroundColor = this.bgcolor;
+        adiv.id = "div" + this.id[this.index];
         adiv.appendChild(img);
         adiv.appendChild(br1);
 
