@@ -1,17 +1,3 @@
-function preload() {
-    images = [];
-    //scene 1
-    images[0] = loadImage("images/deurlinks.png");
-    images[1] = loadImage("images/deurrechts.png");
-    images[2] = loadImage("images/wiel.png");
-    images[3] = loadImage("images/handel.png");
-    //scene 2
-    images[4] = loadImage("images/hond.png");
-    images[5] = loadImage("images/negatievehond.png");
-
-
-
-}
 var canvas;
 var images;
 var scenes;
@@ -32,21 +18,22 @@ function setup() {
     scenes[0] = null;
     scenes[1] = new Scene1("Open de deuren", 1, 700, "frameCount >= 1 && frameCount <= 700");
     scenes[2] = new Scene2("", 700, 1400, "frameCount >= 700 && frameCount <= 1400");
-    scenes[3] = new Scene3("Mier op Roos", 1, 3000, "frameCount >= 1 && frameCount <= 3000");
-
+    scenes[3] = new Scene3("Mier op Roos", 1400, 2400, "frameCount >= 1400 && frameCount <= 2400");
+    document.location.href = "#akast";
 }
 
 function draw() {
 
+
+    scenes[1].show();
+    scenes[2].show();
     scenes[3].show();
-    //scenes[1].show();
-    // scenes[2].show();
 
 
 
 }
 
-function showSnapShot(i, title, img) {
+function showSnapShot(i, title, snap) {
 
     var snapshots = document.getElementById("snapshots");
     var div = document.createElement("div");
