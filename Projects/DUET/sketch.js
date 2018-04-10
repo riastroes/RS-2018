@@ -1,7 +1,10 @@
 /* Ria Stroes */
 /* @created: maart 2018  */
 ;
+//userdata
 
+var user;
+var useremail;
 
 //preloading
 
@@ -35,7 +38,7 @@ function preloader() {
 
 function start() {
 
-
+    checkParent();
     maxwidth = calcWidth("panelinspiration");
 
 
@@ -55,4 +58,16 @@ function start() {
 function calcWidth(elementid) {
     var width = document.getElementById(elementid).offsetWidth;
     return width;
+}
+
+function checkParent() {
+    if (window.opener) {
+        alert("helo");
+        user = window.opener.document.getElementById("user");
+        useremail = window.opener.document.getElementById("email");
+
+    } else {
+        alert("bah");
+    }
+
 }
