@@ -194,4 +194,5 @@ Design.prototype.addWatermark = function(){
 Design.prototype.sendPattern = function(user, useremail){
 
     this.restore(this.id[this.index-1], false);
+    
 }
