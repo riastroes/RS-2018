@@ -26,7 +26,15 @@
         h4,
         h5 {
             font-family: "Poppins", sans-serif;
-            background-color: "seagreen";
+            background-color: teal;
+            color:white
+            
+        }
+        .star{
+            color:red;
+        }
+        td{ 
+            text-align:left;
         }
     </style>
     <script language="JavaScript">
@@ -35,9 +43,21 @@
 </head>
 
 <body id="login" style="text-align:center">
-
-    <p>Aanmelden</p>
-    <input id="btnLogin" onclick="window.open('index.html');" type="button">Aanmelden</input>
+    <div class="w3-container w3-row">
+        <div class="w3-center" style="margin-left:40%;margin-right:40%;margin-top:300px" >
+            <h1 class="w3-center">Subscribe to DUET</h1>
+            <h3 class="w3-center">a powerfull pattern-designer</h3>
+            
+            <form action ="javascript:window.open('index.html')" >
+            <table class="w3-center" style="margin-left:50px">
+                    <tr><td><label>Name:</label></td><td> <input id="inuser" type="text" ></input></td></tr>
+                    <tr><td><label>Email:</label></td><td><input id="inemail" type="text" required></input><span class="star">*</span></td></tr>
+                    <tr><td><label>Password:</label></td><td><input id="inpassword" type="password" required></input><span class="star">*</span></td></tr>
+        </table><br/><br/>
+            <input id="btnLogin" type="submit" class="w3-center"></input>
+            </form>
+        </div>
+    </div>
 
 </body>
 

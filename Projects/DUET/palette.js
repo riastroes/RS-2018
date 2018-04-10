@@ -35,7 +35,7 @@ Palette.prototype.background = function() {
     if (i >= 0 && i < this.colors.length) {
         var bgcolor = this.colors[i];
 
-        design.background(bgcolor);
+        design.background(bgcolor, true);
         this.show();
     }
 

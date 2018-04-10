@@ -50,15 +50,26 @@ function Design(mwidth) {
     this.view.style.left = this.canvas.style.left;
     this.viewctx = this.view.getContext('2d');
 
-}
-Design.prototype.background = function(acolor) {
+    this.watermark = watermark;
 
+}
+Design.prototype.background = function(acolor,isnewdesign) {
+
+    if(isnewdesign){
         this.bgcolor = acolor;
         this.ctx.fillStyle = acolor;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.drawImage(this.tempcanvas, 0, 0);
-
+        this.save();
     }
+    else{
+        this.bgcolor = acolor;
+        this.ctx.fillStyle = acolor;
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.drawImage(this.tempcanvas, 0, 0);
+    }
+}      
+
     // Design.prototype.showView = function() {
     //     var x = event.offsetX;
     //     var y = event.offsetY;
@@ -123,20 +134,20 @@ Design.prototype.stamp = function() {
     }
     this.ctx.drawImage(this.tempcanvas, 0, 0);
     this.save();
-
+   
     // var link = document.getElementById("lnkdownload");
     // link.download = this.name[this.index];
     // link.href = this.dataURL[this.index];
-    this.index++;
+
 
 }
-Design.prototype.restore = function(id) {
+Design.prototype.restore = function(id, isnewdesign) {
     var img = document.getElementById(id);
     var divimg = document.getElementById("div" + id);
     design.ctx.clearRect(0, 0, design.canvas.width, design.canvas.height);
     design.tempctx.clearRect(0, 0, design.canvas.width, design.canvas.height);
     design.tempctx.drawImage(img, 0, 0);
-    design.background(divimg.style.backgroundColor);
+    design.background(divimg.style.backgroundColor, isnewdesign);
     //document.href = "#design";
     //var index = parseInt(id.substring(4));
 
@@ -161,7 +172,7 @@ Design.prototype.save = function() {
         img.alt = this.name[this.index];
         img.src = this.dataURL[this.index];
         img.onclick = function() {
-            design.restore(this.id);
+            design.restore(this.id, true);
         }
         img.width = 100;
         img.height = 100;
@@ -173,9 +184,14 @@ Design.prototype.save = function() {
         adiv.appendChild(img);
         adiv.appendChild(br1);
 
-
+        this.index++;
     }
 
+}
+Design.prototype.addWatermark = function(){
+    this.ctx.drawImage(this.watermark, 0, 0 ,400,300);
+}
+Design.prototype.sendPattern = function(user, useremail){
 
-
+    this.restore(this.id[this.index-1], false);
 }

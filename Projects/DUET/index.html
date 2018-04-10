@@ -40,7 +40,10 @@
         .text-ocean {
             color: teal;
         }
-        
+        .subitem{
+            font-size:14px;
+            margin-left:30px;
+        }
         .w3-half img {
             margin-bottom: -6px;
             margin-top: 16px;
@@ -75,7 +78,8 @@
         }
         
         .rs-frame {
-            padding: 10px;
+            margin:10px;
+            padding: 1px;
             background-color: #eaeaea;
         }
         
@@ -107,6 +111,7 @@
                 <a href="#designers" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Designers</a>
                 <a href="#services" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Services</a>
                 <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Contact</a>
+                <a href="#unsubscribe" onclick="unsubscribe()" class="w3-bar-item subitem w3-button w3-hover-white">Unsubscribe</a>
             </div>
         </div>
     </nav>
@@ -127,7 +132,7 @@
         <div id="designer" width="100%">
             <h1 class="w3-xxxlarge text-ocean" style="margin-top:45px"><b>DUET, Pattern Designer</b></h1>
             <hr style="width:50px;border:5px solid red" class="w3-round" />
-            <p>Welcome <label id="inuser"></label>, <br/> DUET, Pattern Designer is een tool for you to create your own beautifull patterns in a very easy way. Just follow the instructions below and play. We wish you a lot of fun.
+            <p>Welcome <label id="lbluser"></label>, <br/> DUET, Pattern Designer is een tool for you to create your own beautifull patterns in a very easy way. Just follow the instructions below and play. We wish you a lot of fun.
             </p>
             <h1 class="w3-xlarge text-ocean w3-text-red"><b>Create your own patterns! Start Now!</b></h1>
 
@@ -199,10 +204,16 @@
                     <canvas id="canvasdesign" onclick="design.stamp();"></canvas>
                 </div>
             </div>
-            <div id="save" class="w3-container">
+            <div id="save" class="w3-container w3-row">
+               <div  class="w3-container w3-third">
                 <h5 class="w3-xxxlarge text-ocean"><b>SAVE</b></h5>
                 <p class="w3-text-red"><b>CTRL + Left-Mouse-Button</b> or <b>Right-Mouse-Button</b>: click to save your design as .png image.</p>
-
+               </div>
+               <div  class="w3-container w3-twothird">
+                    <h5 class="w3-xxxlarge text-ocean"><b>SEND</b> your design to us</h5>
+                    <p class="w3-text-red"><b>Send</b> your design to us and we will do you an offer for printing your design on fabric.</p>
+                    <input type="button" id="btnsenddesign" onclick="javascript:sendDesign();"  value="SEND"></input>
+                   </div>
             </div>
             <div id="designsteps" class="w3-container">
                 <h1 class="w3-xxxlarge text-ocean"><b>Your Designsteps</b></h1>

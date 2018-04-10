@@ -33,12 +33,14 @@ function preloader() {
         stamps[i].src = "images/stamp" + i.toString() + ".png";
 
     }
+    watermark  = new Image();
+    watermark.src = "images/watermark.png" ;
 }
 
 
 function start() {
 
-    checkParent();
+    getUserData();
     maxwidth = calcWidth("panelinspiration");
 
 
@@ -60,14 +62,40 @@ function calcWidth(elementid) {
     return width;
 }
 
-function checkParent() {
+function getUserData() {
     if (window.opener) {
         alert("helo");
-        user = window.opener.document.getElementById("user");
-        useremail = window.opener.document.getElementById("email");
+        user = window.opener.document.getElementById("inuser").value;
+        useremail = window.opener.document.getElementById("inemail").value;
+        userpassword = window.opener.document.getElementById("inpassword").value;
+
+        if(user != "" & user != undefined){
+        var lbluser = document.getElementById("lbluser");
+        lbluser.innerHTML = user;
+        }
+        else{
+            document.location.href= "login.html"
+        }
 
     } else {
-        alert("bah");
+       ; document.location.href= "login.html"
     }
 
+}
+function unsubscribe(){
+    confirm("We are sorry to see you go! Come back any time you like!");
+    deleteUser(user, useremail);
+}
+function deleteUser(user, email){
+    console.log("delete this user: " + useremail);
+}
+function sendDesign(user, email){
+    console.log("send design");
+    design.sendPattern(user, useremail);
+}
+window.oncontextmenu = function ()
+{
+   
+    design.addWatermark();
+    return true;     // cancel default menu
 }
