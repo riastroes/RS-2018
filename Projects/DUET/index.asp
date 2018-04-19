@@ -110,7 +110,7 @@
 </head>
 
 <body onload="start();" style="width:100%">
-
+    
     <!-- Sidebar/menu -->
     <nav class="w3-sidebar ocean w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:330px;font-weight:bold;overflow:hidden" id="mySidebar"><br>
         <a href="javascript:void(0)" onclick="w3_close()" class="w3-button w3-hide-large w3-display-topleft" style="width:100%;font-size:22px">Close Menu</a>
@@ -167,6 +167,7 @@ useremail = Request.Form("inlogemail")
 userpassword = Request.Form("inlogpassword")
 
 If user<>"" Then
+     
      Response.Write("Hello " & user & "!<br>")
      Response.Write("Have fun designing a lovely DUET-pattern today?")
      If( useremail <>"" ) Then
@@ -213,7 +214,7 @@ End If
                 <div id="panelchooseinspiration" class="w3-twothird w3-padding">
                     <h3 class="text-ocean">Inspiration Theme: Screenprints on fabric, </h3>
                     <h5> inspired by the coral and underwater world of the Caribbean. </h5>
-                    <input class="rs-button" type="text" id="btnshowhideinfo" value="hide all info" onclick="toggleInfo()" />
+                    <input class="rs-button" type="button" id="btnshowhideinfo" value="hide all info" onclick="toggleInfo()" />
 
                     <p class="info"><b>Buttons 1 t/m 10</b>: click a button to change your inspiration source.<br/></p>
                     <input type="button" value="1" id="btninspire1" class="rs-button selected" onclick="inspiration.changeInspiration(this.value)" />
