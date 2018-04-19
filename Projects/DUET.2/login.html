@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>DUET, Pattern Designer</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+    <script src="/RS-2018/library/google.js" type="text/javascript"></script>
+    <script src="/RS-2018/mylibrary/functions.js" type="text/javascript"></script>
+    <script src="/RS-2018/mylibrary/colorconversion.js" type="text/javascript"></script>
+    <script src="sketch.js" type="text/javascript"></script>
+
+    <script src="inspiration.js" type="text/javascript"></script>
+    <script src="palette.js" type="text/javascript"></script>
+    <script src="rgb.js" type="text/javascript"></script>
+    <script src="stamp.js" type="text/javascript"></script>
+
+    <script src="design.js" type="text/javascript"></script>
+    <style>
+        body,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+            font-family: "Poppins", sans-serif;
+            background-color: teal;
+            color:white
+            
+        }
+        .star{
+            color:red;
+        }
+        td{ 
+            text-align:left;
+        }
+    </style>
+    <script language="JavaScript">
+    </script>
+
+</head>
+
+<body id="login" style="text-align:center">
+    <div class="w3-container w3-row">
+        <div class="w3-center" style="margin-left:40%;margin-right:40%;margin-top:300px" >
+            <h1 class="w3-center">Subscribe to DUET</h1>
+            <h3 class="w3-center">a powerfull pattern-designer</h3>
+            
+            <form action ="javascript:window.open('index.html')" >
+            <table class="w3-center" style="margin-left:50px">
+                    <tr><td><label>Name:</label></td><td> <input id="inuser" type="text" ></input></td></tr>
+                    <tr><td><label>Email:</label></td><td><input id="inemail" type="text" required></input><span class="star">*</span></td></tr>
+                    <tr><td><label>Password:</label></td><td><input id="inpassword" type="password" required></input><span class="star">*</span></td></tr>
+        </table><br/><br/>
+            <input id="btnLogin" type="submit" class="w3-center"></input>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>
