@@ -137,17 +137,17 @@
                     <table style="width:100%; margin:0px;" border="0px">
                         <tr>
                             <td><label>Name:</label></td>
-                            <td> <input id="inlogname" name="inlogname" type="text" size="15"></input>
+                            <td> <input id="inlogname" name="inlogname" type="text"></input>
                             </td>
                         </tr>
                         <tr>
                             <td><label>Email:</label></td>
-                            <td><input id="inlogemail" name="inlogemail" type="text" size="15" required></input>
+                            <td><input id="inlogemail" name="inlogemail" type="text" required></input>
                             </td>
                         </tr>
                         <tr>
                             <td><label>Password:</label></td>
-                            <td><input id="inlogpassword" type="password" name="inlogpassword" size="15" required></input>
+                            <td><input id="inlogpassword" type="password" name="inlogpassword" required></input>
                             </td>
                         </tr>
                         <tr>

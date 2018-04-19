@@ -1,7 +1,22 @@
 function Design(mwidth) {
-    this.width = Math.floor(mwidth - 20);
-    this.width += (this.width % 2);
-    this.height = this.width;
+    var inwidth = document.getElementById("inwidth");
+    var inheight = document.getElementById("inheight");
+    if (inwidth.value == "0") {
+        this.width = Math.floor(mwidth - 20);
+        this.width -= (this.width % 2);
+        this.height = this.width;
+        inwidth.value = this.width.toString();
+        inheight.value = this.height.toString();
+        var paneldesign = document.getElementById("paneldesign");
+        paneldesign.width = (this.width + 16) + "px";
+        paneldesign.height = (this.height + 12) + "px";
+
+    } else {
+        this.width = inwidth.value;
+        this.height = inheight.value;
+
+    }
+
     this.maxstack = 0;
     this.current = 0;
 
@@ -53,26 +68,25 @@ function Design(mwidth) {
     this.watermark = watermark;
 
 }
-Design.prototype.background = function(acolor,isnewdesign) {
+Design.prototype.background = function(acolor, isnewdesign) {
 
-    if(isnewdesign){
+    if (isnewdesign) {
         this.bgcolor = acolor;
         this.ctx.fillStyle = acolor;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.drawImage(this.tempcanvas, 0, 0);
         this.save();
-    }
-    else{
+    } else {
         this.bgcolor = acolor;
         this.ctx.fillStyle = acolor;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         this.ctx.drawImage(this.tempcanvas, 0, 0);
     }
-}      
+}
 
-    // Design.prototype.showView = function() {
-    //     var x = event.offsetX;
-    //     var y = event.offsetY;
+// Design.prototype.showView = function() {
+//     var x = event.offsetX;
+//     var y = event.offsetY;
 
 //     design.viewctx.fillStyle = "#ffffffff";
 //     design.viewctx.fillRect(0, 0, design.width, design.height);
@@ -93,7 +107,11 @@ Design.prototype.resizePattern = function(size) {
     // this.background(this.bgcolor);
     // 
 }
-
+Design.prototype.scalePattern = function(scale) {
+    var lblscale = document.getElementById("lblscale");
+    lblscale.innerHTML = scale.toString();
+    this.ctx.scale(scale, scale);
+}
 Design.prototype.stamp = function() {
     var imgData = this.tempctx.createImageData(stamp.width, stamp.height);
 
@@ -132,9 +150,10 @@ Design.prototype.stamp = function() {
 
         }
     }
+
     this.ctx.drawImage(this.tempcanvas, 0, 0);
     this.save();
-   
+
     // var link = document.getElementById("lnkdownload");
     // link.download = this.name[this.index];
     // link.href = this.dataURL[this.index];
@@ -166,7 +185,7 @@ Design.prototype.save = function() {
         var adiv = document.createElement("div");
         adiv.className = "rs-frame float";
         var img = document.createElement("img");
-        var br1 = document.createElement("br");
+        var br = document.createElement("br");
 
         img.id = this.id[this.index];
         img.alt = this.name[this.index];
@@ -182,17 +201,17 @@ Design.prototype.save = function() {
         adiv.style.backgroundColor = this.bgcolor;
         adiv.id = "div" + this.id[this.index];
         adiv.appendChild(img);
-        adiv.appendChild(br1);
+        adiv.appendChild(br);
 
         this.index++;
     }
 
 }
-Design.prototype.addWatermark = function(){
-    this.ctx.drawImage(this.watermark, 0, 0 ,400,300);
+Design.prototype.addWatermark = function() {
+    this.ctx.drawImage(this.watermark, 0, 0, 400, 300);
 }
-Design.prototype.sendPattern = function(user, useremail){
+Design.prototype.sendPattern = function(user) {
 
-    this.restore(this.id[this.index-1], false);
-    
+    this.restore(this.id[this.index - 1], false);
+    //create order dit moet nog
 }

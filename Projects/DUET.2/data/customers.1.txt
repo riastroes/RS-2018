@@ -1,3 +1,0 @@
-{"list":
-[{"id": "0","name":"Ria Stroes","email":"riastroes@gmail.com","password":"DUET1","address":"","zipcode":"","city":"","country":"","status":"","creationdate":"","changedate":"","lastvisitdate":""},
- {"id": "1","name":"Jolanta Pawlak","email":"jolanta@gmail.com","password":"DUET2","address":"","zipcode":"","city":"","country":"","status":"","creationdate":"","changedate":"","lastvisitdate":""}]}
