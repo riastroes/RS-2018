@@ -1,4 +1,56 @@
-/*************  scene 3 ***********************/
+function Scene4(titel, start, stop, conditie) {
+
+    this.title = titel;
+    this.start = start;
+    this.stop = stop;
+    this.steps = stop - start;
+    this.step = 0;
+    this.lblstep = document.getElementById("lblstep");
+
+
+    this.condition = conditie;
+
+
+    this.bloem = images[7];
+    this.gp = createGraphics(width, height);
+    this.gp.pixelDensity(1);
+    this.gp.imageMode(CENTER);
+    this.gp.image(this.bloem, width / 2, height / 2);
+    this.a = 0.01;
+
+}
+Scene4.prototype.show = function() {
+    if (eval(this.condition)) {
+        this.update();
+    }
+    if (this.step == 100) {
+        this.title = "Rode bloem";
+        this.createSnapShot();
+    }
+
+}
+Scene4.prototype.update = function() {
+    var center = createVector(width / 2, height / 2);
+
+    this.step++
+        this.lblstep.innerHTML = this.step;
+    push();
+    translate(center.x, center.y)
+    rotate(this.a);
+    image(this.gp, 0, 0);
+
+    pop();
+    this.a += 0.01;
+
+
+}
+
+Scene4.prototype.createSnapShot = function(titel) {
+        var htmlcanvas = document.getElementById("defaultCanvas0");
+        var snap = htmlcanvas.toDataURL('image/png', 1.0);
+        showSnapShot(4, titel, snap);
+    }
+    /**** scene 3 ****/
 function Scene3(titel, start, stop, conditie) {
 
     this.title = titel;

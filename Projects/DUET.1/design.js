@@ -107,11 +107,7 @@ Design.prototype.resizePattern = function(size) {
     // this.background(this.bgcolor);
     // 
 }
-Design.prototype.scalePattern = function(scale) {
-    var lblscale = document.getElementById("lblscale");
-    lblscale.innerHTML = scale.toString();
-    this.ctx.scale(scale, scale);
-}
+
 Design.prototype.stamp = function() {
     var imgData = this.tempctx.createImageData(stamp.width, stamp.height);
 
@@ -150,7 +146,6 @@ Design.prototype.stamp = function() {
 
         }
     }
-
     this.ctx.drawImage(this.tempcanvas, 0, 0);
     this.save();
 
@@ -185,7 +180,7 @@ Design.prototype.save = function() {
         var adiv = document.createElement("div");
         adiv.className = "rs-frame float";
         var img = document.createElement("img");
-        var br = document.createElement("br");
+        var br1 = document.createElement("br");
 
         img.id = this.id[this.index];
         img.alt = this.name[this.index];
@@ -201,7 +196,7 @@ Design.prototype.save = function() {
         adiv.style.backgroundColor = this.bgcolor;
         adiv.id = "div" + this.id[this.index];
         adiv.appendChild(img);
-        adiv.appendChild(br);
+        adiv.appendChild(br1);
 
         this.index++;
     }
@@ -210,8 +205,8 @@ Design.prototype.save = function() {
 Design.prototype.addWatermark = function() {
     this.ctx.drawImage(this.watermark, 0, 0, 400, 300);
 }
-Design.prototype.sendPattern = function(user) {
+Design.prototype.sendPattern = function(user, useremail) {
 
     this.restore(this.id[this.index - 1], false);
-    //create order
+
 }

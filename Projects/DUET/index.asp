@@ -16,7 +16,9 @@
     <script src="palette.js" type="text/javascript"></script>
     <script src="rgb.js" type="text/javascript"></script>
     <script src="stamp.js" type="text/javascript"></script>
-
+    <script src="customer.js" type="text/javascript"></script>
+    <script src="customers.js" type="text/javascript"></script>
+    <script src="order.js" type="text/javascript"></script>
     <script src="design.js" type="text/javascript"></script>
     <style>
         body,
@@ -40,10 +42,12 @@
         .text-ocean {
             color: teal;
         }
-        .subitem{
-            font-size:14px;
-            margin-left:30px;
+        
+        .subitem {
+            font-size: 14px;
+            margin-left: 30px;
         }
+        
         .w3-half img {
             margin-bottom: -6px;
             margin-top: 16px;
@@ -61,6 +65,9 @@
         
         #paneldesign {
             border: solid 10px #eaeaea;
+            position: relative;
+            height: 1000px;
+            overflow: auto;
         }
         
         .rs-button {
@@ -78,9 +85,18 @@
         }
         
         .rs-frame {
-            margin:10px;
+            margin: 10px;
             padding: 1px;
             background-color: #eaeaea;
+        }
+        
+        .info {
+            color: red;
+        }
+        
+        .hidden {
+            visibility: hidden;
+            height: 0px;
         }
         
         .view {
@@ -111,8 +127,66 @@
                 <a href="#designers" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Designers</a>
                 <a href="#services" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Services</a>
                 <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Contact</a>
+                <a href="#register" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Register</a>
                 <a href="#unsubscribe" onclick="unsubscribe()" class="w3-bar-item subitem w3-button w3-hover-white">Unsubscribe</a>
             </div>
+            <br/><br/>
+            <div id="login">
+                <p>Sign in if you want to save your designs or create an order.</p>
+                <form action="index.asp" method="post">
+                    <table style="width:100%; margin:0px;" border="0px">
+                        <tr>
+                            <td><label>Name:</label></td>
+                            <td> <input id="inlogname" name="inlogname" type="text"></input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label>Email:</label></td>
+                            <td><input id="inlogemail" name="inlogemail" type="text" required></input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label>Password:</label></td>
+                            <td><input id="inlogpassword" type="password" name="inlogpassword" required></input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><br/><input id="btnLogin" type="submit" class="w3-center" value="Login"></input>
+                            </td>
+                        </tr>
+                    </table><br/><br/>
+
+                </form>
+
+                <%
+                
+dim user, useremail, userpassword
+user=Request.Form("inlogname")
+useremail = Request.Form("inlogemail")
+userpassword = Request.Form("inlogpassword")
+
+If user<>"" Then
+     Response.Write("Hello " & user & "!<br>")
+     Response.Write("Have fun designing a lovely DUET-pattern today?")
+     If( useremail <>"" ) Then
+        If( userpassword <>"" ) Then
+            dim fs, f
+            set fs=Server.CreateObject("Scripting.FileSystemObject")
+            set f = fs.OpenTextFile(Server.MapPath("data/log.txt"), 8,true)
+            f.WriteLine("<br/>" & user & " " & useremail & " " & userpassword & " " &  Date )
+            f.Close
+
+            set f = nothing
+            set fs = nothing
+        End If
+    End If
+End If
+                
+%>
+                    <input type="hidden" id="hiduser"></input>
+            </div>
+            <label id="response"></label>
         </div>
     </nav>
 
@@ -132,15 +206,16 @@
         <div id="designer" width="100%">
             <h1 class="w3-xxxlarge text-ocean" style="margin-top:45px"><b>DUET, Pattern Designer</b></h1>
             <hr style="width:50px;border:5px solid red" class="w3-round" />
-            <p>Welcome <label id="lbluser"></label>, <br/> DUET, Pattern Designer is een tool for you to create your own beautifull patterns in a very easy way. Just follow the instructions below and play. We wish you a lot of fun.
+            <p>DUET, Pattern Designer is een tool for you to create your own beautifull patterns in a very easy way. Just follow the instructions below and play. We wish you a lot of fun.
             </p>
             <h1 class="w3-xlarge text-ocean w3-text-red"><b>Create your own patterns! Start Now!</b></h1>
-
             <div id="row" class="w3-row">
                 <div id="panelchooseinspiration" class="w3-twothird w3-padding">
                     <h3 class="text-ocean">Inspiration Theme: Screenprints on fabric, </h3>
                     <h5> inspired by the coral and underwater world of the Caribbean. </h5>
-                    <p class="w3-text-red"><b>Buttons 1 t/m 10</b>: click a button to change your inspiration source.<br/></p>
+                    <input class="rs-button" type="text" id="btnshowhideinfo" value="hide all info" onclick="toggleInfo()" />
+
+                    <p class="info"><b>Buttons 1 t/m 10</b>: click a button to change your inspiration source.<br/></p>
                     <input type="button" value="1" id="btninspire1" class="rs-button selected" onclick="inspiration.changeInspiration(this.value)" />
                     <input type="button" value="2" id="btninspire2" class="rs-button" onclick="inspiration.changeInspiration(this.value)" />
                     <input type="button" value="3" id="btninspire3" class="rs-button" onclick="inspiration.changeInspiration(this.value)" />
@@ -152,7 +227,7 @@
                     <input type="button" value="9" id="btninspire9" class="rs-button" onclick="inspiration.changeInspiration(this.value)" />
                     <input type="button" value="10" id="btninspire10" class="rs-button" onclick="inspiration.changeInspiration(this.value)" />
                     <br/>
-                    <p class="w3-text-red"><b>Click</b> : Click on the inspiration-canvas to add colors to your background-palette and to fill your stamp.<br/></p>
+                    <p class="info"><b>Click</b> : Click on the inspiration-canvas to add colors to your background-palette and to fill your stamp.<br/></p>
                     </p>
                     <div id="panelinspiration" oncontextmenu="return false;">
                         <canvas id="canvasinspiration" onclick="inspiration.loadStamp(true);" />
@@ -161,7 +236,7 @@
                 </div>
                 <div id="panelchoosestamp" class="w3-third w3-padding">
                     <h3 class="text-ocean">Stamp</h3>
-                    <p class="w3-text-red"><b>Buttons 1 t/m 8</b>: click on a button to change the shape of your stamp.</p>
+                    <p class="info"><b>Buttons 1 t/m 8</b>: click on a button to change the shape of your stamp.</p>
                     <input type="button" id="btnstamp1" value="1" class="rs-button selected" onclick="stamp.changeStamp(this.value)" />
                     <input type="button" id="btnstamp2" value="2" class="rs-button" onclick="stamp.changeStamp(this.value)" />
                     <input type="button" id="btnstamp3" value="3" class="rs-button" onclick="stamp.changeStamp(this.value)" />
@@ -171,10 +246,10 @@
                     <input type="button" id="btnstamp7" value="7" class="rs-button" onclick="stamp.changeStamp(this.value)" />
                     <input type="button" id="btnstamp8" value="8" class="rs-button" onclick="stamp.changeStamp(this.value)" />
                     <br/>
-                    <p class="w3-text-red"> <b>Slider</b> : Push the slider to the right for a bigger stamp.<br/></p>
-                    <label id="lblstampsize">size: 200px </label><input id="instampsize" type="range" min="50" max="400" class="w3-slider" value="200" step="50" onclick="stamp.resize(this.value)" style="width:250px" />
+                    <p class="info"> <b>Slider</b> : Push the slider to the right for a bigger stamp.<br/></p>
+                    <label id="lblstampsize">size: 200px </label><input id="instampsize" type="range" min="50" max="400" class="w3-slider" value="200" step="50" onchange="stamp.resize(this.value)" style="width:250px" />
                     <br/>
-                    <p class="w3-text-red"> <b>Selection</b> : Select your type of stamp.</p>
+                    <p class="info"> <b>Selection</b> : Select your type of stamp.</p>
 
                     <input type="radio" class="w3-radio" name="instamptype" onclick="inspiration.loadStamp(false)" value="hue" checked> hue
                     <input type="radio" class="w3-radio" name="instamptype" onclick="inspiration.loadStamp(false)" value="saturation"> saturation
@@ -186,40 +261,57 @@
                     </div>
                 </div>
             </div>
-            <div id="palette" class="w3-container">
+            <div id="palette">
                 <h3 class="text-ocean">Your palette</h3>
-                <p class="w3-text-red"><b>Click</b> : Click on the inspiration-canvas to add colors to your palette.</p>
-                <p class="w3-text-red"><b>Click</b> : Click on the palette to select the backgroundcolor of your design.</p>
+                <p class="info"><b>Click</b> : Click on the inspiration-canvas to add colors to your palette.</p>
+                <p class="info"><b>Click</b> : Click on the palette to change the backgroundcolor of your design.</p>
                 <div id="panelpalette" class="rs-frame">
                     <canvas id="canvaspalette" onclick="palette.background();"></canvas>
                 </div>
             </div>
-            <div id="design" class="w3-container">
+            <div id="design">
                 <h1 class="w3-xxxlarge text-ocean"><b>New Design</b></h1>
-                <p class="w3-text-red"><b>slider</b> : push the slider to the right to increase the repetition of the pattern.</p>
-                <input id="inpatternsize" type="range" min="1" max="10" class="w3-slider" value="2" step="1" onclick="design.resizePattern(this.value)" />
-                <label id="lblpatternsize"> 2</label>
+                <table>
+                    <tr>
+                        <td><label>design width: </label></td>
+                        <td><input type="text" value="0" id="inwidth" /></td>
+                        <td class="info"> If you change the size of the canvas you will lose your design and dignstaps.</td>
+                    </tr>
+                    <td><label>design height: </label></td>
+                    <td><input type="text" value="0" id="inheight" /></td>
+                    <td><input type="button" value="change" onclick="changeCanvasSize()" /></td>
+                    </tr>
+                </table><br/>
 
+                <div class="w3-row">
+                    <div class="w3-half">
+                        <b>repeat stamp :  </b><input id="inpatternsize" type="range" min="1" max="10" class="w3-slider" value="1" step="1" onchange="design.resizePattern(this.value)" /><label id="lblpatternsize"> 1</label>
+                        <p class="info">push the slider to the right to increase the repetition of the pattern.</p>
+                    </div>
+                    <div class="w3-half">
+                        <b>scale :  </b><input id="inscale" type="range" min="0.2" max="3" class="w3-slider" value="1" step=".1" onchange="design.scalePattern(this.value)" /><label id="lblscale"> 1</label>
+                        <p class="info"> push the slider to the right to increase the repetition of the pattern.</p>
+                    </div>
+                </div>
                 <div id="paneldesign" class="rs-frame">
                     <canvas id="canvasdesign" onclick="design.stamp();"></canvas>
                 </div>
             </div>
             <div id="save" class="w3-container w3-row">
-               <div  class="w3-container w3-third">
-                <h5 class="w3-xxxlarge text-ocean"><b>SAVE</b></h5>
-                <p class="w3-text-red"><b>CTRL + Left-Mouse-Button</b> or <b>Right-Mouse-Button</b>: click to save your design as .png image.</p>
-               </div>
-               <div  class="w3-container w3-twothird">
+                <div class="w3-container w3-third">
+                    <h5 class="w3-xxxlarge text-ocean"><b>SAVE</b></h5>
+                    <p class="info"><b>CTRL + Left-Mouse-Button</b> or <b>Right-Mouse-Button</b>: click to save your design as .png image.</p>
+                </div>
+                <div class="w3-container w3-twothird">
                     <h5 class="w3-xxxlarge text-ocean"><b>SEND</b> your design to us</h5>
-                    <p class="w3-text-red"><b>Send</b> your design to us and we will do you an offer for printing your design on fabric.</p>
-                    <input type="button" id="btnsenddesign" onclick="javascript:sendDesign();"  value="SEND"></input>
-                   </div>
+                    <p class="info"><b>Send</b> your design to us and we will do you an offer for printing your design on fabric.</p>
+                    <input type="button" id="btnsenddesign" onclick="javascript:sendDesign();" value="SEND"></input>
+                </div>
             </div>
             <div id="designsteps" class="w3-container">
-                <h1 class="w3-xxxlarge text-ocean"><b>Your Designsteps</b></h1>
-                <p class="w3-text-red"><b>click</b> : click on an image to go back to this designstep.</p>
+                <h1 class="info"><b>click</b> : click on an image to go back to this designstep.</p>
 
-                <div id="divdesignsteps" class="w3-container float"></div>
+                    <div id="divdesignsteps" class="w3-container float"></div>
             </div>
         </div>
         <!-- Designers -->
@@ -365,7 +457,51 @@
                 <button type="submit" class="w3-button w3-block w3-padding-large w3-red w3-margin-bottom">Send Message</button>
             </form>
         </div>
-
+        <!-- Register -->
+        <div id="register" class="w3-container" style="margin-top:75px">
+            <h1 class="w3-xxxlarge text-ocean"><b>Registration.</b></h1>
+            <hr style="width:50px;border:5px solid red" class="w3-round">
+            <p>If you want to save your DUET-pattern or want to order, you have to fill in this registrationform.
+                <br/> You can change the data anytime. The changed information is only applied to new orders.
+                <br/> If you want to change a current order, please contact us.
+            </p>
+            <p><label id="msgregistration" class="w3-text-red"></label></p>
+            <form action="javascript:registerCustomer();">
+                <div class="w3-section">
+                    <label>Name</label>
+                    <input class="w3-input w3-border" type="text" id="inname" required>
+                </div>
+                <div class="w3-section">
+                    <label>Email</label>
+                    <input class="w3-input w3-border" type="text" id="inemail" required>
+                </div>
+                <div class="w3-section">
+                    <label>Password</label>
+                    <input class="w3-input w3-border" type="password" id="inpassword" required>
+                </div>
+                <div class="w3-section">
+                    <label>Check Password</label>
+                    <input class="w3-input w3-border" type="password" id="inpassword2" required>
+                </div>
+                <div class="w3-section">
+                    <label>Address</label>
+                    <input class="w3-input w3-border" type="text" id="inaddress" required>
+                </div>
+                <div class="w3-section">
+                    <label>Zipcode</label>
+                    <input class="w3-input w3-border" type="text" id="inzipcode" required>
+                </div>
+                <div class="w3-section">
+                    <label>City</label>
+                    <input class="w3-input w3-border" type="text" id="incity" required>
+                </div>
+                <div class="w3-section">
+                    <label>Country</label>
+                    <input class="w3-input w3-border" type="text" id="incountry" required>
+                </div>
+                <button type="submit" class="w3-button w3-block w3-padding-large w3-red w3-margin-bottom">Register</button>
+            </form>
+        </div>
         <!-- End page content -->
     </div>
 
@@ -394,6 +530,7 @@
             captionText.innerHTML = element.alt;
         }
     </script>
+
 
 </body>
 

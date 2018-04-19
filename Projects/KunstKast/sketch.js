@@ -19,15 +19,17 @@ function setup() {
     scenes[1] = new Scene1("Open de deuren", 1, 700, "frameCount >= 1 && frameCount <= 700");
     scenes[2] = new Scene2("", 700, 1400, "frameCount >= 700 && frameCount <= 1400");
     scenes[3] = new Scene3("Mier op Roos", 1400, 2400, "frameCount >= 1400 && frameCount <= 2400");
+    scenes[4] = new Scene3("RodeBloem", 1, 700, "frameCount >= 14010 && frameCount <= 700");
     document.location.href = "#akast";
 }
 
 function draw() {
 
 
-    scenes[1].show();
-    scenes[2].show();
-    scenes[3].show();
+    //scenes[1].show();
+    // scenes[2].show();
+    // scenes[3].show();
+    scenes[4].show();
 
 
 

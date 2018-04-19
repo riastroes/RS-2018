@@ -9,4 +9,7 @@ function preload() {
     //scene 2
     images[4] = loadImage("images/hond.png");
     images[5] = loadImage("images/negatievehond.png");
+    //scene 4
+    images[7] = loadImage("images/rodebloem.jpg");
+
 }

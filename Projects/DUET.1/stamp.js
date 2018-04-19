@@ -65,49 +65,48 @@ Stamp.prototype.loadStamp = function(inspirationData, stamptype, argb) {
 
     for (var i = 0; i < inspirationData.data.length; i += 4) {
         var rgb = new RGB(inspirationData.data[i], inspirationData.data[i + 1], inspirationData.data[i + 2]);
+        
 
 
-
-        if (stamptype == "hue") {
-            var datahue = rgb.hue();
-            if (datahue >= (argb.hue() - 20) && datahue <= (argb.hue() + 20) &&
+            if (stamptype == "hue") {
+                var datahue = rgb.hue();
+                if (datahue >= (argb.hue() - 20) && datahue <= (argb.hue() + 20) &&  
                 this.filter.data[i] === 0 && this.filter.data[i + 3] > 0) {
-                this.stampData.data[i] = inspirationData.data[i];
-                this.stampData.data[i + 1] = inspirationData.data[i + 1];
-                this.stampData.data[i + 2] = inspirationData.data[i + 2];
-                this.stampData.data[i + 3] = this.filter.data[i + 3];
+                    this.stampData.data[i] = inspirationData.data[i];
+                    this.stampData.data[i + 1] = inspirationData.data[i + 1];
+                    this.stampData.data[i + 2] = inspirationData.data[i + 2];
+                    this.stampData.data[i + 3] = this.filter.data[i + 3];
+                }
             }
-        }
-        if (stamptype == "saturation") {
-            var datasaturation = rgb.saturation();
-            if (datasaturation >= (argb.saturation() - 10) && datasaturation <= (argb.saturation() + 10) && this.filter.data[i] === 0 && this.filter.data[i + 3] > 0) {
-                this.stampData.data[i] = inspirationData.data[i];
-                this.stampData.data[i + 1] = inspirationData.data[i + 1];
-                this.stampData.data[i + 2] = inspirationData.data[i + 2];
-                this.stampData.data[i + 3] = this.filter.data[i + 3];
+            if (stamptype == "saturation") {
+                var datasaturation = rgb.saturation();
+                if (datasaturation >= (argb.saturation() - 10) && datasaturation <= (argb.saturation() + 10) &&  this.filter.data[i] === 0 && this.filter.data[i + 3] > 0) {
+                    this.stampData.data[i] = inspirationData.data[i];
+                    this.stampData.data[i + 1] = inspirationData.data[i + 1];
+                    this.stampData.data[i + 2] = inspirationData.data[i + 2];
+                    this.stampData.data[i + 3] = this.filter.data[i + 3];
+                }
+            } 
+            if (stamptype == "lightness") {
+                var datalightness = rgb.lightness();
+                if (datalightness >= (argb.lightness() - 10) && datalightness <= (argb.lightness() + 10) &&  this.filter.data[i] === 0 && this.filter.data[i + 3] > 0) {
+                    this.stampData.data[i] = inspirationData.data[i];
+                    this.stampData.data[i + 1] = inspirationData.data[i + 1];
+                    this.stampData.data[i + 2] = inspirationData.data[i + 2];
+                    this.stampData.data[i + 3] = this.filter.data[i + 3];
+                }
             }
-        }
-        if (stamptype == "lightness") {
-            var datalightness = rgb.lightness();
-            if (datalightness >= (argb.lightness() - 10) && datalightness <= (argb.lightness() + 10) && this.filter.data[i] === 0 && this.filter.data[i + 3] > 0) {
-                this.stampData.data[i] = inspirationData.data[i];
-                this.stampData.data[i + 1] = inspirationData.data[i + 1];
-                this.stampData.data[i + 2] = inspirationData.data[i + 2];
-                this.stampData.data[i + 3] = this.filter.data[i + 3];
+            if (stamptype == "copy") {
+            
+                if (inspirationData.data[i + 3] > 0  && (this.filter.data[i + 3] > 0)) {
+                    this.stampData.data[i] = inspirationData.data[i];
+                    this.stampData.data[i + 1] = inspirationData.data[i + 1];
+                    this.stampData.data[i + 2] = inspirationData.data[i + 2];
+                    this.stampData.data[i + 3] = this.filter.data[i + 3];
+                }
             }
-        }
-        if (stamptype == "copy") {
-
-            if (inspirationData.data[i + 3] > 0 && (this.filter.data[i + 3] > 0)) {
-                this.stampData.data[i] = inspirationData.data[i];
-                this.stampData.data[i + 1] = inspirationData.data[i + 1];
-                this.stampData.data[i + 2] = inspirationData.data[i + 2];
-                this.stampData.data[i + 3] = this.filter.data[i + 3];
-            }
-        }
-
+        
     }
-
     this.ctx.fillStyle = "#000000";
     this.ctx.fillRect(0, 0, this.width, this.height);
     this.ctx.putImageData(this.stampData, 0, 0);
