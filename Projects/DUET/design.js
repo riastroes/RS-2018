@@ -213,5 +213,5 @@ Design.prototype.addWatermark = function() {
 Design.prototype.sendPattern = function(user) {
 
     this.restore(this.id[this.index - 1], false);
-    //create order
+    //create order dit moet nog
 }
