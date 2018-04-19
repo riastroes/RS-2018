@@ -39,8 +39,14 @@ function preloader() {
 
 
 function start() {
+<<<<<<< HEAD
 
     getUserData();
+=======
+    //dit is anders
+    //getUserData();
+    customers = new Customers();
+>>>>>>> origin/master
     maxwidth = calcWidth("panelinspiration");
 
 
