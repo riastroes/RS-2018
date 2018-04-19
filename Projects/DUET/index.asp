@@ -112,7 +112,7 @@
 <body onload="start();" style="width:100%">
 
     <!-- Sidebar/menu -->
-    <nav class="w3-sidebar ocean w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:300px;font-weight:bold;" id="mySidebar"><br>
+    <nav class="w3-sidebar ocean w3-collapse w3-top w3-large w3-padding" style="z-index:3;width:330px;font-weight:bold; overflow:hidden" id="mySidebar"><br>
         <a href="javascript:void(0)" onclick="w3_close()" class="w3-button w3-hide-large w3-display-topleft" style="width:100%;font-size:22px">Close Menu</a>
         <div id="menu">
             <div class="w3-container">
@@ -131,23 +131,23 @@
                 <a href="#unsubscribe" onclick="unsubscribe()" class="w3-bar-item subitem w3-button w3-hover-white">Unsubscribe</a>
             </div>
             <br/><br/>
-            <div id="login">
+            <div id="login" style="font-weight:normal;">
                 <p>Sign in if you want to save your designs or create an order.</p>
                 <form action="index.asp" method="post">
                     <table style="width:100%; margin:0px;" border="0px">
                         <tr>
                             <td><label>Name:</label></td>
-                            <td> <input id="inlogname" name="inlogname" type="text"></input>
+                            <td> <input id="inlogname" name="inlogname" type="text" size="15"></input>
                             </td>
                         </tr>
                         <tr>
                             <td><label>Email:</label></td>
-                            <td><input id="inlogemail" name="inlogemail" type="text" required></input>
+                            <td><input id="inlogemail" name="inlogemail" type="text" size="15" required></input>
                             </td>
                         </tr>
                         <tr>
                             <td><label>Password:</label></td>
-                            <td><input id="inlogpassword" type="password" name="inlogpassword" required></input>
+                            <td><input id="inlogpassword" type="password" name="inlogpassword" size="15" required></input>
                             </td>
                         </tr>
                         <tr>
