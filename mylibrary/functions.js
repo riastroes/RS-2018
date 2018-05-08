@@ -25,3 +25,13 @@ function convertCanvasToImage(canvas, callback) {
     }
     image.src = canvas.toDataURL("image/jpeg", 1.0);
 }
+
+function calcWidth(elem) {
+    var width = elem.offsetWidth;
+    return width;
+}
+
+function calcHeight(elem) {
+    var height = elem.offsetHeight;
+    return height;
+}

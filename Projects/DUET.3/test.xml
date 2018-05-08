@@ -1,0 +1,28 @@
+<configuration>
+<system.web>
+<authentication mode="Forms" >
+<forms loginUrl="login.aspx" name=".ASPNETAUTH" protection="None" path="/" timeout="20" >
+</forms>
+</authentication>
+<!-- This section denies access to all files in this application except for those that you have not explicitly specified by using another setting. -->
+<authorization>
+<deny users="?" /> 
+</authorization>
+</system.web>
+<!-- This section gives the unauthenticated user access to the Default1.aspx page only. It is located in the same folder as this configuration file. -->
+<location path="default1.aspx">
+<system.web>
+<authorization>
+<allow users ="*" />
+</authorization>
+</system.web>
+</location>
+<!-- This section gives the unauthenticated user access to all of the files that are stored in the Subdir1 folder.  -->
+<location path="subdir1">
+<system.web>
+<authorization>
+<allow users ="*" />
+</authorization>
+</system.web>
+</location>
+</configuration>

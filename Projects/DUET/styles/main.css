@@ -1,0 +1,308 @@
+body,
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-family: "Poppins", sans-serif
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    color: #ff6d78;
+}
+
+body {
+    -webkit-touch-callout: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+p {
+    font-size: 18px;
+    color: white;
+}
+
+ul {
+    background: #006666;
+}
+
+li {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+label {
+    font-size: 18px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: white;
+}
+
+label.right {
+    padding-right: 20px;
+}
+
+label.left {
+    padding-left: 20px;
+}
+
+button {
+    padding: 10px;
+}
+
+button.info {
+    font-size: 14px;
+    display: block;
+    float: right;
+    background: #012929;
+    color: white;
+    padding: 10px;
+    right: 20px;
+    top: -25px;
+    border: 1px solid #ff6d78;
+    z-index: 3;
+    border-radius: 25px;
+}
+
+div.info {
+    position: absolute;
+    display: none;
+    float: right;
+    z-index: 4;
+    right: 70px;
+    border: solid 1px #ff6d78;
+    background-color: teal;
+    color: white;
+    font-size: 16px;
+    padding: 10px;
+}
+
+div.title {
+    font-size: 40px;
+    color: #ff6d78;
+}
+
+
+/* panel */
+
+#divbar {
+    position: absolute;
+    left: 0px;
+    width: 20px;
+    top: 0px;
+    height: 150%;
+    background-color: #ff6d78;
+    z-index: 20;
+    -webkit-transition: all 3000ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 3000ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#divpanel {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 150%;
+    padding: 20px;
+    -webkit-transition: all 3000ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 3000ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 5;
+    background-color: teal;
+}
+
+#divA {
+    padding-left: 20px;
+    background-color: teal;
+}
+
+#divB {
+    padding-left: 20px
+}
+
+#imgclosepanel {
+    position: relative;
+    top: 0px;
+    right: 0px;
+    width: 30px;
+    height: 30px;
+}
+
+#divlogin {
+    display: block;
+    position: relative;
+    height: calc(100% - 70px);
+}
+
+#divmenu {
+    display: none;
+    position: relative;
+    height: calc(100% - 70px);
+    color: white;
+    font-size: 14px;
+}
+
+#divanimation {
+    display: block;
+    position: relative;
+    height: calc(100% - 70px);
+}
+
+#divstampsettings {
+    display: none;
+    position: relative;
+    height: calc(100% - 70px);
+    color: white;
+    font-size: 14px;
+    background: #006666;
+    padding: 20px;
+}
+
+#divcanvassettings {
+    display: none;
+    width: calc(100% - 40px);
+    height: calc(100% - 70px);
+    color: white;
+    font-size: 14px;
+    background: #006666;
+    padding: 20px;
+}
+
+.btnclose {
+    position: relative;
+    bottom: 0px;
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: #012929;
+    color: white;
+    font-size: 20px;
+    padding: 20px;
+}
+
+#divinspiration {
+    display: none;
+    overflow: hidden;
+    position: relative;
+    height: calc(100%);
+}
+
+#divselectinspiration {
+    display: "float";
+}
+
+.xsmallimg {
+    margin: 6px 3px 6px 3px;
+    width: 70px;
+    height: 70px
+}
+
+.smallimg {
+    margin: 6px 3px 6px 3px;
+    width: 120px;
+    height: 120px;
+}
+
+#divsavedesign {
+    display: none;
+    width: calc(100% - 40px);
+    height: calc(100% - 70px);
+    color: white;
+    font-size: 14px;
+    background: #006666;
+    padding: 20px;
+}
+
+#divsaveddesigns {
+    display: none;
+    color: white;
+    font-size: 14px;
+    background: #006666;
+    padding: 20px;
+}
+
+
+/* end panel */
+
+
+/* design */
+
+#divdesign {
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+#divdesignframe {
+    position: absolute;
+    width: calc(100% - 60px);
+    height: calc(100% - 100px);
+    background-color: rgb(200, 200, 200);
+    overflow: scroll;
+    padding: 0px;
+    z-index: 2;
+}
+
+#canvashrule {
+    position: relative;
+    height: 20px;
+    z-index: 1;
+}
+
+#canvasvrule {
+    position: relative;
+    width: 20px;
+    z-index: 1;
+}
+
+#canvasdesign {
+    position: absolute;
+    z-index: 1;
+}
+
+#canvastop {
+    position: absolute;
+    padding: 20px;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+}
+
+.rs-200 {
+    width: 200px;
+}
+
+
+/* end design */
+
+
+/* design steps */
+
+#divdesignsteps {
+    padding: 20px;
+}
+
+#divsteps {
+    padding: 20px;
+    width: 100%;
+}
+
+.float {
+    float: left;
+}
+
+.rs-frame {
+    margin: 10px;
+    padding: 1px;
+    background-color: #eaeaea;
+}
+
+
+/* end design steps */

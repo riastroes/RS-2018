@@ -1,187 +1,179 @@
-function Design(mwidth) {
-    var inwidth = document.getElementById("inwidth");
-    var inheight = document.getElementById("inheight");
-    if (inwidth.value == "0") {
-        this.width = Math.floor(mwidth - 20);
-        this.width -= (this.width % 2);
-        this.height = this.width;
-        inwidth.value = this.width.toString();
-        inheight.value = this.height.toString();
-        var paneldesign = document.getElementById("paneldesign");
-        paneldesign.width = (this.width + 16) + "px";
-        paneldesign.height = (this.height + 12) + "px";
+function Design() {
+    this.designpanel = document.getElementById("divdesignframe");
+    this.infodesign = document.getElementById("btninfodesign");
+    this.infotextdesign = document.getElementById("divinfodesign");
+    this.infodesignsteps = document.getElementById("btninfodesignsteps");
+    this.infotextdesignsteps = document.getElementById("divinfodesignsteps");
 
-    } else {
-        this.width = inwidth.value;
-        this.height = inheight.value;
 
-    }
-
-    this.maxstack = 0;
-    this.current = 0;
-
-    this.DUETimg = [];
-    this.dataURL = [];
-    this.name = [];
-    this.link = [];
-    this.id = [];
-    this.index = 0;
-    // var scale = window.devicePixelRatio;
-    // console.log(scale);
-    // this.pnlcanvas = document.getElementById("paneldesign");
-    // this.pnlcanvas.width = this.width;
-    // this.pnlcanvas.height = this.height;
-    // this.pnlcanvas.style.overflow = "hidden";
-    // this.width *= scale;
-    // this.height *= scale;
     this.canvas = document.getElementById("canvasdesign");
-    this.canvas.width = this.width;
-    this.canvas.height = this.height;
-    this.bgcanvas = document.createElement("canvas");
-    this.bgcanvas.width = this.width;
-    this.bgcanvas.height = this.height;
-    this.bgctx = this.bgcanvas.getContext('2d');
-    this.bgcolor = "#ffffff";
-    this.patternsize = 2;
-    this.maxpatternsize = 1;
-    this.ctx = this.canvas.getContext('2d');
-    // this.ctx.scale(scale, scale);
-    //this.canvas.onmouseover = this.showView();
-    this.rows = this.patternsize;
-    this.cols = this.patternsize;
 
-    this.tempcanvas = document.createElement("canvas");
-    this.tempcanvas.width = this.canvas.width;
-    this.tempcanvas.height = this.canvas.height;
-    this.tempcanvas.id = "tempcanvas";
-    this.tempctx = this.tempcanvas.getContext('2d');
-    this.background(this.bgcolor);
+    this.olddesignwidth;
+    this.olddesignwidth;
 
-    this.view = document.createElement("canvas");
-    this.view.className = "view";
-    this.view.width = this.width;
-    this.view.height = this.height;
-    this.view.style.top = this.canvas.style.top;
-    this.view.style.left = this.canvas.style.left;
-    this.viewctx = this.view.getContext('2d');
+    this.hruler = new Ruler("h");
+    this.vruler = new Ruler("v");
 
-    this.watermark = watermark;
+    this.canvasbg = document.createElement("canvas");
+    this.canvastemp = document.createElement("canvas");
+    this.canvastop = document.getElementById("canvastop");
+
+    this.name = [];
+    this.id = [];
+    this.dataURL = [];
+    this.index = 0;
+
 
 }
-Design.prototype.background = function(acolor, isnewdesign) {
+Design.prototype.init = function(w, h) {
 
-    if (isnewdesign) {
-        this.bgcolor = acolor;
-        this.ctx.fillStyle = acolor;
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.drawImage(this.tempcanvas, 0, 0);
-        this.save();
+        //canvas
+
+        this.canvastop.addEventListener("mousemove", this.callDragStamp);
+        this.canvastop.addEventListener("click", this.callStamp);
+
+        this.infodesign.addEventListener("click", this.callToggleInfoDesign);
+        this.infotextdesign.addEventListener("click", this.callHideInfoDesign);
+        this.infodesignsteps.addEventListener("click", this.callToggleInfoDesignSteps);
+        this.infotextdesignsteps.addEventListener("click", this.callHideInfoDesignSteps);
+
+
+        this.canvas.width = w * app.dpi;
+        this.canvas.height = h * app.dpi;
+
+        this.width = w * app.dpi;
+        this.height = h * app.dpi;
+        this.canvasbg.width = w * app.dpi;
+        this.canvasbg.height = h * app.dpi;
+        this.canvastemp.width = w * app.dpi;
+        this.canvastemp.height = h * app.dpi;
+        this.canvastop.width = w * app.dpi;
+        this.canvastop.height = h * app.dpi;
+        this.canvastop.offsetX = this.canvas.offsetX;
+        this.canvastop.offsetY = this.canvas.offsetY;
+
+        //this.canvas.style.width = Math.floor(w * (app.scale * 100)) + "px";
+        //this.canvas.style.height = Math.floor(h * (app.scale * 100)) + "px";
+        //this.canvastop.style.width = Math.floor(w * (app.scale * 100)) + "px";
+        //this.canvastop.style.height = Math.floor(h * (app.scale * 100)) + "px";
+        var lblwidth = document.getElementById("lblcanvaswidth");
+        lblwidth.innerHTML = " " + w + " cm";
+        var lblheight = document.getElementById("lblcanvasheight");
+        lblheight.innerHTML = " " + h + " cm";
+
+        this.olddesignwidth = w;
+        this.olddesignheight = h;
+
+        this.ctxbg = this.canvasbg.getContext('2d');
+        this.ctxtemp = this.canvastemp.getContext('2d');
+        this.ctxtop = this.canvastop.getContext('2d');
+        this.ctx = this.canvas.getContext('2d');
+        this.changeBackgroundColor("#ffffff");
+        //rulers
+        this.hruler.init(w, 20);
+        this.vruler.init(20, h);
+        this.hruler.draw();
+        this.vruler.draw();
+    }
+    /* info buttons */
+Design.prototype.callToggleInfoDesign = function() {
+
+    if (app.design.infotextdesign.style.display == "none" || app.design.infotextdesign.style.display == undefined || app.design.infotextdesign.style.display == "") {
+        app.design.infotextdesign.style.display = "block";
     } else {
-        this.bgcolor = acolor;
-        this.ctx.fillStyle = acolor;
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.drawImage(this.tempcanvas, 0, 0);
+        app.design.infotextdesign.style.display = "none";
     }
+    return app.stop();
 }
+Design.prototype.callHideInfoDesign = function() {
+    app.design.infotextdesign.style.display = "none";
+    return app.stop();
+}
+Design.prototype.callToggleInfoDesignSteps = function() {
 
-// Design.prototype.showView = function() {
-//     var x = event.offsetX;
-//     var y = event.offsetY;
-
-//     design.viewctx.fillStyle = "#ffffffff";
-//     design.viewctx.fillRect(0, 0, design.width, design.height);
-//     design.viewctx.drawImage(design.canvas, x - (design.width / 2), y - (design.width / 2));
-// }
-Design.prototype.resizePattern = function(size) {
-    if (size == 0) {
-        this.patternsize = 1;
-    } else { this.patternsize = parseInt(size); }
-
-    var label = document.getElementById("lblpatternsize");
-    label.innerHTML = " " + this.patternsize;
-    if (this.patternsize > this.maxpatternsize) {
-        this.maxpatternsize = this.patternsize;
+    if (app.design.infotextdesignsteps.style.display == "none" || app.design.infotextdesignsteps.style.display == undefined || app.design.infotextdesignsteps.style.display == "") {
+        app.design.infotextdesignsteps.style.display = "block";
+    } else {
+        app.design.infotextdesignsteps.style.display = "none";
     }
-    this.rows = this.patternsize;
-    this.cols = this.patternsize;
-    // this.background(this.bgcolor);
-    // 
+    return app.stop();
 }
-Design.prototype.scalePattern = function(scale) {
-    var lblscale = document.getElementById("lblscale");
-    lblscale.innerHTML = scale.toString();
-    this.ctx.scale(scale, scale);
+Design.prototype.callHideInfoDesignSteps = function() {
+        app.design.infotextdesignsteps.style.display = "none";
+        return app.stop();
+    }
+    /* end info buttons */
+Design.prototype.changeBackgroundColor = function(acolor, isnewdesign) {
+    this.ctxbg.fillStyle = acolor;
+    this.ctxbg.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+    this.ctx.drawImage(this.canvasbg, 0, 0); //draw background 
+    this.ctx.drawImage(this.canvastemp, 0, 0);
+    if (isnewdesign) {
+        this.save();
+    }
+
 }
-Design.prototype.stamp = function() {
-    var imgData = this.tempctx.createImageData(stamp.width, stamp.height);
+Design.prototype.changeCanvasSize = function() {
+
+
+    let w = Math.floor(app.inrangecanvaswidth.value);
+    let h = Math.floor(app.inrangecanvasheight.value);
+    app.init(w, h);
+    return app.stop();
+}
+Design.prototype.callDragStamp = function() {
+    var scale = app.stamp.inrangescale.value
+    var x = event.offsetX - (app.stamp.width * scale / 2);
+    var y = event.offsetY - (app.stamp.height * scale / 2);
+    app.design.ctxtop.clearRect(0, 0, app.design.canvastop.width, app.design.canvastop.height);
+    app.design.ctxtop.drawImage(app.stamp.canvas, 0, 0, app.stamp.width, app.stamp.height, x, y, app.stamp.width * scale, app.stamp.height * scale);
+    //app.design.ctxtop.putImageData(app.stamp.stampData, x, y);
+    //app.design.ctx.drawImage(app.design.canvastop, 0, 0);
+
+}
+Design.prototype.callStamp = function() {
+    app.design.ctx.drawImage(app.design.canvasbg, 0, 0); //draw background 
+
+    var imgData = app.design.ctxtemp.createImageData(app.stamp.width, app.stamp.height);
 
     var x = event.offsetX;
     var y = event.offsetY;
+    var repeat = app.stamp.inrangerepeat.value
+    var scale = app.stamp.inrangescale.value
 
-    var w = this.canvas.width / this.cols;
-    var px = (x % w) - (stamp.width / 2);
-    var h = this.canvas.height / this.rows;
-    var py = (y % h) - (stamp.height / 2);
-    for (var i = -1; i <= this.cols; i++) {
-        for (var j = -1; j <= this.rows; j++) {
+    var w = app.design.canvas.width / repeat;
+    var px = (x % w) - (app.stamp.width * scale / 2);
+    var h = app.design.canvas.height / repeat;
+    var py = (y % h) - (app.stamp.height * scale / 2);
+    for (var i = -1; i <= repeat; i++) {
+        for (var j = -1; j <= repeat; j++) {
             var ax = (i * w) + px;
             var ay = (j * h) + py;
-            var bg = this.tempctx.getImageData(ax, ay, stamp.width, stamp.height);
-            for (var p = 0; p < bg.data.length; p += 4) {
-                if (stamp.stampData.data[p + 3] != 255) {
-                    imgData.data[p] = bg.data[p];
-                    imgData.data[p + 1] = bg.data[p + 1];
-                    imgData.data[p + 2] = bg.data[p + 2];
-                    imgData.data[p + 3] = bg.data[p + 3];
-                } else if (stamp.stampData.data[p] == 0 && stamp.stampData.data[p + 1] == 0 && stamp.stampData.data[p + 2] == 0 && stamp.stampData.data[p + 3] == 0) {
-                    //empty stamp
-                    imgData.data[p] = bg.data[p];
-                    imgData.data[p + 1] = bg.data[p + 1];
-                    imgData.data[p + 2] = bg.data[p + 2];
-                    imgData.data[p + 3] = bg.data[p + 3];
-                } else {
-                    imgData.data[p] = stamp.stampData.data[p];
-                    imgData.data[p + 1] = stamp.stampData.data[p + 1];
-                    imgData.data[p + 2] = stamp.stampData.data[p + 2];
-                    imgData.data[p + 3] = stamp.stampData.data[p + 3];
-                }
-            }
-            this.tempctx.putImageData(imgData, ax, ay);
-
+            app.design.ctxtemp.drawImage(app.stamp.canvas, 0, 0, app.stamp.width, app.stamp.height, ax, ay, app.stamp.width * scale, app.stamp.height * scale)
         }
     }
-
-    this.ctx.drawImage(this.tempcanvas, 0, 0);
-    this.save();
-
-    // var link = document.getElementById("lnkdownload");
-    // link.download = this.name[this.index];
-    // link.href = this.dataURL[this.index];
-
-
+    app.design.ctx.drawImage(app.design.canvastemp, 0, 0);
+    app.design.save();
+    return app.stop();
 }
 Design.prototype.restore = function(id, isnewdesign) {
     var img = document.getElementById(id);
     var divimg = document.getElementById("div" + id);
-    design.ctx.clearRect(0, 0, design.canvas.width, design.canvas.height);
-    design.tempctx.clearRect(0, 0, design.canvas.width, design.canvas.height);
-    design.tempctx.drawImage(img, 0, 0);
-    design.background(divimg.style.backgroundColor, isnewdesign);
-    //document.href = "#design";
-    //var index = parseInt(id.substring(4));
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctxtemp.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctxtemp.drawImage(img, 0, 0);
+    this.changeBackgroundColor(divimg.style.backgroundColor, false);
 
-    // var link = document.getElementById("lnkdownload");
-    // link.download = design.name[index];
-    // link.href = design.dataURL[index];
 }
 
 
 Design.prototype.save = function() {
 
-    this.dataURL[this.index] = this.tempcanvas.toDataURL('image/png', 1.0);
+    this.dataURL[this.index] = this.canvastemp.toDataURL('image/png', 1.0);
     this.name[this.index] = "DUET-pattern-" + this.index + ".png";
     this.id[this.index] = "DUET" + this.index;
-    if (this.dataURL[design.index].length > 0) {
+    if (this.dataURL[this.index].length > 0) {
         var adiv = document.createElement("div");
         adiv.className = "rs-frame float";
         var img = document.createElement("img");
@@ -191,13 +183,18 @@ Design.prototype.save = function() {
         img.alt = this.name[this.index];
         img.src = this.dataURL[this.index];
         img.onclick = function() {
-            design.restore(this.id, true);
+            app.design.restore(this.id, true);
         }
         img.width = 100;
         img.height = 100;
 
-        var divdesigns = document.getElementById("divdesignsteps");
-        divdesigns.appendChild(adiv);
+        var divsteps = document.getElementById("divsteps");
+        if (divsteps.innerHTML == 0) {
+            divsteps.appendChild(adiv)
+        } else {
+            divsteps.insertBefore(adiv, divsteps.childNodes[0]);
+        }
+
         adiv.style.backgroundColor = this.bgcolor;
         adiv.id = "div" + this.id[this.index];
         adiv.appendChild(img);
@@ -205,13 +202,6 @@ Design.prototype.save = function() {
 
         this.index++;
     }
+    app.designismade = true;
 
-}
-Design.prototype.addWatermark = function() {
-    this.ctx.drawImage(this.watermark, 0, 0, 400, 300);
-}
-Design.prototype.sendPattern = function(user) {
-
-    this.restore(this.id[this.index - 1], false);
-    //create order dit moet nog
 }
